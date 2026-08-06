@@ -7,3 +7,7 @@ dist/
 CV/
 PHOTO/
 PAPER_FIGURES/
+__pycache__/
+*.py[cod]
+playwright-report/
+test-results/

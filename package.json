@@ -8,7 +8,11 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --test tests/*.test.mjs"
+    "test": "npm run test:content",
+    "test:content": "node --test tests/*.test.mjs",
+    "test:scholar": "python -m unittest discover --start-directory tests --pattern test_scholar_sync.py",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test:content && npm run test:scholar && npm run build && npm run test:e2e"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",
@@ -17,6 +21,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^24.0.0",
     "typescript": "^6.0.3"
   }
 }
