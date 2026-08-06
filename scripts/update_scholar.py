@@ -52,6 +52,10 @@ def _title_key(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", title.casefold())
 
 
+def _is_truncated_text(value: str) -> bool:
+    return "…" in value or bool(re.search(r"\.{3,}", value))
+
+
 def normalize_publications(
     raw_publications: Iterable[dict[str, Any]],
     existing_publications: Iterable[dict[str, Any]] = (),
@@ -83,6 +87,13 @@ def normalize_publications(
             or bib.get("conference")
             or bib.get("publisher")
         )
+        previous_venue = _clean_text(previous.get("venue"))
+        if _is_truncated_text(venue):
+            venue = (
+                previous_venue
+                if previous_venue and not _is_truncated_text(previous_venue)
+                else "Google Scholar"
+            )
         year = _coerce_year(bib.get("pub_year") or bib.get("year"))
         url = _clean_text(
             raw.get("pub_url")
@@ -100,7 +111,7 @@ def normalize_publications(
             {
                 "title": display_title,
                 "authors": authors or _clean_text(previous.get("authors")),
-                "venue": venue or _clean_text(previous.get("venue")) or "Google Scholar",
+                "venue": venue or previous_venue or "Google Scholar",
                 "year": year or _coerce_year(previous.get("year")),
                 "url": url,
                 "citations": _coerce_citations(

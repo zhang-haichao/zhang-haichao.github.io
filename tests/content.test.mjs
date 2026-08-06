@@ -41,6 +41,7 @@ test('publication data matches the Scholar contract', async () => {
     assert.ok(publication.authors);
     assert.ok(Number.isInteger(publication.year));
     assert.match(publication.url, /^https:\/\//);
+    assert.doesNotMatch(publication.venue, /…|\.{3}/);
   }
 });
 

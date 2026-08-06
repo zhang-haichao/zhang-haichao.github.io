@@ -5,7 +5,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.update_scholar import ScholarUpdateError, update_publication_file
+from scripts.update_scholar import (
+    ScholarUpdateError,
+    normalize_publications,
+    update_publication_file,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,6 +17,34 @@ FIXTURE = ROOT / "tests" / "fixtures" / "scholar-profile.json"
 
 
 class ScholarSyncTests(unittest.TestCase):
+    def test_truncated_venue_preserves_existing_complete_metadata(self) -> None:
+        previous = {
+            "title": "A Scholar Work",
+            "authors": "Haichao Zhang",
+            "venue": "Complete Conference Name (CCN), 1–10, 2025",
+            "year": 2025,
+            "url": "https://example.org/work",
+            "citations": 2,
+        }
+
+        for truncated in ("Complete Conference Name …, 2025", "Complete Conference Name ..., 2025"):
+            with self.subTest(truncated=truncated):
+                publications = normalize_publications(
+                    [
+                        {
+                            "bib": {
+                                "title": "A Scholar Work",
+                                "author": "Haichao Zhang",
+                                "pub_year": "2025",
+                                "citation": truncated,
+                            }
+                        }
+                    ],
+                    [previous],
+                )
+
+                self.assertEqual(previous["venue"], publications[0]["venue"])
+
     def test_fixture_normalizes_deterministically_and_preserves_curated_url(self) -> None:
         raw = json.loads(FIXTURE.read_text(encoding="utf-8"))["publications"]
         with tempfile.TemporaryDirectory() as directory:
