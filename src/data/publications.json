@@ -1,56 +1,55 @@
 {
   "scholarId": "zRvnGK0AAAAJ",
-  "updatedAt": "2026-08-07T00:00:00Z",
-  "source": "seeded-from-cv-and-public-records",
+  "updatedAt": "2026-08-06T19:54:41Z",
+  "source": "google-scholar",
   "publications": [
     {
       "title": "Machine Vision-Enabled Octahedral Network Reconstruction and Structural Analysis of Perovskite Quantum Dots",
       "authors": "Guangyu Du, Haichao Zhang, Tieyuan Bian, Weizhen Wang, Long Hu, Yuxin Liu, Zhen Zhan, Songwei Liu, Yuanzhe Li, Xie He, Chutian Huang, Ying Kong, Lianzheng Hao, Jiawen Wang, Ni Zhou, Bao Tu, Chen Zhu, Jiadong Jaydon Gong, Tom Wu, Jun Yin, Zhouchen Lin, Songhua Cai",
-      "venue": "ACS Nano 20(7), 6125–6137",
+      "venue": "ACS nano 20 (7), 6125, 2026",
       "year": 2026,
-      "url": "https://doi.org/10.1021/acsnano.5c20211",
-      "citations": null
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12947740/",
+      "citations": 1
     },
     {
       "title": "Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning",
       "authors": "Haichao Zhang, Chong Zhang, Peiyu Hu, Shi Qiu, Jia Wang",
-      "venue": "IEEE International Conference on Data Mining (ICDM)",
+      "venue": "2025 IEEE International Conference on Data Mining (ICDM), 1702-1711, 2025",
       "year": 2025,
-      "url": "https://arxiv.org/abs/2511.05494",
-      "citations": null
+      "url": "https://ieeexplore.ieee.org/abstract/document/11391920/",
+      "citations": 2
     },
     {
       "title": "Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation",
-      "authors": "Chenke Yin, Li Fan, Jia Wang, Dongxiao Hu, Haichao Zhang, Chong Zhang, Yang Xiang",
-      "venue": "arXiv preprint arXiv:2508.07210",
+      "authors": "Chenke Yin, Fan Li, Jia Wang, Dongxiao Hu, Haichao Zhang, Chong Zhang, Yang Xiang",
+      "venue": "Asia-Pacific Web (APWeb) and Web-Age Information Management (WAIM) Joint …, 2025",
       "year": 2025,
-      "url": "https://arxiv.org/abs/2508.07210",
-      "citations": null
+      "url": "https://link.springer.com/chapter/10.1007/978-981-95-5719-6_25",
+      "citations": 4
     },
     {
       "title": "Clustering-based incremental learning for imbalanced data classification",
       "authors": "Yuxin Liu, Guangyu Du, Chenke Yin, Haichao Zhang, Jia Wang",
-      "venue": "Knowledge-Based Systems 292, 111612",
+      "venue": "Knowledge-Based Systems 292, 111612, 2024",
       "year": 2024,
-      "url": "https://doi.org/10.1016/j.knosys.2024.111612",
-      "citations": null
+      "url": "https://www.sciencedirect.com/science/article/pii/S0950705124002478",
+      "citations": 19
     },
     {
       "title": "Counterfactual Contrastive Learning for Fine Grained Image Classification",
       "authors": "Chenke Yin, Jia Wang, Haichao Zhang, Kaiyue Feng, Lin Shi, Qianyi Ma",
-      "venue": "International Conference on Artificial Neural Networks (ICANN), 169–183",
+      "venue": "International Conference on Artificial Neural Networks, 169-183, 2024",
       "year": 2024,
-      "url": "https://doi.org/10.1007/978-3-031-72341-4_12",
-      "citations": null
+      "url": "https://link.springer.com/chapter/10.1007/978-3-031-72341-4_12",
+      "citations": 4
     },
     {
       "title": "Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains",
       "authors": "Lin Shi, Yushi Li, Yu Han, Jia Wang, Fangyu Wu, Chenke Yin, Haichao Zhang",
-      "venue": "IEEE CSCWD, 2191–2196",
+      "venue": "2024 27th International Conference on Computer Supported Cooperative Work in …, 2024",
       "year": 2024,
-      "url": "https://doi.org/10.1109/CSCWD61410.2024.10580800",
-      "citations": null
+      "url": "https://ieeexplore.ieee.org/abstract/document/10580800/",
+      "citations": 2
     }
   ]
 }
-

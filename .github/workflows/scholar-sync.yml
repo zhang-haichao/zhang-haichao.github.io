@@ -1,0 +1,81 @@
+name: Sync Google Scholar
+
+on:
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scholar-sync-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update-publications:
+    if: github.repository_owner == 'zhang-haichao'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/requirements-scholar.txt
+
+      - name: Install Scholar updater
+        run: python -m pip install --requirement scripts/requirements-scholar.txt
+
+      - name: Test the safe update path
+        run: python -m unittest discover --start-directory tests --pattern 'test_scholar_sync.py'
+
+      - name: Fetch and validate Google Scholar publications
+        run: >-
+          python scripts/update_scholar.py
+          --scholar-id zRvnGK0AAAAJ
+          --output src/data/publications.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Verify the updated site builds
+        run: |
+          npm ci
+          npm run build
+
+      - name: Commit a validated update
+        shell: bash
+        run: |
+          if git diff --quiet -- src/data/publications.json; then
+            echo "Publication data is already current."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/publications.json
+          git commit -F - <<'EOF'
+          🐎 ci(scholar): 同步 Google Scholar 论文数据
+
+          Why:
+          - 保持个人主页论文、正式链接和引用数与公开 Scholar 主页一致
+
+          Why this works:
+          - 抓取结果通过完整性检查且站点构建成功后才提交
+
+          Remaining:
+          - Google Scholar 限流时保留上一次有效数据并等待下次计划任务
+          EOF
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

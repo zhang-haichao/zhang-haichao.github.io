@@ -1,0 +1,24 @@
+{
+  "publications": [
+    {
+      "bib": {
+        "title": "A Newer Scholar Work",
+        "author": ["Haichao Zhang", "Jia Wang"],
+        "pub_year": "2026",
+        "citation": "Example Conference"
+      },
+      "num_citations": 3,
+      "pub_url": "https://example.org/newer"
+    },
+    {
+      "bib": {
+        "title": "An Earlier Scholar Work",
+        "author": "Jia Wang and Haichao Zhang",
+        "pub_year": "2024",
+        "journal": "Example Journal"
+      },
+      "num_citations": "11"
+    }
+  ]
+}
+
