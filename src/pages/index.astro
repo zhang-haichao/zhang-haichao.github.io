@@ -1,0 +1,51 @@
+---
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/newsreader';
+import { profile } from '../data/site';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Haichao Zhang — Ph.D. student researching trustworthy and controllable recommender systems." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Haichao Zhang · Academic Homepage</title>
+  </head>
+  <body>
+    <main>
+      <h1>{profile.name.en}</h1>
+      <p>{profile.statement.en}</p>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(body) {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #f4f0e7;
+    color: #142b3a;
+    font-family: 'Manrope Variable', sans-serif;
+  }
+
+  main {
+    max-width: 48rem;
+    padding: 3rem;
+  }
+
+  h1 {
+    margin: 0 0 1rem;
+    font: 600 clamp(3.5rem, 10vw, 8rem) / 0.9 'Newsreader Variable', serif;
+  }
+
+  p {
+    max-width: 42rem;
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+</style>
+

@@ -1,0 +1,56 @@
+{
+  "scholarId": "zRvnGK0AAAAJ",
+  "updatedAt": "2026-08-07T00:00:00Z",
+  "source": "seeded-from-cv-and-public-records",
+  "publications": [
+    {
+      "title": "Machine Vision-Enabled Octahedral Network Reconstruction and Structural Analysis of Perovskite Quantum Dots",
+      "authors": "Guangyu Du, Haichao Zhang, Tieyuan Bian, Weizhen Wang, Long Hu, Yuxin Liu, Zhen Zhan, Songwei Liu, Yuanzhe Li, Xie He, Chutian Huang, Ying Kong, Lianzheng Hao, Jiawen Wang, Ni Zhou, Bao Tu, Chen Zhu, Jiadong Jaydon Gong, Tom Wu, Jun Yin, Zhouchen Lin, Songhua Cai",
+      "venue": "ACS Nano 20(7), 6125–6137",
+      "year": 2026,
+      "url": "https://doi.org/10.1021/acsnano.5c20211",
+      "citations": null
+    },
+    {
+      "title": "Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning",
+      "authors": "Haichao Zhang, Chong Zhang, Peiyu Hu, Shi Qiu, Jia Wang",
+      "venue": "IEEE International Conference on Data Mining (ICDM)",
+      "year": 2025,
+      "url": "https://arxiv.org/abs/2511.05494",
+      "citations": null
+    },
+    {
+      "title": "Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation",
+      "authors": "Chenke Yin, Li Fan, Jia Wang, Dongxiao Hu, Haichao Zhang, Chong Zhang, Yang Xiang",
+      "venue": "arXiv preprint arXiv:2508.07210",
+      "year": 2025,
+      "url": "https://arxiv.org/abs/2508.07210",
+      "citations": null
+    },
+    {
+      "title": "Clustering-based incremental learning for imbalanced data classification",
+      "authors": "Yuxin Liu, Guangyu Du, Chenke Yin, Haichao Zhang, Jia Wang",
+      "venue": "Knowledge-Based Systems 292, 111612",
+      "year": 2024,
+      "url": "https://doi.org/10.1016/j.knosys.2024.111612",
+      "citations": null
+    },
+    {
+      "title": "Counterfactual Contrastive Learning for Fine Grained Image Classification",
+      "authors": "Chenke Yin, Jia Wang, Haichao Zhang, Kaiyue Feng, Lin Shi, Qianyi Ma",
+      "venue": "International Conference on Artificial Neural Networks (ICANN), 169–183",
+      "year": 2024,
+      "url": "https://doi.org/10.1007/978-3-031-72341-4_12",
+      "citations": null
+    },
+    {
+      "title": "Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains",
+      "authors": "Lin Shi, Yushi Li, Yu Han, Jia Wang, Fangyu Wu, Chenke Yin, Haichao Zhang",
+      "venue": "IEEE CSCWD, 2191–2196",
+      "year": 2024,
+      "url": "https://doi.org/10.1109/CSCWD61410.2024.10580800",
+      "citations": null
+    }
+  ]
+}
+
