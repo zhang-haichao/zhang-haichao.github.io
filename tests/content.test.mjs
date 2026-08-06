@@ -15,7 +15,6 @@ const requiredAssets = [
   'public/images/institutions/xjtlu-official.svg',
   'public/images/institutions/liverpool-official.svg',
   'public/images/institutions/ecjtu-official.png',
-  'public/images/institutions/alibaba-official-alt.png',
   'public/images/institutions/dingfu-archive.png',
   'public/cv/haichao-zhang-en.pdf',
   'public/cv/haichao-zhang-zh.pdf'
@@ -55,7 +54,7 @@ test('public page source excludes private contact data and removed work', async 
   assert.doesNotMatch(source, /\bDURE\b/);
 });
 
-test('timeline uses traceable institution assets instead of generated monograms', async () => {
+test('timeline uses traceable institution assets and a license-safe Alibaba identifier', async () => {
   const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
   const sources = await readFile(new URL('docs/sources.md', root), 'utf8');
 
@@ -63,7 +62,6 @@ test('timeline uses traceable institution assets instead of generated monograms'
     'xjtlu-official.svg',
     'liverpool-official.svg',
     'ecjtu-official.png',
-    'alibaba-official-alt.png',
     'dingfu-archive.png'
   ]) {
     assert.match(site, new RegExp(asset.replace('.', '\\.')));
@@ -80,4 +78,7 @@ test('timeline uses traceable institution assets instead of generated monograms'
   }
 
   assert.doesNotMatch(site, /institutions\/(?:xjtlu|liverpool|ecjtu|alibaba|dingfu)\.svg/);
+  assert.match(site, /wordmark: 'Alibaba'/);
+  assert.doesNotMatch(site, /alibaba-official/i);
+  assert.match(sources, /not copied/i);
 });

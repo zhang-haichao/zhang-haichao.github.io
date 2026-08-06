@@ -13,7 +13,7 @@ This file records the public sources used to seed publication metadata and insti
 - XJTLU header logo: https://www.xjtlu.edu.cn/wp-content/uploads/2024/01/en-header-logo.svg
 - University of Liverpool header logo: https://www.liverpool.ac.uk/ (the inline `rb-header__logo` SVG was archived without changing its paths or proportions)
 - East China Jiaotong University header logo: https://www.ecjtu.edu.cn/images/logo20210811.png
-- Alibaba Group English logo: https://www.alibabagroup.com/en-US/resource-logos (downloaded from the official media library and preserved without altering its artwork; credit: Source: www.alibabagroup.com)
+- Alibaba Group media-library terms reviewed at https://www.alibabagroup.com/en-US/resource-logos. Because that artwork is limited to accredited editorial use, it is not copied into this personal academic site; the timeline uses neutral HTML text for the employer identifier.
 - Dingfu Data company profile and archived logo: https://pitchhub.36kr.com/project/2316725606435333
 
 The local copies are used only to identify the corresponding education or employment record. All trademarks remain the property of their owners; the page does not imply endorsement. The Dingfu Data website listed by its company profile (`http://www.dingfudata.com/`) was unavailable during implementation, so the exact-company 36Kr profile image is retained as a documented archival fallback rather than presented as a current official download. If an employer-supplied original becomes available, replace that one file before publication.

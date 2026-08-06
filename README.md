@@ -101,4 +101,4 @@ The Pages workflow runs content, Scholar-safety, build, and browser tests before
 
 The webpage exposes only the XJTLU and University of Liverpool academic email addresses. Phone number and private email are not rendered. The downloadable PDFs are the original user-provided files and are intentionally unmodified.
 
-The institution graphics are original, restrained monograms for timeline context rather than reproductions of official trademarks. Source links and publication references are recorded in `docs/sources.md`.
+The education timeline uses locally archived, source-documented university logos. Dingfu Data uses an exact-company historical profile image because its former official site was unavailable during implementation. Alibaba is rendered as neutral HTML text instead of copying the restricted official media-library artwork. All marks remain the property of their owners, and the timeline does not imply endorsement. Exact sources and usage notes are recorded in `docs/sources.md`.

@@ -413,7 +413,11 @@ const markAuthor = (authors: string) => authors.split(/(Haichao Zhang)/g);
               <div class="timeline-list">
                 {experience.map((item) => (
                   <article class="timeline-item reveal">
-                    <div class="timeline-logos"><img src={item.logo} alt={item.logoAlt} width="72" height="72" loading="lazy" /></div>
+                    <div class="timeline-logos">
+                      {item.logo
+                        ? <img src={item.logo} alt={item.logoAlt} width="72" height="72" loading="lazy" />
+                        : <span class="timeline-wordmark" aria-label={item.logoAlt}>{item.wordmark}</span>}
+                    </div>
                     <div class="timeline-copy">
                       <time>{item.period}</time>
                       <h4>{item.href.startsWith('http') ? <a href={item.href} target="_blank" rel="noreferrer"><span data-lang="en">{item.organization.en}</span><span data-lang="zh">{item.organization.zh}</span></a> : <><span data-lang="en">{item.organization.en}</span><span data-lang="zh">{item.organization.zh}</span></>}</h4>

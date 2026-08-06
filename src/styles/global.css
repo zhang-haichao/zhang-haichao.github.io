@@ -1040,7 +1040,8 @@ html[data-ui-language='zh'] .display-heading {
   min-height: 3.2rem;
 }
 
-.timeline-logos img {
+.timeline-logos img,
+.timeline-wordmark {
   box-sizing: border-box;
   width: 6rem;
   height: 3.25rem;
@@ -1050,6 +1051,16 @@ html[data-ui-language='zh'] .display-heading {
   background: #fffaf0;
   object-fit: contain;
   object-position: center;
+}
+
+.timeline-wordmark {
+  display: grid;
+  place-items: center;
+  color: #be4b2f;
+  font-family: var(--display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 .timeline-logos img[src*='ecjtu'] {
@@ -1640,10 +1651,15 @@ html[data-ui-language='zh'] .display-heading {
     gap: 1rem;
   }
 
-  .timeline-logos img {
+  .timeline-logos img,
+  .timeline-wordmark {
     width: 4.7rem;
     height: 2.9rem;
     padding: 0.42rem;
+  }
+
+  .timeline-wordmark {
+    font-size: 0.9rem;
   }
 
   .project-item {
