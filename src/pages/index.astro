@@ -1,51 +1,602 @@
 ---
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/newsreader';
-import { profile } from '../data/site';
+import '../styles/global.css';
+import {
+  about,
+  awards,
+  education,
+  experience,
+  news,
+  ongoingResearch,
+  openSource,
+  profile,
+  researchThemes,
+  selectedResearch
+} from '../data/site';
+import publicationData from '../data/publications.json';
+
+const navItems = [
+  { id: 'about', en: 'About', zh: '关于' },
+  { id: 'research', en: 'Research', zh: '研究' },
+  { id: 'publications', en: 'Publications', zh: '论文' },
+  { id: 'journey', en: 'Journey', zh: '经历' },
+  { id: 'opensource', en: 'Open Source', zh: '开源' }
+];
+
+const sectionCopy = {
+  news: {
+    eyebrow: { en: 'Now & next', zh: '近况' },
+    title: { en: 'Recent signals', zh: '近期动态' },
+    intro: {
+      en: 'A concise record of publications and research milestones.',
+      zh: '记录近期论文发表与研究进展。'
+    }
+  },
+  research: {
+    eyebrow: { en: 'Selected research', zh: '代表性研究' },
+    title: { en: 'Forgetting precisely, recommending responsibly.', zh: '精确遗忘，负责任地推荐。' },
+    intro: {
+      en: 'My current work centers on recommendation models that are useful, efficient, and accountable when data or user intent changes.',
+      zh: '我的研究关注当数据或用户意图发生变化时，推荐模型如何兼顾有效性、效率与可问责性。'
+    }
+  },
+  publications: {
+    eyebrow: { en: 'Publications', zh: '学术论文' },
+    title: { en: 'Published work', zh: '已发表工作' },
+    intro: {
+      en: 'This list is maintained from my Google Scholar profile. Citation counts appear when available.',
+      zh: '论文列表由 Google Scholar 主页同步维护；引用数据可用时会一并显示。'
+    }
+  },
+  ongoing: {
+    eyebrow: { en: 'Ongoing research', zh: '在研工作' },
+    title: { en: 'Questions still in motion', zh: '仍在推进的研究问题' },
+    intro: {
+      en: 'Early-stage and submitted work is intentionally described at a high level.',
+      zh: '为保护尚未发表的研究构思，此处仅提供概括性介绍。'
+    }
+  },
+  journey: {
+    eyebrow: { en: 'Journey', zh: '个人经历' },
+    title: { en: 'Research shaped by systems practice.', zh: '从工程实践走向可信智能。' },
+    intro: {
+      en: 'Before doctoral research, I built large-scale data and recommendation infrastructure in industry.',
+      zh: '在博士研究之前，我曾在工业界从事大规模数据与推荐基础设施研发。'
+    }
+  },
+  openSource: {
+    eyebrow: { en: 'Open source', zh: '开源项目' },
+    title: { en: 'Tools for better research habits.', zh: '让科研习惯更高效的工具。' },
+    intro: {
+      en: 'Two small, focused projects that turn recurring research work into reusable systems.',
+      zh: '两个聚焦且实用的项目，将重复性的科研工作沉淀为可复用系统。'
+    }
+  }
+} as const;
+
+const markAuthor = (authors: string) => authors.split(/(Haichao Zhang)/g);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-ui-language="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Haichao Zhang — Ph.D. student researching trustworthy and controllable recommender systems." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f4efe4" />
+    <meta name="description" content="Haichao Zhang is a Ph.D. student at XJTLU researching trustworthy and controllable recommender systems, LLMs, RAG, and machine unlearning." />
+    <meta property="og:title" content="Haichao Zhang · Academic Homepage" />
+    <meta property="og:description" content="Trustworthy and controllable recommender systems." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://zhang-haichao.github.io/" />
+    <meta property="og:image" content="https://zhang-haichao.github.io/images/portrait-haichao.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      try {
+        const stored = localStorage.getItem('haichao-site-language');
+        if (stored === 'zh') document.documentElement.dataset.uiLanguage = 'zh';
+      } catch {}
+    </script>
     <title>Haichao Zhang · Academic Homepage</title>
   </head>
   <body>
-    <main>
-      <h1>{profile.name.en}</h1>
-      <p>{profile.statement.en}</p>
+    <a class="skip-link" href="#main-content">
+      <span data-lang="en">Skip to content</span><span data-lang="zh">跳到主要内容</span>
+    </a>
+
+    <header class="site-header" data-site-header>
+      <a class="brand" href="#top" aria-label="Haichao Zhang home">
+        <span class="brand-mark" aria-hidden="true">HZ</span>
+        <span class="brand-name">Haichao Zhang</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        {navItems.map((item) => (
+          <a href={`#${item.id}`} data-nav-link={item.id}>
+            <span data-lang="en">{item.en}</span><span data-lang="zh">{item.zh}</span>
+          </a>
+        ))}
+      </nav>
+
+      <div class="header-actions">
+        <div class="language-switch" role="group" aria-label="Language selection">
+          <button type="button" data-language-button="en" aria-pressed="true">EN</button>
+          <span aria-hidden="true">/</span>
+          <button type="button" data-language-button="zh" aria-pressed="false">中文</button>
+        </div>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu">
+          <span class="menu-toggle-label" data-lang="en">Menu</span>
+          <span class="menu-toggle-label" data-lang="zh">菜单</span>
+          <span class="menu-toggle-lines" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+
+      <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" hidden>
+        {navItems.map((item, index) => (
+          <a href={`#${item.id}`} data-mobile-nav-link>
+            <span class="mobile-menu-index">0{index + 1}</span>
+            <span data-lang="en">{item.en}</span><span data-lang="zh">{item.zh}</span>
+          </a>
+        ))}
+        <a href={`mailto:${profile.emailPrimary}`}>
+          <span class="mobile-menu-index">06</span>
+          <span data-lang="en">Contact</span><span data-lang="zh">联系</span>
+        </a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true">
+          <img src={profile.portrait} alt="" width="1254" height="1254" fetchpriority="high" />
+        </div>
+        <div class="hero-wash" aria-hidden="true"></div>
+        <div class="hero-content page-shell">
+          <p class="hero-role hero-enter hero-enter-1">
+            <span class="hero-role-line" aria-hidden="true"></span>
+            <span data-lang="en">{profile.role.en}</span><span data-lang="zh">{profile.role.zh}</span>
+          </p>
+          <h1 id="hero-title" class="hero-name hero-enter hero-enter-2">
+            <span data-lang="en">Haichao<br />Zhang<span class="hero-dot">.</span></span>
+            <span data-lang="zh">张海超<span class="hero-dot">。</span></span>
+          </h1>
+          <p class="hero-headline hero-enter hero-enter-3">
+            <span data-lang="en">{profile.headline.en}</span><span data-lang="zh">{profile.headline.zh}</span>
+          </p>
+          <p class="hero-statement hero-enter hero-enter-4">
+            <span data-lang="en">{profile.statement.en}</span><span data-lang="zh">{profile.statement.zh}</span>
+          </p>
+          <div class="hero-actions hero-enter hero-enter-5">
+            <a class="button button-primary" href="#research">
+              <span data-lang="en">Explore research</span><span data-lang="zh">查看研究</span>
+              <span aria-hidden="true">↘</span>
+            </a>
+            <a class="button button-text" href={profile.links.cvEn} data-cv-link target="_blank" rel="noreferrer">
+              <span data-lang="en">Download CV</span><span data-lang="zh">下载简历</span>
+              <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+        </div>
+        <a class="hero-scroll" href="#about" aria-label="Scroll to About">
+          <span data-lang="en">Scroll</span><span data-lang="zh">向下</span>
+          <i aria-hidden="true"></i>
+        </a>
+      </section>
+
+      <section class="about section-space" id="about" aria-labelledby="about-title">
+        <div class="page-shell about-grid reveal-group">
+          <div class="section-marker reveal">
+            <span class="section-number">01</span>
+            <p><span data-lang="en">{about.eyebrow.en}</span><span data-lang="zh">{about.eyebrow.zh}</span></p>
+          </div>
+          <div class="about-copy">
+            <h2 id="about-title" class="display-heading reveal">
+              <span data-lang="en">{about.title.en}</span><span data-lang="zh">{about.title.zh}</span>
+            </h2>
+            <p class="large-copy reveal">
+              <span data-lang="en">
+                I am a Ph.D. student in the School of AI and Advanced Computing at Xi'an Jiaotong-Liverpool University, advised by <a href={profile.links.supervisor} target="_blank" rel="noreferrer">Prof. Jia Wang</a>. My work asks how recommendation systems can use foundation models while remaining efficient, privacy-aware, and controllable in practice.
+              </span>
+              <span data-lang="zh">
+                我是西交利物浦大学人工智能与先进计算学院博士研究生，导师为<a href={profile.links.supervisor} target="_blank" rel="noreferrer">王佳教授</a>。我的研究关注推荐系统如何在利用基础模型能力的同时，在真实应用中保持高效、隐私友好与可控。
+              </span>
+            </p>
+          </div>
+          <div class="theme-list">
+            {researchThemes.map((theme) => (
+              <article class="theme-row reveal">
+                <span>{theme.index}</span>
+                <h3><span data-lang="en">{theme.title.en}</span><span data-lang="zh">{theme.title.zh}</span></h3>
+                <p><span data-lang="en">{theme.description.en}</span><span data-lang="zh">{theme.description.zh}</span></p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="news-strip" aria-labelledby="news-title">
+        <div class="page-shell news-grid">
+          <div class="news-heading reveal">
+            <p class="eyebrow"><span data-lang="en">{sectionCopy.news.eyebrow.en}</span><span data-lang="zh">{sectionCopy.news.eyebrow.zh}</span></p>
+            <h2 id="news-title"><span data-lang="en">{sectionCopy.news.title.en}</span><span data-lang="zh">{sectionCopy.news.title.zh}</span></h2>
+          </div>
+          <div class="news-list">
+            {news.map((item) => (
+              <a class="news-item reveal" href={item.href} target="_blank" rel="noreferrer">
+                <time>{item.date}</time>
+                <span><span data-lang="en">{item.text.en}</span><span data-lang="zh">{item.text.zh}</span></span>
+                <i aria-hidden="true">↗</i>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="research section-space" id="research" aria-labelledby="research-title">
+        <div class="page-shell">
+          <div class="section-intro reveal-group">
+            <div class="section-marker reveal">
+              <span class="section-number">02</span>
+              <p><span data-lang="en">{sectionCopy.research.eyebrow.en}</span><span data-lang="zh">{sectionCopy.research.eyebrow.zh}</span></p>
+            </div>
+            <div>
+              <h2 id="research-title" class="display-heading reveal">
+                <span data-lang="en">{sectionCopy.research.title.en}</span><span data-lang="zh">{sectionCopy.research.title.zh}</span>
+              </h2>
+              <p class="section-description reveal">
+                <span data-lang="en">{sectionCopy.research.intro.en}</span><span data-lang="zh">{sectionCopy.research.intro.zh}</span>
+              </p>
+            </div>
+          </div>
+
+          {selectedResearch.map((paper) => (
+            <article class="featured-paper reveal-group">
+              <button
+                class="paper-visual reveal"
+                type="button"
+                data-figure-src={paper.image}
+                data-figure-alt-en={paper.imageAlt.en}
+                data-figure-alt-zh={paper.imageAlt.zh}
+                aria-label={`Enlarge ${paper.shortName} framework figure`}
+              >
+                <img src={paper.image} alt={paper.imageAlt.en} width="671" height="482" loading="lazy" />
+                <span class="figure-action"><span data-lang="en">View framework</span><span data-lang="zh">查看框架图</span> ↗</span>
+              </button>
+              <div class="paper-copy reveal">
+                <div class="paper-meta"><span>{paper.shortName}</span><span>{paper.venue}</span></div>
+                <h3><span data-lang="en">{paper.title.en}</span><span data-lang="zh">{paper.title.zh}</span></h3>
+                <p><span data-lang="en">{paper.description.en}</span><span data-lang="zh">{paper.description.zh}</span></p>
+                <div class="text-links">
+                  {paper.links.map((link) => (
+                    <a href={link.href} target="_blank" rel="noreferrer">
+                      <span data-lang="en">{link.label.en}</span><span data-lang="zh">{link.label.zh}</span>
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="publications section-space" id="publications" aria-labelledby="publications-title">
+        <div class="page-shell publication-layout">
+          <div class="publication-sticky reveal">
+            <div class="section-marker">
+              <span class="section-number">03</span>
+              <p><span data-lang="en">{sectionCopy.publications.eyebrow.en}</span><span data-lang="zh">{sectionCopy.publications.eyebrow.zh}</span></p>
+            </div>
+            <h2 id="publications-title" class="display-heading">
+              <span data-lang="en">{sectionCopy.publications.title.en}</span><span data-lang="zh">{sectionCopy.publications.title.zh}</span>
+            </h2>
+            <p class="section-description">
+              <span data-lang="en">{sectionCopy.publications.intro.en}</span><span data-lang="zh">{sectionCopy.publications.intro.zh}</span>
+            </p>
+            <a class="scholar-link" href={profile.links.scholar} target="_blank" rel="noreferrer">
+              <span data-lang="en">Complete profile on Google Scholar</span><span data-lang="zh">在 Google Scholar 查看完整主页</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <ol class="publication-list">
+            {publicationData.publications.map((publication, index) => (
+              <li class="publication-item reveal" data-publication-title={publication.title}>
+                <span class="publication-index">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <div class="publication-meta">
+                    <time>{publication.year}</time>
+                    {publication.citations !== null && (
+                      <span>
+                        <span data-lang="en">Cited by {publication.citations}</span>
+                        <span data-lang="zh">引用 {publication.citations}</span>
+                      </span>
+                    )}
+                  </div>
+                  <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
+                  <p class="publication-authors">
+                    {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                  </p>
+                  <p class="publication-venue">{publication.venue}</p>
+                </div>
+                <a class="publication-arrow" href={publication.url} target="_blank" rel="noreferrer" aria-label={`Open ${publication.title}`}>
+                  ↗
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="ongoing section-space" aria-labelledby="ongoing-title">
+        <div class="page-shell">
+          <div class="section-intro reveal-group">
+            <div class="section-marker reveal">
+              <span class="section-number">04</span>
+              <p><span data-lang="en">{sectionCopy.ongoing.eyebrow.en}</span><span data-lang="zh">{sectionCopy.ongoing.eyebrow.zh}</span></p>
+            </div>
+            <div>
+              <h2 id="ongoing-title" class="display-heading reveal">
+                <span data-lang="en">{sectionCopy.ongoing.title.en}</span><span data-lang="zh">{sectionCopy.ongoing.title.zh}</span>
+              </h2>
+              <p class="section-description reveal">
+                <span data-lang="en">{sectionCopy.ongoing.intro.en}</span><span data-lang="zh">{sectionCopy.ongoing.intro.zh}</span>
+              </p>
+            </div>
+          </div>
+          <div class="ongoing-list">
+            {ongoingResearch.map((paper, index) => (
+              <article class="ongoing-item reveal">
+                <span class="ongoing-index">{String(index + 1).padStart(2, '0')}</span>
+                <button
+                  class="ongoing-visual"
+                  type="button"
+                  data-figure-src={paper.image}
+                  data-figure-alt-en={`${paper.title} framework figure`}
+                  data-figure-alt-zh={`${paper.title} 框架图`}
+                  aria-label={`Enlarge ${paper.title} framework figure`}
+                >
+                  <img src={paper.image} alt={`${paper.title} framework figure`} loading="lazy" />
+                </button>
+                <div class="ongoing-copy">
+                  <p class="ongoing-status"><span data-lang="en">Ongoing research</span><span data-lang="zh">在研工作</span></p>
+                  <h3>{paper.title}</h3>
+                  <p><span data-lang="en">{paper.description.en}</span><span data-lang="zh">{paper.description.zh}</span></p>
+                </div>
+                <span class="ongoing-arrow" aria-hidden="true">↗</span>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="journey section-space" id="journey" aria-labelledby="journey-title">
+        <div class="page-shell">
+          <div class="section-intro reveal-group">
+            <div class="section-marker reveal">
+              <span class="section-number">05</span>
+              <p><span data-lang="en">{sectionCopy.journey.eyebrow.en}</span><span data-lang="zh">{sectionCopy.journey.eyebrow.zh}</span></p>
+            </div>
+            <div>
+              <h2 id="journey-title" class="display-heading reveal">
+                <span data-lang="en">{sectionCopy.journey.title.en}</span><span data-lang="zh">{sectionCopy.journey.title.zh}</span>
+              </h2>
+              <p class="section-description reveal">
+                <span data-lang="en">{sectionCopy.journey.intro.en}</span><span data-lang="zh">{sectionCopy.journey.intro.zh}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="journey-columns">
+            <div class="timeline-block reveal-group">
+              <h3 class="timeline-title reveal"><span data-lang="en">Education</span><span data-lang="zh">教育经历</span></h3>
+              <div class="timeline-list">
+                {education.map((item) => (
+                  <article class="timeline-item reveal">
+                    <div class="timeline-logos">
+                      <img src={item.logo} alt={item.logoAlt} width="72" height="72" loading="lazy" />
+                      {item.secondaryLogo && <img src={item.secondaryLogo} alt={item.secondaryLogoAlt ?? ''} width="72" height="72" loading="lazy" />}
+                    </div>
+                    <div class="timeline-copy">
+                      <time>{item.period}</time>
+                      <h4><a href={item.href} target="_blank" rel="noreferrer"><span data-lang="en">{item.institution.en}</span><span data-lang="zh">{item.institution.zh}</span></a></h4>
+                      <p class="timeline-role"><span data-lang="en">{item.degree.en}</span><span data-lang="zh">{item.degree.zh}</span></p>
+                      <p><span data-lang="en">{item.note.en}</span><span data-lang="zh">{item.note.zh}</span></p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div class="timeline-block reveal-group" id="experience">
+              <h3 class="timeline-title reveal"><span data-lang="en">Industry</span><span data-lang="zh">工作经历</span></h3>
+              <div class="timeline-list">
+                {experience.map((item) => (
+                  <article class="timeline-item reveal">
+                    <div class="timeline-logos"><img src={item.logo} alt={item.logoAlt} width="72" height="72" loading="lazy" /></div>
+                    <div class="timeline-copy">
+                      <time>{item.period}</time>
+                      <h4>{item.href.startsWith('http') ? <a href={item.href} target="_blank" rel="noreferrer"><span data-lang="en">{item.organization.en}</span><span data-lang="zh">{item.organization.zh}</span></a> : <><span data-lang="en">{item.organization.en}</span><span data-lang="zh">{item.organization.zh}</span></>}</h4>
+                      <p class="timeline-role"><span data-lang="en">{item.role.en}</span><span data-lang="zh">{item.role.zh}</span></p>
+                      <p><span data-lang="en">{item.description.en}</span><span data-lang="zh">{item.description.zh}</span></p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="opensource section-space" id="opensource" aria-labelledby="opensource-title">
+        <div class="page-shell open-source-layout">
+          <div class="open-source-intro reveal">
+            <div class="section-marker">
+              <span class="section-number">06</span>
+              <p><span data-lang="en">{sectionCopy.openSource.eyebrow.en}</span><span data-lang="zh">{sectionCopy.openSource.eyebrow.zh}</span></p>
+            </div>
+            <h2 id="opensource-title" class="display-heading">
+              <span data-lang="en">{sectionCopy.openSource.title.en}</span><span data-lang="zh">{sectionCopy.openSource.title.zh}</span>
+            </h2>
+            <p class="section-description">
+              <span data-lang="en">{sectionCopy.openSource.intro.en}</span><span data-lang="zh">{sectionCopy.openSource.intro.zh}</span>
+            </p>
+          </div>
+          <div class="project-list">
+            {openSource.map((project, index) => (
+              <a class="project-item reveal" href={project.href} target="_blank" rel="noreferrer">
+                <span class="project-index">0{index + 1}</span>
+                <div>
+                  <p class="project-language">{project.language}</p>
+                  <h3>{project.name}</h3>
+                  <p><span data-lang="en">{project.description.en}</span><span data-lang="zh">{project.description.zh}</span></p>
+                </div>
+                <span class="project-arrow" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="awards section-space" aria-labelledby="awards-title">
+        <div class="page-shell awards-layout">
+          <div class="reveal">
+            <p class="eyebrow"><span data-lang="en">Selected recognition</span><span data-lang="zh">部分荣誉</span></p>
+            <h2 id="awards-title"><span data-lang="en">Awards</span><span data-lang="zh">荣誉奖项</span></h2>
+          </div>
+          <ol class="award-list">
+            {awards.map((award) => (
+              <li class="reveal">
+                <time>{award.year}</time>
+                <span><span data-lang="en">{award.title.en}</span><span data-lang="zh">{award.title.zh}</span></span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <div class="contact-atmosphere" aria-hidden="true"></div>
+        <div class="page-shell contact-inner reveal">
+          <p class="eyebrow"><span data-lang="en">Start a conversation</span><span data-lang="zh">保持联系</span></p>
+          <h2 id="contact-title">
+            <span data-lang="en">Let’s make intelligent systems<br /><em>worthy of trust.</em></span>
+            <span data-lang="zh">一起构建真正<br /><em>值得信任的智能系统。</em></span>
+          </h2>
+          <div class="contact-actions">
+            <a class="button button-light" href={`mailto:${profile.emailPrimary}`}>
+              <span data-lang="en">Email me</span><span data-lang="zh">发送邮件</span><span aria-hidden="true">↗</span>
+            </a>
+            <a href={profile.links.github} target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href={profile.links.scholar} target="_blank" rel="noreferrer">Google Scholar ↗</a>
+          </div>
+          <div class="contact-details">
+            <div>
+              <span data-lang="en">Academic email</span><span data-lang="zh">学术邮箱</span>
+              <a href={`mailto:${profile.emailPrimary}`}>{profile.emailPrimary}</a>
+              <a href={`mailto:${profile.emailSecondary}`}>{profile.emailSecondary}</a>
+            </div>
+            <div>
+              <span data-lang="en">Based in</span><span data-lang="zh">所在地</span>
+              <p><span data-lang="en">{profile.location.en}</span><span data-lang="zh">{profile.location.zh}</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="page-shell">
+        <p>© {new Date().getFullYear()} Haichao Zhang</p>
+        <p><span data-lang="en">Designed for thoughtful research.</span><span data-lang="zh">为专注而审慎的研究而设计。</span></p>
+        <a href="#top"><span data-lang="en">Back to top</span><span data-lang="zh">返回顶部</span> ↑</a>
+      </div>
+    </footer>
+
+    <dialog class="figure-dialog" id="figure-dialog" aria-labelledby="figure-dialog-caption">
+      <button class="dialog-close" type="button" data-dialog-close aria-label="Close figure">×</button>
+      <div class="dialog-frame"><img src="" alt="" data-dialog-image /></div>
+      <p id="figure-dialog-caption" data-dialog-caption></p>
+    </dialog>
+
+    <script>
+      const root = document.documentElement;
+      const languageButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-language-button]'));
+      const cvLink = document.querySelector<HTMLAnchorElement>('[data-cv-link]');
+      const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const mobileMenu = document.querySelector<HTMLElement>('#mobile-menu');
+      const cvUrls = { en: '/cv/haichao-zhang-en.pdf', zh: '/cv/haichao-zhang-zh.pdf' };
+
+      const setLanguage = (language: 'en' | 'zh') => {
+        root.dataset.uiLanguage = language;
+        root.lang = language === 'zh' ? 'zh-CN' : 'en';
+        document.title = language === 'zh' ? '张海超 · 学术主页' : 'Haichao Zhang · Academic Homepage';
+        languageButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.languageButton === language)));
+        if (cvLink) cvLink.href = cvUrls[language];
+        if (menuToggle) menuToggle.setAttribute('aria-label', language === 'zh' ? '菜单' : 'Menu');
+        try { localStorage.setItem('haichao-site-language', language); } catch {}
+      };
+
+      setLanguage(root.dataset.uiLanguage === 'zh' ? 'zh' : 'en');
+      languageButtons.forEach((button) => button.addEventListener('click', () => setLanguage(button.dataset.languageButton === 'zh' ? 'zh' : 'en')));
+
+      const header = document.querySelector<HTMLElement>('[data-site-header]');
+      const updateHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 24);
+      updateHeader();
+      window.addEventListener('scroll', updateHeader, { passive: true });
+
+      const closeMenu = () => {
+        if (!menuToggle || !mobileMenu) return;
+        menuToggle.setAttribute('aria-expanded', 'false');
+        mobileMenu.hidden = true;
+        document.body.classList.remove('menu-open');
+      };
+      menuToggle?.addEventListener('click', () => {
+        if (!mobileMenu) return;
+        const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+        menuToggle.setAttribute('aria-expanded', String(open));
+        mobileMenu.hidden = !open;
+        document.body.classList.toggle('menu-open', open);
+      });
+      document.querySelectorAll('[data-mobile-nav-link]').forEach((link) => link.addEventListener('click', closeMenu));
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+
+      const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
+      const navObserver = new IntersectionObserver((entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        navLinks.forEach((link) => link.classList.toggle('is-active', link.dataset.navLink === visible.target.id));
+      }, { threshold: [0.15, 0.35], rootMargin: '-18% 0px -55% 0px' });
+      navLinks.forEach((link) => {
+        const section = document.getElementById(link.dataset.navLink ?? '');
+        if (section) navObserver.observe(section);
+      });
+
+      const dialog = document.querySelector<HTMLDialogElement>('#figure-dialog');
+      const dialogImage = dialog?.querySelector<HTMLImageElement>('[data-dialog-image]');
+      const dialogCaption = dialog?.querySelector<HTMLElement>('[data-dialog-caption]');
+      document.querySelectorAll<HTMLButtonElement>('[data-figure-src]').forEach((button) => {
+        button.addEventListener('click', () => {
+          if (!dialog || !dialogImage || !dialogCaption) return;
+          const language = root.dataset.uiLanguage === 'zh' ? 'zh' : 'en';
+          const alt = language === 'zh' ? button.dataset.figureAltZh : button.dataset.figureAltEn;
+          dialogImage.src = button.dataset.figureSrc ?? '';
+          dialogImage.alt = alt ?? '';
+          dialogCaption.textContent = alt ?? '';
+          dialog.showModal();
+        });
+      });
+      dialog?.querySelector('[data-dialog-close]')?.addEventListener('click', () => dialog.close());
+      dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+      window.addEventListener('keydown', (event) => { if (event.key === 'Escape' && dialog?.open) dialog.close(); });
+    </script>
   </body>
 </html>
-
-<style>
-  :global(body) {
-    margin: 0;
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    background: #f4f0e7;
-    color: #142b3a;
-    font-family: 'Manrope Variable', sans-serif;
-  }
-
-  main {
-    max-width: 48rem;
-    padding: 3rem;
-  }
-
-  h1 {
-    margin: 0 0 1rem;
-    font: 600 clamp(3.5rem, 10vw, 8rem) / 0.9 'Newsreader Variable', serif;
-  }
-
-  p {
-    max-width: 42rem;
-    font-size: 1.1rem;
-    line-height: 1.7;
-  }
-</style>
-

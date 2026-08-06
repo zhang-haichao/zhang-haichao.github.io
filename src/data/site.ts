@@ -206,6 +206,8 @@ export const education = [
     },
     logo: '/images/institutions/xjtlu.svg',
     logoAlt: 'XJTLU',
+    secondaryLogo: '/images/institutions/liverpool.svg',
+    secondaryLogoAlt: 'University of Liverpool',
     href: 'https://www.xjtlu.edu.cn/en/study/departments/school-of-ai-and-advanced-computing/'
   },
   {
@@ -224,6 +226,8 @@ export const education = [
     },
     logo: '/images/institutions/xjtlu.svg',
     logoAlt: 'XJTLU',
+    secondaryLogo: null,
+    secondaryLogoAlt: null,
     href: 'https://www.xjtlu.edu.cn/'
   },
   {
@@ -242,6 +246,8 @@ export const education = [
     },
     logo: '/images/institutions/ecjtu.svg',
     logoAlt: 'ECJTU',
+    secondaryLogo: null,
+    secondaryLogoAlt: null,
     href: 'https://www.ecjtu.edu.cn/'
   }
 ] as const;
@@ -336,4 +342,3 @@ export const awards = [
     }
   }
 ] as const;
-
