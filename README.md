@@ -53,7 +53,7 @@ The gate checks local assets and privacy boundaries, Scholar normalization and f
 | Scholar publication cache | `src/data/publications.json` |
 | Research figures | `public/images/papers/` |
 | Portrait | `public/images/portrait-haichao.png` |
-| Institution monograms | `public/images/institutions/` |
+| Institution identifiers and logos | `public/images/institutions/` |
 | Downloadable CVs | `public/cv/` |
 | Visual system | `src/styles/global.css` |
 

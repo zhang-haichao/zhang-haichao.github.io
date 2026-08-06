@@ -57,6 +57,7 @@ test('public page source excludes private contact data and removed work', async 
 test('timeline uses traceable institution assets and a license-safe Alibaba identifier', async () => {
   const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
   const sources = await readFile(new URL('docs/sources.md', root), 'utf8');
+  const readme = await readFile(new URL('README.md', root), 'utf8');
 
   for (const asset of [
     'xjtlu-official.svg',
@@ -81,4 +82,5 @@ test('timeline uses traceable institution assets and a license-safe Alibaba iden
   assert.match(site, /wordmark: 'Alibaba'/);
   assert.doesNotMatch(site, /alibaba-official/i);
   assert.match(sources, /not copied/i);
+  assert.doesNotMatch(readme, /monograms?/i);
 });
