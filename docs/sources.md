@@ -10,9 +10,10 @@ This file records the public sources used to seed publication metadata and insti
 - Counterfactual Contrastive Learning: https://doi.org/10.1007/978-3-031-72341-4_12
 - Two-branch bloodstain network: https://doi.org/10.1109/CSCWD61410.2024.10580800
 - XJTLU School of AI and Advanced Computing: https://www.xjtlu.edu.cn/en/study/departments/school-of-ai-and-advanced-computing/
-- University of Liverpool: https://www.liverpool.ac.uk/
-- East China Jiaotong University: https://www.ecjtu.edu.cn/
-- Alibaba Group: https://www.alibabagroup.com/
+- XJTLU header logo: https://www.xjtlu.edu.cn/wp-content/uploads/2024/01/en-header-logo.svg
+- University of Liverpool header logo: https://www.liverpool.ac.uk/ (the inline `rb-header__logo` SVG was archived without changing its paths or proportions)
+- East China Jiaotong University header logo: https://www.ecjtu.edu.cn/images/logo20210811.png
+- Alibaba Group English logo: https://www.alibabagroup.com/en-US/resource-logos (downloaded from the official media library and preserved without altering its artwork; credit: Source: www.alibabagroup.com)
+- Dingfu Data company profile and archived logo: https://pitchhub.36kr.com/project/2316725606435333
 
-The local institutional graphics are restrained, original monograms for navigation and timeline context. They are not reproductions of official trademarks.
-
+The local copies are used only to identify the corresponding education or employment record. All trademarks remain the property of their owners; the page does not imply endorsement. The Dingfu Data website listed by its company profile (`http://www.dingfudata.com/`) was unavailable during implementation, so the exact-company 36Kr profile image is retained as a documented archival fallback rather than presented as a current official download. If an employer-supplied original becomes available, replace that one file before publication.

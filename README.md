@@ -8,7 +8,7 @@ A bilingual, single-page academic homepage for GitHub Pages. English is the defa
 - English/Chinese content with a persisted language preference
 - Selected Research and public-safe Ongoing Research framework previews
 - Google Scholar-backed Publications with citation counts
-- Education and industry timelines with local institution monograms
+- Education and industry timelines with locally archived, source-documented institution logos
 - Open Source featuring only `senpai-skill` and `PaperReader`
 - Original English and Chinese CV PDFs
 - Automated Scholar updates and GitHub Pages deployment

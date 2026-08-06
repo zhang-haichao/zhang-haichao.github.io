@@ -204,9 +204,9 @@ export const education = [
       en: 'School of AI and Advanced Computing · Degree awarded by the University of Liverpool',
       zh: '人工智能与先进计算学院 · 学位由利物浦大学授予'
     },
-    logo: '/images/institutions/xjtlu.svg',
+    logo: '/images/institutions/xjtlu-official.svg',
     logoAlt: 'XJTLU',
-    secondaryLogo: '/images/institutions/liverpool.svg',
+    secondaryLogo: '/images/institutions/liverpool-official.svg',
     secondaryLogoAlt: 'University of Liverpool',
     href: 'https://www.xjtlu.edu.cn/en/study/departments/school-of-ai-and-advanced-computing/'
   },
@@ -224,7 +224,7 @@ export const education = [
       en: 'Distinction · Top 1%',
       zh: 'Distinction · 专业前 1%'
     },
-    logo: '/images/institutions/xjtlu.svg',
+    logo: '/images/institutions/xjtlu-official.svg',
     logoAlt: 'XJTLU',
     secondaryLogo: null,
     secondaryLogoAlt: null,
@@ -244,7 +244,7 @@ export const education = [
       en: 'GPA 87/100',
       zh: 'GPA 87/100'
     },
-    logo: '/images/institutions/ecjtu.svg',
+    logo: '/images/institutions/ecjtu-official.png',
     logoAlt: 'ECJTU',
     secondaryLogo: null,
     secondaryLogoAlt: null,
@@ -267,7 +267,7 @@ export const experience = [
       en: 'Built audience and recommendation data infrastructure for the DMP platform, including engine control, observability, and large-scale inspection and attribution systems.',
       zh: '参与 DMP 人群与推荐数据平台建设，负责计算引擎管控、可观测性及大规模巡检归因系统。'
     },
-    logo: '/images/institutions/alibaba.svg',
+    logo: '/images/institutions/alibaba-official-alt.png',
     logoAlt: 'Alibaba',
     href: 'https://www.alibabagroup.com/'
   },
@@ -285,7 +285,7 @@ export const experience = [
       en: 'Worked on computer-vision algorithms and image-processing pipelines, with a focus on watermark removal.',
       zh: '从事计算机视觉算法与图像处理流程研发，主要研究图像水印去除。'
     },
-    logo: '/images/institutions/dingfu.svg',
+    logo: '/images/institutions/dingfu-archive.png',
     logoAlt: 'Dingfu Data',
     href: '#experience'
   }

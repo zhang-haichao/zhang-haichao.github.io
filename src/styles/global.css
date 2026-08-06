@@ -1026,29 +1026,34 @@ html[data-ui-language='zh'] .display-heading {
 
 .timeline-item {
   display: grid;
-  grid-template-columns: 4.3rem 1fr;
+  grid-template-columns: 6.5rem 1fr;
   gap: 1.3rem;
   padding: 1.7rem 0 2rem;
   border-bottom: 1px solid rgba(255, 250, 240, 0.16);
 }
 
 .timeline-logos {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
   min-height: 3.2rem;
 }
 
 .timeline-logos img {
-  width: 3.2rem;
-  height: 3.2rem;
+  box-sizing: border-box;
+  width: 6rem;
+  height: 3.25rem;
+  padding: 0.48rem;
+  border: 1px solid rgba(255, 250, 240, 0.16);
+  border-radius: 0.45rem;
+  background: #fffaf0;
+  object-fit: contain;
+  object-position: center;
 }
 
-.timeline-logos img + img {
-  position: absolute;
-  top: 1.9rem;
-  left: 1.6rem;
-  width: 2.3rem;
-  height: 2.3rem;
-  filter: drop-shadow(0 0 0.4rem rgba(0, 0, 0, 0.2));
+.timeline-logos img[src*='ecjtu'] {
+  background: #285c45;
 }
 
 .timeline-copy time {
@@ -1631,12 +1636,14 @@ html[data-ui-language='zh'] .display-heading {
   }
 
   .timeline-item {
-    grid-template-columns: 3.5rem 1fr;
+    grid-template-columns: 5rem 1fr;
+    gap: 1rem;
   }
 
   .timeline-logos img {
-    width: 2.8rem;
-    height: 2.8rem;
+    width: 4.7rem;
+    height: 2.9rem;
+    padding: 0.42rem;
   }
 
   .project-item {

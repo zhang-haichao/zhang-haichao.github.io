@@ -12,11 +12,11 @@ const requiredAssets = [
   'public/images/papers/pcdr.png',
   'public/images/papers/ceu.png',
   'public/images/papers/drumrec.png',
-  'public/images/institutions/xjtlu.svg',
-  'public/images/institutions/liverpool.svg',
-  'public/images/institutions/ecjtu.svg',
-  'public/images/institutions/alibaba.svg',
-  'public/images/institutions/dingfu.svg',
+  'public/images/institutions/xjtlu-official.svg',
+  'public/images/institutions/liverpool-official.svg',
+  'public/images/institutions/ecjtu-official.png',
+  'public/images/institutions/alibaba-official-alt.png',
+  'public/images/institutions/dingfu-archive.png',
   'public/cv/haichao-zhang-en.pdf',
   'public/cv/haichao-zhang-zh.pdf'
 ];
@@ -54,3 +54,29 @@ test('public page source excludes private contact data and removed work', async 
   assert.doesNotMatch(source, /\bDURE\b/);
 });
 
+test('timeline uses traceable institution assets instead of generated monograms', async () => {
+  const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
+  const sources = await readFile(new URL('docs/sources.md', root), 'utf8');
+
+  for (const asset of [
+    'xjtlu-official.svg',
+    'liverpool-official.svg',
+    'ecjtu-official.png',
+    'alibaba-official-alt.png',
+    'dingfu-archive.png'
+  ]) {
+    assert.match(site, new RegExp(asset.replace('.', '\\.')));
+  }
+
+  for (const origin of [
+    'xjtlu.edu.cn/wp-content/uploads/2024/01/en-header-logo.svg',
+    'liverpool.ac.uk/',
+    'ecjtu.edu.cn/images/logo20210811.png',
+    'alibabagroup.com/en-US/resource-logos',
+    'pitchhub.36kr.com/project/2316725606435333'
+  ]) {
+    assert.match(sources, new RegExp(origin.replaceAll('.', '\\.')));
+  }
+
+  assert.doesNotMatch(site, /institutions\/(?:xjtlu|liverpool|ecjtu|alibaba|dingfu)\.svg/);
+});
