@@ -116,17 +116,18 @@ def normalize_publications(
 def validate_publications(
     publications: list[dict[str, Any]],
     existing_count: int = 0,
+    allow_removals: bool = False,
 ) -> None:
     """Reject empty, malformed, duplicate, or suspiciously truncated results."""
 
     if not publications:
         raise ScholarUpdateError("Scholar returned no usable publications")
 
-    minimum_count = max(1, int(existing_count * 0.6))
-    if existing_count and len(publications) < minimum_count:
+    if existing_count and len(publications) < existing_count and not allow_removals:
         raise ScholarUpdateError(
-            f"Scholar result looks truncated: {len(publications)} fetched, "
-            f"expected at least {minimum_count} from {existing_count} existing records"
+            f"Scholar result would remove publications: {len(publications)} fetched, "
+            f"but {existing_count} records already exist; rerun with "
+            "--allow-removals only after reviewing the missing works"
         )
 
     current_year = datetime.now(UTC).year
@@ -226,11 +227,12 @@ def update_publication_file(
     raw_publications: list[dict[str, Any]],
     source: str,
     timestamp: str | None = None,
+    allow_removals: bool = False,
 ) -> bool:
     existing = load_existing(output)
     existing_publications = existing.get("publications", [])
     publications = normalize_publications(raw_publications, existing_publications)
-    validate_publications(publications, len(existing_publications))
+    validate_publications(publications, len(existing_publications), allow_removals)
 
     if existing.get("scholarId") == scholar_id and existing_publications == publications:
         return False
@@ -250,6 +252,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--scholar-id", default=DEFAULT_SCHOLAR_ID)
     parser.add_argument("--output", type=Path, default=Path("src/data/publications.json"))
     parser.add_argument("--fixture", type=Path, help="Use a local JSON fixture instead of the network")
+    parser.add_argument(
+        "--allow-removals",
+        action="store_true",
+        help="Allow a reviewed update to contain fewer publications than the current file",
+    )
     parser.add_argument("--timestamp", help=argparse.SUPPRESS)
     return parser.parse_args(argv)
 
@@ -269,6 +276,7 @@ def main(argv: list[str] | None = None) -> int:
             raw_publications,
             source,
             args.timestamp,
+            args.allow_removals,
         )
     except (OSError, json.JSONDecodeError, ScholarUpdateError) as exc:
         print(f"Scholar update aborted: {exc}", file=sys.stderr)

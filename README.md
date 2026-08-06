@@ -84,6 +84,8 @@ python scripts/update_scholar.py \
   --output .mission/publications-fixture.json
 ```
 
+The updater rejects any decrease in publication count by default, so a partial or rate-limited Scholar response cannot silently remove existing work. For an intentional, reviewed deletion, add `--allow-removals`; the scheduled Action never enables this override.
+
 ## Deploying to `zhang-haichao.github.io`
 
 This directory is an independent local Git repository; it has not been pushed automatically and does not delete the existing remote homepage.

@@ -106,7 +106,82 @@ class ScholarSyncTests(unittest.TestCase):
 
             self.assertEqual(original, output.read_text(encoding="utf-8"))
 
+    def test_any_count_decrease_is_rejected_by_default(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "publications.json"
+            existing = {
+                "scholarId": "zRvnGK0AAAAJ",
+                "publications": [
+                    {
+                        "title": f"Existing Work {index}",
+                        "authors": "Haichao Zhang",
+                        "venue": "Venue",
+                        "year": 2024,
+                        "url": "",
+                        "citations": 0,
+                    }
+                    for index in range(6)
+                ],
+            }
+            original = json.dumps(existing)
+            output.write_text(original, encoding="utf-8")
+            raw = [
+                {
+                    "bib": {
+                        "title": f"Existing Work {index}",
+                        "author": "Haichao Zhang",
+                        "pub_year": "2024",
+                    }
+                }
+                for index in range(3)
+            ]
+
+            with self.assertRaises(ScholarUpdateError):
+                update_publication_file(output, "zRvnGK0AAAAJ", raw, "fixture")
+
+            self.assertEqual(original, output.read_text(encoding="utf-8"))
+
+    def test_count_decrease_requires_explicit_removal_override(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "publications.json"
+            existing = {
+                "scholarId": "zRvnGK0AAAAJ",
+                "publications": [
+                    {
+                        "title": f"Existing Work {index}",
+                        "authors": "Haichao Zhang",
+                        "venue": "Venue",
+                        "year": 2024,
+                        "url": "",
+                        "citations": 0,
+                    }
+                    for index in range(6)
+                ],
+            }
+            output.write_text(json.dumps(existing), encoding="utf-8")
+            raw = [
+                {
+                    "bib": {
+                        "title": f"Existing Work {index}",
+                        "author": "Haichao Zhang",
+                        "pub_year": "2024",
+                    }
+                }
+                for index in range(3)
+            ]
+
+            changed = update_publication_file(
+                output,
+                "zRvnGK0AAAAJ",
+                raw,
+                "fixture",
+                allow_removals=True,
+            )
+
+            self.assertTrue(changed)
+            data = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual(3, len(data["publications"]))
+
 
 if __name__ == "__main__":
     unittest.main()
-
