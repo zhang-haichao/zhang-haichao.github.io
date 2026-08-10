@@ -7,9 +7,9 @@ import {
   news,
   ongoingResearch,
   openSource,
+  publicationPresentation,
   profile,
-  researchThemes,
-  selectedResearch
+  researchThemes
 } from '../data/site';
 import publicationData from '../data/publications.json';
 
@@ -23,6 +23,13 @@ const navItems = [
 ];
 
 const markAuthor = (authors: string) => authors.split(/(Haichao Zhang)/g);
+const publicationByTitle = new Map(publicationData.publications.map((publication) => [publication.title, publication]));
+const curatedPublications = publicationPresentation.flatMap((presentation) => {
+  const publication = publicationByTitle.get(presentation.title);
+  return publication ? [{ publication, presentation }] : [];
+});
+const curatedTitles = new Set<string>(publicationPresentation.map((publication) => publication.title));
+const additionalPublications = publicationData.publications.filter((publication) => !curatedTitles.has(publication.title));
 ---
 
 <!doctype html>
@@ -207,54 +214,68 @@ const markAuthor = (authors: string) => authors.split(/(Haichao Zhang)/g);
             </a>
           </div>
 
-          {selectedResearch.map((paper) => (
-            <article class="paper-box reveal">
+          {curatedPublications.map(({ publication, presentation }) => (
+            <article class="paper-box publication-paper reveal" data-publication-title={publication.title}>
               <button
                 class="paper-figure"
                 type="button"
-                data-figure-src={paper.image}
-                data-figure-alt-en={paper.imageAlt.en}
-                data-figure-alt-zh={paper.imageAlt.zh}
-                aria-label={`Enlarge ${paper.shortName} framework figure`}
+                data-figure-src={presentation.image}
+                data-figure-alt-en={presentation.imageAlt.en}
+                data-figure-alt-zh={presentation.imageAlt.zh}
+                aria-label={`Enlarge ${presentation.shortName} framework figure`}
               >
-                <img src={paper.image} alt={paper.imageAlt.en} width="671" height="482" loading="lazy" />
+                <img src={presentation.image} alt={presentation.imageAlt.en} loading="lazy" />
               </button>
               <div class="paper-info">
-                <span class="venue-badge">{paper.venue}</span>
-                <h3><span data-lang="en">{paper.title.en}</span><span data-lang="zh">{paper.title.zh}</span></h3>
-                <p class="paper-authors"><strong>Haichao Zhang</strong>, Chong Zhang, Peiyu Hu, Shi Qiu, Jia Wang</p>
-                <p><span data-lang="en">{paper.description.en}</span><span data-lang="zh">{paper.description.zh}</span></p>
+                <span class="venue-badge">{presentation.venueLabel}</span>
+                <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
+                <p class="paper-authors">
+                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                </p>
+                <p class="publication-venue">{publication.venue}</p>
+                {presentation.description && (
+                  <p><span data-lang="en">{presentation.description.en}</span><span data-lang="zh">{presentation.description.zh}</span></p>
+                )}
                 <div class="paper-links">
-                  {paper.links.map((link) => (
+                  <a href={publication.url} target="_blank" rel="noreferrer">
+                    [<span data-lang="en">Paper</span><span data-lang="zh">论文</span>]
+                  </a>
+                  {presentation.extraLinks.map((link) => (
                     <a href={link.href} target="_blank" rel="noreferrer">
                       [<span data-lang="en">{link.label.en}</span><span data-lang="zh">{link.label.zh}</span>]
                     </a>
                   ))}
+                  {publication.citations !== null && (
+                    <span class="publication-citation">
+                      <span data-lang="en">Cited by {publication.citations}</span><span data-lang="zh">引用 {publication.citations}</span>
+                    </span>
+                  )}
                 </div>
               </div>
             </article>
           ))}
 
-          <h3 class="subsection-title reveal"><span data-lang="en">Complete publication list</span><span data-lang="zh">完整论文列表</span></h3>
-          <ol class="publication-list">
-            {publicationData.publications.map((publication) => (
-              <li class="publication-item reveal" data-publication-title={publication.title}>
-                <div class="publication-year">{publication.year}</div>
-                <div>
-                  <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
-                  <p class="publication-authors">
-                    {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
-                  </p>
-                  <p class="publication-venue">{publication.venue}</p>
-                </div>
-                {publication.citations !== null && (
-                  <span class="citation-count">
-                    <span data-lang="en">Cited by {publication.citations}</span><span data-lang="zh">引用 {publication.citations}</span>
-                  </span>
-                )}
-              </li>
-            ))}
-          </ol>
+          {additionalPublications.length > 0 && (
+            <>
+              <h3 class="subsection-title reveal">
+                <span data-lang="en">Additional publications</span><span data-lang="zh">其他论文</span>
+              </h3>
+              <ol class="publication-list">
+                {additionalPublications.map((publication) => (
+                  <li class="publication-item reveal" data-publication-title={publication.title}>
+                    <div class="publication-year">{publication.year}</div>
+                    <div>
+                      <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
+                      <p class="publication-authors">
+                        {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                      </p>
+                      <p class="publication-venue">{publication.venue}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
         </section>
 
         <section class="content-section" id="ongoing-research" aria-labelledby="ongoing-title">

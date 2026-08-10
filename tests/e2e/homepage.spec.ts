@@ -18,7 +18,17 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('.academic-sidebar')).toBeVisible();
   await expect(page.locator('.academic-main')).toBeVisible();
   await expect(page.locator('.profile-avatar')).toBeVisible();
-  await expect(page.locator('.paper-box')).toHaveCount(1);
+  await expect(page.locator('.publication-paper')).toHaveCount(5);
+  await expect(page.locator('#publications')).not.toContainText('Time Since Deposition Estimation of Bloodstains');
+
+  const publicationTitles = await page.locator('.publication-paper h3').allTextContents();
+  expect(publicationTitles).toEqual([
+    'Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning',
+    'Machine Vision-Enabled Octahedral Network Reconstruction and Structural Analysis of Perovskite Quantum Dots',
+    'Clustering-based incremental learning for imbalanced data classification',
+    'Counterfactual Contrastive Learning for Fine Grained Image Classification',
+    'Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation'
+  ]);
 
   const composition = await page.evaluate(() => {
     const sidebar = document.querySelector('.academic-sidebar')?.getBoundingClientRect();

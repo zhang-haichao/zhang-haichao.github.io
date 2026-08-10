@@ -25,7 +25,7 @@ Build a polished, single-page academic homepage for GitHub Pages. English is the
 2. About and research focus.
 3. News highlights.
 4. Selected Research with framework figures, concise contributions, and Paper/Code/Project links.
-5. Publications sourced from Google Scholar and rendered from repository data.
+5. Publications sourced from Google Scholar and rendered from repository data. Exclude “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains” from the homepage and scheduled sync output.
 6. Ongoing Research with public-safe summaries only. Include Teaching to Forget, ReGen, PCDR, CEU, and DRUMRec. Exclude DURE.
 7. Experience and Education with institution/company logos.
 8. Open Source containing only `senpai-skill` and `PaperReader`.
@@ -53,4 +53,3 @@ Build a polished, single-page academic homepage for GitHub Pages. English is the
 - Local project path: `C:\Users\zhang\OneDrive\Desktop\zhang-haichao-academic-homepage`.
 - Do not delete or modify the existing remote homepage repository without separate authorization.
 - Do not copy the credential-like Gitalk configuration found in the old repository.
-

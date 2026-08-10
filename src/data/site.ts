@@ -107,26 +107,23 @@ export const news = [
   }
 ] as const;
 
-export const selectedResearch = [
+export const publicationPresentation = [
   {
     shortName: 'CRAGRU',
-    title: {
-      en: 'Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning',
-      zh: '基于定制检索增强生成的去偏推荐遗忘'
-    },
-    venue: 'IEEE ICDM 2025',
-    description: {
-      en: 'A retrieval-augmented generation framework for user-level recommendation unlearning that limits collateral effects on non-target users while preserving recommendation quality.',
-      zh: '面向用户级推荐遗忘的检索增强生成框架，在保留推荐质量的同时，减少遗忘操作对非目标用户的连带影响。'
-    },
+    title: 'Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning',
+    venueLabel: 'IEEE ICDM 2025',
     image: '/images/papers/cragru.png',
     imageAlt: {
       en: 'CRAGRU framework showing retrieval, augmentation, and generation stages',
       zh: 'CRAGRU 的检索、增强与生成三阶段框架图'
     },
-    links: [
+    description: {
+      en: 'A retrieval-augmented generation framework for user-level recommendation unlearning that limits collateral effects on non-target users while preserving recommendation quality.',
+      zh: '面向用户级推荐遗忘的检索增强生成框架，在保留推荐质量的同时，减少遗忘操作对非目标用户的连带影响。'
+    },
+    extraLinks: [
       {
-        label: { en: 'Paper', zh: '论文' },
+        label: { en: 'Preprint', zh: '预印本' },
         href: 'https://arxiv.org/abs/2511.05494'
       },
       {
@@ -138,6 +135,54 @@ export const selectedResearch = [
         href: 'https://github.com/zhang-haichao/CRAGRU-Page'
       }
     ] satisfies Link[]
+  },
+  {
+    shortName: 'Perovskite QDs',
+    title: 'Machine Vision-Enabled Octahedral Network Reconstruction and Structural Analysis of Perovskite Quantum Dots',
+    venueLabel: 'ACS Nano 2026',
+    image: '/images/papers/perovskite-qds.png',
+    imageAlt: {
+      en: 'Machine-vision framework for octahedral network reconstruction and structural analysis of perovskite quantum dots',
+      zh: '钙钛矿量子点八面体网络重建与结构分析的机器视觉框架图'
+    },
+    description: null,
+    extraLinks: [] satisfies Link[]
+  },
+  {
+    shortName: 'CIL',
+    title: 'Clustering-based incremental learning for imbalanced data classification',
+    venueLabel: 'Knowledge-Based Systems 2024',
+    image: '/images/papers/cil.png',
+    imageAlt: {
+      en: 'Clustering-based data reorganization and incremental learning framework for imbalanced classification',
+      zh: '面向不平衡分类的聚类数据重组与增量学习框架图'
+    },
+    description: null,
+    extraLinks: [] satisfies Link[]
+  },
+  {
+    shortName: 'CCL',
+    title: 'Counterfactual Contrastive Learning for Fine Grained Image Classification',
+    venueLabel: 'ICANN 2024',
+    image: '/images/papers/ccl.png',
+    imageAlt: {
+      en: 'Counterfactual contrastive learning framework for fine-grained image classification',
+      zh: '面向细粒度图像分类的反事实对比学习框架图'
+    },
+    description: null,
+    extraLinks: [] satisfies Link[]
+  },
+  {
+    shortName: 'UASD',
+    title: 'Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation',
+    venueLabel: 'APWeb-WAIM 2025',
+    image: '/images/papers/uasd.png',
+    imageAlt: {
+      en: 'Uncertainty-aware semantic clustering and adaptive decoding framework for sequential recommendation',
+      zh: '面向序列推荐的不确定性感知语义聚类与自适应解码框架图'
+    },
+    description: null,
+    extraLinks: [] satisfies Link[]
   }
 ] as const;
 

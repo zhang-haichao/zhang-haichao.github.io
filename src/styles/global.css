@@ -288,6 +288,7 @@ html[data-ui-language="zh"] [data-lang="zh"] {
 .profile-links li {
   display: grid;
   grid-template-columns: 1.25rem minmax(0, 1fr);
+  column-gap: 0.35rem;
   align-items: baseline;
   color: var(--muted);
   font-size: 0.79rem;
@@ -532,6 +533,12 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   font-size: 0.79rem;
 }
 
+.paper-info .publication-venue {
+  color: #59636d;
+  font-size: 0.77rem;
+  font-style: italic;
+}
+
 .paper-links {
   display: flex;
   flex-wrap: wrap;
@@ -539,6 +546,14 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   margin-top: 0.75rem;
   font-size: 0.79rem;
   font-weight: 700;
+}
+
+.publication-citation {
+  margin-left: auto;
+  color: #78828d;
+  font-size: 0.69rem;
+  font-weight: 400;
+  white-space: nowrap;
 }
 
 .subsection-title {

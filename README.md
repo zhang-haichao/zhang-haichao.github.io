@@ -8,6 +8,7 @@ A bilingual, single-page academic homepage for GitHub Pages. English is the defa
 - English/Chinese content with a persisted language preference
 - Selected Research and public-safe Ongoing Research framework previews
 - Google Scholar-backed Publications with citation counts
+- Curated publication ordering with framework figures, while newly synced papers remain visible as compact fallbacks until their figures are added
 - Education and industry timelines with locally archived, source-documented institution logos
 - Open Source featuring only `senpai-skill` and `PaperReader`
 - Original English and Chinese CV PDFs
@@ -73,6 +74,8 @@ The updater:
 4. writes atomically only after validation;
 5. builds the site; and
 6. commits only when publication data changed.
+
+The public homepage intentionally excludes “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains”. The exclusion is enforced inside the updater, so scheduled runs cannot add it back.
 
 If Google Scholar rate-limits a run, the workflow fails without replacing the last valid publication file. No API key or repository secret is required.
 

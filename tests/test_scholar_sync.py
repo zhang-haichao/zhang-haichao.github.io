@@ -17,6 +17,28 @@ FIXTURE = ROOT / "tests" / "fixtures" / "scholar-profile.json"
 
 
 class ScholarSyncTests(unittest.TestCase):
+    def test_explicitly_excluded_work_is_never_normalized(self) -> None:
+        publications = normalize_publications(
+            [
+                {
+                    "bib": {
+                        "title": "Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains",
+                        "author": "Haichao Zhang",
+                        "pub_year": "2024",
+                    }
+                },
+                {
+                    "bib": {
+                        "title": "A Visible Scholar Work",
+                        "author": "Haichao Zhang",
+                        "pub_year": "2025",
+                    }
+                },
+            ]
+        )
+
+        self.assertEqual(["A Visible Scholar Work"], [item["title"] for item in publications])
+
     def test_truncated_venue_preserves_existing_complete_metadata(self) -> None:
         previous = {
             "title": "A Scholar Work",
