@@ -4,7 +4,7 @@ A bilingual, single-page academic homepage for GitHub Pages. English is the defa
 
 ## What is included
 
-- Full-bleed academic portrait and a responsive editorial layout
+- Jia Wang-inspired academic layout with a compact profile sidebar and readable main column
 - English/Chinese content with a persisted language preference
 - Selected Research and public-safe Ongoing Research framework previews
 - Google Scholar-backed Publications with citation counts

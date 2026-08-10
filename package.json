@@ -15,8 +15,6 @@
     "test:all": "npm run test:content && npm run test:scholar && npm run build && npm run test:e2e"
   },
   "dependencies": {
-    "@fontsource-variable/manrope": "^5.3.0",
-    "@fontsource-variable/newsreader": "^5.3.0",
     "astro": "^7.2.0"
   },
   "devDependencies": {

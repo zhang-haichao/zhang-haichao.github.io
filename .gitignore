@@ -4,6 +4,7 @@ dist/
 .DS_Store
 *.log
 .mission/
+.learnings/
 CV/
 PHOTO/
 PAPER_FIGURES/

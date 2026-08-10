@@ -4,16 +4,34 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('renders the confirmed English academic profile by default', async ({ page }) => {
+test('renders the confirmed English academic profile by default', async ({ page, isMobile }) => {
   await expect(page).toHaveTitle('Haichao Zhang · Academic Homepage');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Haichao');
+  await expect(page.locator('.profile-identity').getByRole('heading')).toContainText('Haichao');
   await expect(page.getByRole('link', { name: 'Download CV' })).toHaveAttribute('href', '/cv/haichao-zhang-en.pdf');
   await expect(page.locator('.ongoing-item')).toHaveCount(5);
   await expect(page.locator('#opensource .project-item')).toHaveCount(2);
   await expect(page.locator('#opensource')).toContainText('senpai-skill');
   await expect(page.locator('#opensource')).toContainText('PaperReader');
   await expect(page.locator('#opensource')).not.toContainText('CRAGRU');
+
+  await expect(page.locator('.academic-sidebar')).toBeVisible();
+  await expect(page.locator('.academic-main')).toBeVisible();
+  await expect(page.locator('.profile-avatar')).toBeVisible();
+  await expect(page.locator('.paper-box')).toHaveCount(1);
+
+  const composition = await page.evaluate(() => {
+    const sidebar = document.querySelector('.academic-sidebar')?.getBoundingClientRect();
+    const main = document.querySelector('.academic-main')?.getBoundingClientRect();
+    const heading = document.querySelector('h1');
+    return {
+      sidebarRight: sidebar?.right ?? 0,
+      mainLeft: main?.left ?? 0,
+      headingSize: heading ? Number.parseFloat(getComputedStyle(heading).fontSize) : 999
+    };
+  });
+  if (!isMobile) expect(composition.sidebarRight).toBeLessThanOrEqual(composition.mainLeft + 1);
+  expect(composition.headingSize).toBeLessThanOrEqual(34);
 
   const widths = await page.evaluate(() => ({
     client: document.documentElement.clientWidth,
@@ -26,12 +44,12 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   await page.getByRole('button', { name: '中文' }).click();
   await expect(page).toHaveTitle('张海超 · 学术主页');
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('张海超');
+  await expect(page.locator('.profile-identity').getByRole('heading')).toContainText('张海超');
   await expect(page.getByRole('link', { name: '下载简历' })).toHaveAttribute('href', '/cv/haichao-zhang-zh.pdf');
 
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('张海超');
+  await expect(page.locator('.profile-identity').getByRole('heading')).toContainText('张海超');
 });
 
 test('opens and closes a framework figure dialog', async ({ page }) => {
@@ -51,7 +69,10 @@ test('mobile navigation is usable and the page does not overflow', async ({ page
   await menu.click();
   await expect(menu).toHaveAttribute('aria-expanded', 'true');
   await expect(page.locator('#mobile-menu')).toBeVisible();
-  await expect(page.locator('#mobile-menu').getByRole('link', { name: 'Research' })).toBeVisible();
+  await expect(page.locator('#mobile-menu').getByRole('link', { name: 'Publications' })).toBeVisible();
+
+  const profileLayout = await page.locator('.profile-card').evaluate((element) => getComputedStyle(element).display);
+  expect(profileLayout).toBe('grid');
 
   const widths = await page.evaluate(() => ({
     client: document.documentElement.clientWidth,
