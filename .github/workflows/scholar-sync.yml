@@ -31,17 +31,25 @@ jobs:
           cache: pip
           cache-dependency-path: scripts/requirements-scholar.txt
 
-      - name: Install Scholar updater
+      - name: Install Scholar and framework updaters
         run: python -m pip install --requirement scripts/requirements-scholar.txt
 
-      - name: Test the safe update path
-        run: python -m unittest discover --start-directory tests --pattern 'test_scholar_sync.py'
+      - name: Test the safe update paths
+        run: python -m unittest discover --start-directory tests --pattern 'test_*.py'
 
       - name: Fetch and validate Google Scholar publications
         run: >-
           python scripts/update_scholar.py
           --scholar-id zRvnGK0AAAAJ
           --output src/data/publications.json
+
+      - name: Extract framework figures from reviewed public PDFs
+        run: >-
+          python scripts/sync_framework_figures.py
+          --publications src/data/publications.json
+          --sources src/data/framework-sources.json
+          --manifest src/data/frameworks.json
+          --output-dir public/images/papers/auto
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
@@ -52,30 +60,31 @@ jobs:
       - name: Verify the updated site builds
         run: |
           npm ci
+          npm run test:content
           npm run build
 
       - name: Commit a validated update
         shell: bash
         run: |
-          if git diff --quiet -- src/data/publications.json; then
-            echo "Publication data is already current."
+          if [[ -z "$(git status --porcelain -- src/data/publications.json src/data/frameworks.json public/images/papers/auto)" ]]; then
+            echo "Publication metadata and framework figures are already current."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/publications.json
+          git add src/data/publications.json src/data/frameworks.json public/images/papers/auto
           git commit -F - <<'EOF'
-          🐎 ci(scholar): 同步 Google Scholar 论文数据
+          🐎 ci(scholar): 同步论文数据与框架图
 
           Why:
-          - 保持个人主页论文、正式链接和引用数与公开 Scholar 主页一致
+          - 保持个人主页论文、正式链接、引用数和公开论文框架图与来源一致
 
           Why this works:
-          - 抓取结果通过完整性检查且站点构建成功后才提交
+          - Scholar 数据和公开 PDF 提图通过完整性检查且站点构建成功后才提交
 
           Remaining:
-          - Google Scholar 限流时保留上一次有效数据并等待下次计划任务
+          - Google Scholar 或 PDF 来源暂时不可用时保留上一次有效数据并等待下次计划任务
           EOF
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"

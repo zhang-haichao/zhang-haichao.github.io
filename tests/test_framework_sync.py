@@ -93,6 +93,45 @@ class FrameworkSyncTests(unittest.TestCase):
         self.assertNotIn("pdfUrl", sources[1])
         self.assertEqual("awaiting-author-pdf", sources[1]["status"])
 
+    def test_discovered_eprint_failure_keeps_metadata_sync_unblocked(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            publications = root / "publications.json"
+            sources = root / "sources.json"
+            manifest = root / "frameworks.json"
+            output = root / "auto"
+            publications.write_text(
+                dumps(
+                    {
+                        "publications": [
+                            {
+                                "title": "New Scholar Paper",
+                                "pdfUrl": "https://example.org/new.pdf",
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            sources.write_text(dumps({"sources": []}), encoding="utf-8")
+
+            with patch(
+                "scripts.sync_framework_figures.download_pdf",
+                side_effect=FrameworkSyncError("source offline"),
+            ):
+                result = sync_framework_sources(
+                    publications,
+                    sources,
+                    manifest,
+                    output,
+                    "2026-02-01T00:00:00Z",
+                )
+
+            self.assertEqual((0, 0), result)
+            framework = loads(manifest.read_text(encoding="utf-8"))["frameworks"][0]
+            self.assertEqual("source-error", framework["status"])
+            self.assertNotIn("image", framework)
+
     def test_source_failure_retains_the_last_valid_manifest_and_image(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

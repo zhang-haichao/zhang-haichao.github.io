@@ -79,6 +79,16 @@ test('framework sync records real extraction provenance and closed-access fallba
   assert.ok(!('image' in bloodstain), 'closed-access papers must not receive a fabricated figure');
 });
 
+test('scheduled Scholar workflow validates and commits metadata plus framework artifacts', async () => {
+  const workflow = await readFile(new URL('.github/workflows/scholar-sync.yml', root), 'utf8');
+
+  assert.match(workflow, /python -m unittest discover[^\n]+test_\*\.py/);
+  assert.match(workflow, /python scripts\/sync_framework_figures\.py/);
+  assert.match(workflow, /git status --porcelain -- src\/data\/publications\.json src\/data\/frameworks\.json public\/images\/papers\/auto/);
+  assert.match(workflow, /git add src\/data\/publications\.json src\/data\/frameworks\.json public\/images\/papers\/auto/);
+  assert.match(workflow, /permissions:\s+contents: write/);
+});
+
 test('public page source excludes private contact data and removed work', async () => {
   const files = ['src/data/site.ts', 'src/pages/index.astro', 'src/styles/global.css'];
   const source = (await Promise.all(files.map((file) => readFile(new URL(file, root), 'utf8')))).join('\n');

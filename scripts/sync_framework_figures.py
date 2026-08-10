@@ -90,6 +90,7 @@ def resolve_sources(
             source["pdfUrl"] = publication["pdfUrl"]
         source.setdefault("output", _slug(str(source["title"])))
         source.setdefault("captionKeywords", list(DEFAULT_KEYWORDS))
+        source.setdefault("required", bool(source.get("pdfUrl")))
         if not isinstance(source["captionKeywords"], list):
             raise FrameworkSyncError(f"captionKeywords must be a list for {source['title']}")
         resolved.append(source)
@@ -104,6 +105,7 @@ def resolve_sources(
                 "output": _slug(str(publication["title"])),
                 "captionKeywords": list(DEFAULT_KEYWORDS),
                 "source": "Google Scholar public eprint",
+                "required": False,
             }
         )
     return resolved
@@ -364,6 +366,15 @@ def sync_framework_sources(
                     print(f"Framework sync warning for {title}: {exc}; retaining cache.", file=sys.stderr)
                     frameworks.append(previous)
                     retained += 1
+                elif not source.get("required", False):
+                    print(f"Framework sync warning for {title}: {exc}; keeping metadata only.", file=sys.stderr)
+                    frameworks.append(
+                        {
+                            "title": title,
+                            "status": "source-error",
+                            "note": "Public PDF extraction failed; the scheduled workflow will retry.",
+                        }
+                    )
                 else:
                     failures.append(f"{title}: {exc}")
 
