@@ -643,6 +643,13 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   object-fit: contain;
 }
 
+.industry-list .institution-logos img {
+  width: 82px;
+  max-width: 82px;
+  height: auto;
+  max-height: 52px;
+}
+
 .education-list .timeline-item {
   grid-template-columns: 152px minmax(0, 1fr);
 }
@@ -658,16 +665,6 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   max-width: 132px;
   height: auto;
   max-height: 58px;
-}
-
-.company-wordmark {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  color: #f05a24;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
 }
 
 .timeline-item time {
@@ -1074,6 +1071,13 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   .institution-logos img {
     max-width: 44px;
     height: 42px;
+  }
+
+  .industry-list .institution-logos img {
+    width: 64px;
+    max-width: 64px;
+    height: auto;
+    max-height: 46px;
   }
 
   .education-list .timeline-item {

@@ -18,7 +18,8 @@ const requiredAssets = [
   'public/images/papers/drumrec.png',
   'public/images/institutions/xjtlu-official.svg',
   'public/images/institutions/liverpool-official.svg',
-  'public/images/institutions/ecjtu-official.png',
+  'public/images/institutions/ecjtu-user.png',
+  'public/images/institutions/alibaba-user.png',
   'public/images/institutions/dingfu-archive.png',
   'public/cv/haichao-zhang-en.pdf',
   'public/cv/haichao-zhang-zh.pdf'
@@ -59,7 +60,7 @@ test('public page source excludes private contact data and removed work', async 
   assert.doesNotMatch(source, /\bDURE\b/);
 });
 
-test('timeline uses traceable institution assets and a license-safe Alibaba identifier', async () => {
+test('timeline uses traceable institution assets and the user-provided Alibaba identifier', async () => {
   const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
   const sources = await readFile(new URL('docs/sources.md', root), 'utf8');
   const readme = await readFile(new URL('README.md', root), 'utf8');
@@ -67,7 +68,8 @@ test('timeline uses traceable institution assets and a license-safe Alibaba iden
   for (const asset of [
     'xjtlu-official.svg',
     'liverpool-official.svg',
-    'ecjtu-official.png',
+    'ecjtu-user.png',
+    'alibaba-user.png',
     'dingfu-archive.png'
   ]) {
     assert.match(site, new RegExp(asset.replace('.', '\\.')));
@@ -76,16 +78,15 @@ test('timeline uses traceable institution assets and a license-safe Alibaba iden
   for (const origin of [
     'xjtlu.edu.cn/wp-content/uploads/2024/01/en-header-logo.svg',
     'liverpool.ac.uk/',
-    'ecjtu.edu.cn/images/logo20210811.png',
-    'alibabagroup.com/en-US/resource-logos',
     'pitchhub.36kr.com/project/2316725606435333'
   ]) {
     assert.match(sources, new RegExp(origin.replaceAll('.', '\\.')));
   }
 
   assert.doesNotMatch(site, /institutions\/(?:xjtlu|liverpool|ecjtu|alibaba|dingfu)\.svg/);
-  assert.match(site, /wordmark: 'Alibaba'/);
-  assert.doesNotMatch(site, /alibaba-official/i);
-  assert.match(sources, /not copied/i);
+  assert.doesNotMatch(site, /wordmark:/);
+  assert.match(sources, /PAPER_FIGURES\/alilogo\.png/);
+  assert.match(sources, /PAPER_FIGURES\/ecjtu\.png/);
+  assert.match(sources, /user-provided/i);
   assert.doesNotMatch(readme, /monograms?/i);
 });

@@ -334,13 +334,11 @@ const additionalPublications = publicationData.publications.filter((publication)
           </div>
 
           <h3 class="subsection-title reveal"><span data-lang="en">Industry Experience</span><span data-lang="zh">工作经历</span></h3>
-          <div class="timeline-list">
+          <div class="timeline-list industry-list">
             {experience.map((item) => (
               <article class="timeline-item reveal">
                 <div class="institution-logos">
-                  {item.logo
-                    ? <img src={item.logo} alt={item.logoAlt} width="76" height="76" loading="lazy" />
-                    : <span class="company-wordmark" aria-label={item.logoAlt}>{item.wordmark}</span>}
+                  <img src={item.logo} alt={item.logoAlt} width="76" height="76" loading="lazy" />
                 </div>
                 <div>
                   <time>{item.period}</time>

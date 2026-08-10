@@ -289,7 +289,7 @@ export const education = [
       en: 'GPA 87/100',
       zh: 'GPA 87/100'
     },
-    logo: '/images/institutions/ecjtu-official.png',
+    logo: '/images/institutions/ecjtu-user.png',
     logoAlt: 'ECJTU',
     secondaryLogo: null,
     secondaryLogoAlt: null,
@@ -312,8 +312,7 @@ export const experience = [
       en: 'Built audience and recommendation data infrastructure for the DMP platform, including engine control, observability, and large-scale inspection and attribution systems.',
       zh: '参与 DMP 人群与推荐数据平台建设，负责计算引擎管控、可观测性及大规模巡检归因系统。'
     },
-    logo: null,
-    wordmark: 'Alibaba',
+    logo: '/images/institutions/alibaba-user.png',
     logoAlt: 'Alibaba',
     href: 'https://www.alibabagroup.com/'
   },
@@ -332,7 +331,6 @@ export const experience = [
       zh: '从事计算机视觉算法与图像处理流程研发，主要研究图像水印去除。'
     },
     logo: '/images/institutions/dingfu-archive.png',
-    wordmark: null,
     logoAlt: 'Dingfu Data',
     href: '#experience'
   }

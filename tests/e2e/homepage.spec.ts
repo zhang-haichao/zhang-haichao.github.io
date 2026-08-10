@@ -94,6 +94,18 @@ test('stacks readable XJTLU and Liverpool logos in the PhD education entry', asy
   expect(layout.firstWidth).toBeGreaterThanOrEqual(isMobile ? 72 : 110);
 });
 
+test('uses the supplied ECJTU and Alibaba logo assets', async ({ page }) => {
+  const ecjtuLogo = page.locator('#experience-education img[alt="ECJTU"]');
+  const alibabaLogo = page.locator('#experience-education img[alt="Alibaba"]');
+
+  await expect(ecjtuLogo).toHaveAttribute('src', '/images/institutions/ecjtu-user.png');
+  await expect(alibabaLogo).toHaveAttribute('src', '/images/institutions/alibaba-user.png');
+  await ecjtuLogo.scrollIntoViewIfNeeded();
+  await expect(ecjtuLogo).toBeVisible();
+  await alibabaLogo.scrollIntoViewIfNeeded();
+  await expect(alibabaLogo).toBeVisible();
+});
+
 test('mobile navigation is usable and the page does not overflow', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'mobile-only interaction');
   const menu = page.locator('.menu-toggle');
