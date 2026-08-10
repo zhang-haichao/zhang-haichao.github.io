@@ -5,9 +5,9 @@ dist/
 *.log
 .mission/
 .learnings/
-CV/
-PHOTO/
-PAPER_FIGURES/
+/CV/
+/PHOTO/
+/PAPER_FIGURES/
 __pycache__/
 *.py[cod]
 playwright-report/

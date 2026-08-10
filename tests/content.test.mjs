@@ -1,8 +1,12 @@
 import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
 import { readFile, stat } from 'node:fs/promises';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
 
 const root = new URL('../', import.meta.url);
+const execFileAsync = promisify(execFile);
 
 const requiredAssets = [
   'public/images/portrait-haichao.png',
@@ -31,6 +35,12 @@ test('all homepage assets exist and are non-empty', async () => {
     assert.ok(details.isFile(), `${asset} must be a file`);
     assert.ok(details.size > 0, `${asset} must not be empty`);
   }
+});
+
+test('all homepage assets are tracked for deployment', async () => {
+  await execFileAsync('git', ['ls-files', '--error-unmatch', '--', ...requiredAssets], {
+    cwd: fileURLToPath(root)
+  });
 });
 
 test('publication data matches the Scholar contract', async () => {
