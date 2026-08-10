@@ -643,6 +643,23 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   object-fit: contain;
 }
 
+.education-list .timeline-item {
+  grid-template-columns: 152px minmax(0, 1fr);
+}
+
+.education-list .institution-logos {
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 104px;
+}
+
+.education-list .institution-logos img {
+  max-width: 132px;
+  height: auto;
+  max-height: 58px;
+}
+
 .company-wordmark {
   display: inline-flex;
   min-height: 36px;
@@ -1057,6 +1074,22 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   .institution-logos img {
     max-width: 44px;
     height: 42px;
+  }
+
+  .education-list .timeline-item {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  .education-list .institution-logos {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    min-height: 84px;
+  }
+
+  .education-list .institution-logos img {
+    max-width: 86px;
+    height: auto;
+    max-height: 46px;
   }
 
   .project-item {

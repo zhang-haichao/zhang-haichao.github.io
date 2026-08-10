@@ -72,6 +72,28 @@ test('opens and closes a framework figure dialog', async ({ page }) => {
   await expect(dialog).not.toBeVisible();
 });
 
+test('stacks readable XJTLU and Liverpool logos in the PhD education entry', async ({ page, isMobile }) => {
+  const logoGroup = page.locator('#experience-education .timeline-item').first().locator('.institution-logos');
+  const logos = logoGroup.locator('img');
+
+  await expect(logos).toHaveCount(2);
+  await logoGroup.scrollIntoViewIfNeeded();
+  await expect(logos.first()).toBeVisible();
+  const layout = await logoGroup.evaluate((element) => {
+    const images = Array.from(element.querySelectorAll('img')).map((image) => image.getBoundingClientRect());
+    return {
+      direction: getComputedStyle(element).flexDirection,
+      firstWidth: images[0]?.width ?? 0,
+      firstBottom: images[0]?.bottom ?? 0,
+      secondTop: images[1]?.top ?? 0
+    };
+  });
+
+  expect(layout.direction).toBe('column');
+  expect(layout.firstBottom).toBeLessThanOrEqual(layout.secondTop);
+  expect(layout.firstWidth).toBeGreaterThanOrEqual(isMobile ? 72 : 110);
+});
+
 test('mobile navigation is usable and the page does not overflow', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'mobile-only interaction');
   const menu = page.locator('.menu-toggle');
