@@ -131,8 +131,8 @@ test('reduced-motion users receive visible content without entrance delays', asy
   await expect(page.locator('.reveal').first()).toHaveCSS('opacity', '1');
 });
 
-test('serves the unlisted legacy homepage from its noindex path', async ({ page }) => {
-  await page.goto('/legacy/', { waitUntil: 'domcontentloaded' });
+test('serves the unlisted legacy homepage from its archived index file', async ({ page }) => {
+  await page.goto('/legacy/index.html', { waitUntil: 'domcontentloaded' });
   await expect(page).toHaveTitle('张海超的个人博客');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/i);
   await expect(page.locator('link[href="/legacy/css/bootstrap.min.css"]')).toHaveCount(1);
