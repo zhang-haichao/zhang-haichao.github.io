@@ -52,14 +52,6 @@ def _title_key(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", title.casefold())
 
 
-EXCLUDED_PUBLICATION_TITLES = (
-    "Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains",
-)
-EXCLUDED_PUBLICATION_KEYS = frozenset(
-    _title_key(title) for title in EXCLUDED_PUBLICATION_TITLES
-)
-
-
 def _is_truncated_text(value: str) -> bool:
     return "…" in value or bool(re.search(r"\.{3,}", value))
 
@@ -82,7 +74,7 @@ def normalize_publications(
         bib = raw.get("bib") if isinstance(raw.get("bib"), dict) else raw
         title = _clean_text(bib.get("title"))
         key = _title_key(title)
-        if not title or not key or key in seen or key in EXCLUDED_PUBLICATION_KEYS:
+        if not title or not key or key in seen:
             continue
 
         previous = existing_by_title.get(key, {})

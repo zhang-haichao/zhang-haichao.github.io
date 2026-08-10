@@ -17,15 +17,18 @@ FIXTURE = ROOT / "tests" / "fixtures" / "scholar-profile.json"
 
 
 class ScholarSyncTests(unittest.TestCase):
-    def test_explicitly_excluded_work_is_never_normalized(self) -> None:
+    def test_all_scholar_works_are_normalized_with_publication_metadata(self) -> None:
         publications = normalize_publications(
             [
                 {
                     "bib": {
                         "title": "Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains",
-                        "author": "Haichao Zhang",
+                        "author": "Lin Shi and Yushi Li and Yu Han and Jia Wang and Fangyu Wu and Chenke Yin and Haichao Zhang",
                         "pub_year": "2024",
-                    }
+                        "citation": "2024 27th International Conference on Computer Supported Cooperative Work in Design (CSCWD), 2191-2196",
+                    },
+                    "pub_url": "https://doi.org/10.1109/CSCWD61410.2024.10580800",
+                    "num_citations": 3,
                 },
                 {
                     "bib": {
@@ -37,7 +40,21 @@ class ScholarSyncTests(unittest.TestCase):
             ]
         )
 
-        self.assertEqual(["A Visible Scholar Work"], [item["title"] for item in publications])
+        self.assertEqual(
+            [
+                "A Visible Scholar Work",
+                "Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains",
+            ],
+            [item["title"] for item in publications],
+        )
+        bloodstain = publications[1]
+        self.assertEqual(2024, bloodstain["year"])
+        self.assertEqual(3, bloodstain["citations"])
+        self.assertIn("CSCWD", bloodstain["venue"])
+        self.assertEqual(
+            "https://doi.org/10.1109/CSCWD61410.2024.10580800",
+            bloodstain["url"],
+        )
 
     def test_truncated_venue_preserves_existing_complete_metadata(self) -> None:
         previous = {

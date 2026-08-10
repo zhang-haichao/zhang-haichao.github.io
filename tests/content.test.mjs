@@ -48,9 +48,13 @@ test('publication data matches the Scholar contract', async () => {
   const data = JSON.parse(raw);
 
   assert.equal(data.scholarId, 'zRvnGK0AAAAJ');
-  assert.ok(data.publications.length >= 5);
+  assert.ok(data.publications.length >= 6);
   assert.equal(new Set(data.publications.map((item) => item.title.toLowerCase())).size, data.publications.length);
-  assert.ok(!data.publications.some((item) => item.title.includes('Time Since Deposition Estimation of Bloodstains')));
+  const bloodstain = data.publications.find((item) => item.title.includes('Time Since Deposition Estimation of Bloodstains'));
+  assert.ok(bloodstain, 'the Scholar-listed bloodstain paper must remain visible');
+  assert.equal(bloodstain.year, 2024);
+  assert.match(bloodstain.venue, /CSCWD/);
+  assert.ok(Number.isInteger(bloodstain.citations) && bloodstain.citations >= 0);
   for (const publication of data.publications) {
     assert.ok(publication.title);
     assert.ok(publication.authors);
