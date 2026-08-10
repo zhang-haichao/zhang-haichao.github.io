@@ -70,6 +70,8 @@ Ongoing Research descriptions should stay concise and public-safe. When adding o
 
 `.github/workflows/scholar-sync.yml` runs every Monday at 03:17 UTC (11:17 China Standard Time) and can also be started manually from the Actions tab. It uses Scholar profile ID `zRvnGK0AAAAJ`.
 
+For a manual framework-only retry when Google Scholar is rate-limited, start the workflow with **Use cached publication data and sync framework figures only** enabled. The weekly schedule keeps the default off and still refreshes Scholar metadata before framework extraction.
+
 The workflow:
 
 1. fetches the public Scholar profile;

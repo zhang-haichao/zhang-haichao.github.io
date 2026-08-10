@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '17 3 * * 1'
   workflow_dispatch:
+    inputs:
+      skip_scholar:
+        description: Use cached publication data and sync framework figures only
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -38,6 +44,7 @@ jobs:
         run: python -m unittest discover --start-directory tests --pattern 'test_*.py'
 
       - name: Fetch and validate Google Scholar publications
+        if: ${{ !inputs.skip_scholar }}
         run: >-
           python scripts/update_scholar.py
           --scholar-id zRvnGK0AAAAJ
@@ -81,10 +88,10 @@ jobs:
           - 保持个人主页论文、正式链接、引用数和公开论文框架图与来源一致
 
           Why this works:
-          - Scholar 数据和公开 PDF 提图通过完整性检查且站点构建成功后才提交
+          - Scholar 数据和经审核图源通过完整性检查且站点构建成功后才提交
 
           Remaining:
-          - Google Scholar 或 PDF 来源暂时不可用时保留上一次有效数据并等待下次计划任务
+          - Google Scholar 或图源暂时不可用时保留上一次有效数据并等待下次计划任务
           EOF
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"

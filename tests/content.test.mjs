@@ -99,6 +99,8 @@ test('scheduled Scholar workflow validates and commits metadata plus framework a
 
   assert.match(workflow, /python -m unittest discover[^\n]+test_\*\.py/);
   assert.match(workflow, /python scripts\/sync_framework_figures\.py/);
+  assert.match(workflow, /skip_scholar:/);
+  assert.match(workflow, /if: \$\{\{ !inputs\.skip_scholar \}\}/);
   assert.match(workflow, /git status --porcelain -- src\/data\/publications\.json src\/data\/frameworks\.json public\/images\/papers\/auto/);
   assert.match(workflow, /git add src\/data\/publications\.json src\/data\/frameworks\.json public\/images\/papers\/auto/);
   assert.match(workflow, /permissions:\s+contents: write/);
