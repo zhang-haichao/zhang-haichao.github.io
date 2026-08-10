@@ -18,6 +18,7 @@ Rebuild Haichao Zhang's academic homepage using the supplied Jia Wang homepage s
 3. Main column: About Me, News, Publications, Ongoing Research, Experience & Education, Open Source, Selected Awards.
 4. Five curated publications use supplied or source-verified framework figures. Their display order balances Haichao's author position, venue quality, recency, and scholarly impact; Scholar updates cannot reorder them. CRAGRU also includes Preprint/Code/Project links.
 5. Ongoing manuscripts use only the supplied framework figures and intentionally high-level descriptions.
+6. Open Source highlights `axiom-quant`, `senpai-skill`, and `PaperReader`; paper implementation repositories remain attached to their publication entries.
 
 ## Responsive and visual acceptance
 

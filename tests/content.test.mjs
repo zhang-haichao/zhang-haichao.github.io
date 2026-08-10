@@ -125,6 +125,24 @@ test('public page source excludes private contact data and removed work', async 
   assert.doesNotMatch(source, /\bDURE\b/);
 });
 
+test('verified publication resources and selected open-source projects are explicit', async () => {
+  const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
+
+  for (const url of [
+    'https://zhang-haichao.github.io/S2-SOFS-Page/',
+    'https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction',
+    'https://zhang-haichao.github.io/CRAGRU-Page/',
+    'https://github.com/zhang-haichao/axiom-quant'
+  ]) {
+    assert.match(site, new RegExp(url.replaceAll('.', '\\.').replaceAll('/', '\\/')));
+  }
+
+  const openSourceBlock = site.match(/export const openSource = \[([\s\S]*?)\] as const;/)?.[1] ?? '';
+  assert.match(openSourceBlock, /name: 'axiom-quant'/);
+  assert.match(openSourceBlock, /name: 'senpai-skill'/);
+  assert.match(openSourceBlock, /name: 'PaperReader'/);
+});
+
 test('timeline uses traceable institution assets and the user-provided Alibaba identifier', async () => {
   const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
   const sources = await readFile(new URL('docs/sources.md', root), 'utf8');

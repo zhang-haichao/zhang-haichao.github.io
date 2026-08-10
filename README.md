@@ -10,7 +10,7 @@ A bilingual, single-page academic homepage for GitHub Pages. English is the defa
 - Google Scholar-backed Publications with citation counts
 - Curated publication ordering with zoomable framework figures, plus compact fallbacks for papers without a public figure source
 - Education and industry timelines with locally archived, source-documented institution logos
-- Open Source featuring only `senpai-skill` and `PaperReader`
+- Open Source featuring `axiom-quant`, `senpai-skill`, and `PaperReader`
 - Original English and Chinese CV PDFs
 - Unlisted, noindex archive of the previous Jekyll homepage at `/legacy/`
 - Automated Scholar updates and GitHub Pages deployment

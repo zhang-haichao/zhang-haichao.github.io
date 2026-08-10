@@ -132,7 +132,7 @@ export const publicationPresentation = [
       },
       {
         label: { en: 'Project', zh: '项目' },
-        href: 'https://github.com/zhang-haichao/CRAGRU-Page'
+        href: 'https://zhang-haichao.github.io/CRAGRU-Page/'
       }
     ] satisfies Link[]
   },
@@ -146,7 +146,16 @@ export const publicationPresentation = [
       zh: '钙钛矿量子点八面体网络重建与结构分析的机器视觉框架图'
     },
     description: null,
-    extraLinks: [] satisfies Link[]
+    extraLinks: [
+      {
+        label: { en: 'Code', zh: '代码' },
+        href: 'https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction'
+      },
+      {
+        label: { en: 'Project', zh: '项目' },
+        href: 'https://zhang-haichao.github.io/S2-SOFS-Page/'
+      }
+    ] satisfies Link[]
   },
   {
     shortName: 'CIL',
@@ -337,6 +346,15 @@ export const experience = [
 ] as const;
 
 export const openSource = [
+  {
+    name: 'axiom-quant',
+    description: {
+      en: 'A local-first open-source A-share quantitative research and batch backtesting platform.',
+      zh: '本地优先的开源 A 股量化研究与批量回测平台。'
+    },
+    language: 'Python',
+    href: 'https://github.com/zhang-haichao/axiom-quant'
+  },
   {
     name: 'senpai-skill',
     description: {

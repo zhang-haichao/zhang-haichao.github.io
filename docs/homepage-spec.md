@@ -28,7 +28,7 @@ Build a polished, single-page academic homepage for GitHub Pages. English is the
 5. Publications sourced from Google Scholar and rendered from repository data, including “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains”.
 6. Ongoing Research with public-safe summaries only. Include Teaching to Forget, ReGen, PCDR, CEU, and DRUMRec. Exclude DURE.
 7. Experience and Education with institution/company logos.
-8. Open Source containing only `senpai-skill` and `PaperReader`.
+8. Open Source containing `axiom-quant`, `senpai-skill`, and `PaperReader`.
 9. Awards and contact/footer.
 
 ## Publication and automation rules

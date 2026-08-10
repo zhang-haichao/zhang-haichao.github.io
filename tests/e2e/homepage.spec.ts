@@ -10,7 +10,8 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('.profile-identity').getByRole('heading')).toContainText('Haichao');
   await expect(page.getByRole('link', { name: 'Download CV' })).toHaveAttribute('href', '/cv/haichao-zhang-en.pdf');
   await expect(page.locator('.ongoing-item')).toHaveCount(5);
-  await expect(page.locator('#opensource .project-item')).toHaveCount(2);
+  await expect(page.locator('#opensource .project-item')).toHaveCount(3);
+  await expect(page.locator('#opensource')).toContainText('axiom-quant');
   await expect(page.locator('#opensource')).toContainText('senpai-skill');
   await expect(page.locator('#opensource')).toContainText('PaperReader');
   await expect(page.locator('#opensource')).not.toContainText('CRAGRU');
@@ -24,6 +25,12 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(bloodstain).toContainText('CSCWD');
   await expect(bloodstain.getByText('Cited by 3', { exact: true })).toBeVisible();
   await expect(bloodstain.getByText('Framework pending public PDF', { exact: true })).toBeVisible();
+
+  const perovskite = page.locator('[data-publication-title^="Machine Vision-Enabled"]');
+  await expect(perovskite.locator('a[href="https://zhang-haichao.github.io/S2-SOFS-Page/"]')).toBeVisible();
+  await expect(perovskite.locator('a[href="https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction"]')).toBeVisible();
+  const cragru = page.locator('[data-publication-title^="Customized Retrieval-Augmented"]');
+  await expect(cragru.locator('a[href="https://zhang-haichao.github.io/CRAGRU-Page/"]')).toBeVisible();
 
   const publicationTitles = await page.locator('.publication-paper h3').allTextContents();
   expect(publicationTitles).toEqual([
