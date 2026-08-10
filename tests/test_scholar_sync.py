@@ -7,6 +7,7 @@ from pathlib import Path
 
 from scripts.update_scholar import (
     ScholarUpdateError,
+    hydrate_new_publications,
     normalize_publications,
     update_publication_file,
 )
@@ -17,6 +18,50 @@ FIXTURE = ROOT / "tests" / "fixtures" / "scholar-profile.json"
 
 
 class ScholarSyncTests(unittest.TestCase):
+    def test_only_new_scholar_summaries_request_detail_pages(self) -> None:
+        summaries = [
+            {
+                "bib": {"title": "Existing Work", "pub_year": "2025"},
+                "num_citations": 8,
+            },
+            {
+                "bib": {"title": "New Work", "pub_year": "2026"},
+                "num_citations": 0,
+            },
+        ]
+        existing = [
+            {
+                "title": "Existing Work",
+                "authors": "Haichao Zhang",
+                "venue": "Existing Venue",
+                "year": 2025,
+                "url": "https://example.org/existing",
+                "citations": 7,
+            }
+        ]
+        detail_requests: list[str] = []
+
+        def fill_detail(summary: dict) -> dict:
+            detail_requests.append(summary["bib"]["title"])
+            return {
+                **summary,
+                "bib": {
+                    **summary["bib"],
+                    "author": "Haichao Zhang and Jia Wang",
+                    "citation": "New Conference, 2026",
+                },
+                "pub_url": "https://example.org/new",
+            }
+
+        hydrated = hydrate_new_publications(summaries, existing, fill_detail)
+        normalized = normalize_publications(hydrated, existing)
+
+        self.assertEqual(["New Work"], detail_requests)
+        existing_work = next(item for item in normalized if item["title"] == "Existing Work")
+        self.assertEqual("Haichao Zhang", existing_work["authors"])
+        self.assertEqual("https://example.org/existing", existing_work["url"])
+        self.assertEqual(8, existing_work["citations"])
+
     def test_all_scholar_works_are_normalized_with_publication_metadata(self) -> None:
         publications = normalize_publications(
             [

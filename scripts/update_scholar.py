@@ -16,7 +16,7 @@ import sys
 import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
 
 DEFAULT_SCHOLAR_ID = "zRvnGK0AAAAJ"
@@ -162,7 +162,44 @@ def validate_publications(
             raise ScholarUpdateError(f"Publication has no authors: {title}")
 
 
-def load_live_scholar(scholar_id: str) -> list[dict[str, Any]]:
+def hydrate_new_publications(
+    summaries: Iterable[dict[str, Any]],
+    existing_publications: Iterable[dict[str, Any]],
+    fill_detail: Callable[[dict[str, Any]], dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Fetch detail pages only for works that are not already in the cache.
+
+    Scholar profile summaries already contain the fields that change during a
+    normal weekly refresh: title, year, venue summary, and citation count. The
+    cached record supplies stable authors and canonical URLs. New works still
+    need one detail request so they can pass the complete publication contract.
+    """
+
+    existing_titles = {
+        _title_key(_clean_text(publication.get("title")))
+        for publication in existing_publications
+        if _clean_text(publication.get("title"))
+    }
+    results: list[dict[str, Any]] = []
+    for summary in summaries:
+        bib = summary.get("bib") if isinstance(summary.get("bib"), dict) else summary
+        title_key = _title_key(_clean_text(bib.get("title")))
+        if title_key in existing_titles:
+            results.append(summary)
+            continue
+        try:
+            results.append(fill_detail(summary))
+        except Exception:
+            # Validation later rejects an incomplete new work, preserving the
+            # previous publication file instead of silently omitting the work.
+            results.append(summary)
+    return results
+
+
+def load_live_scholar(
+    scholar_id: str,
+    existing_publications: Iterable[dict[str, Any]] = (),
+) -> list[dict[str, Any]]:
     """Fetch a public Scholar profile. Import lazily so fixture tests stay light."""
 
     try:
@@ -184,15 +221,7 @@ def load_live_scholar(scholar_id: str) -> list[dict[str, Any]]:
     except Exception as exc:  # pragma: no cover - depends on remote service
         raise ScholarUpdateError(f"Unable to read Google Scholar profile: {exc}") from exc
 
-    results: list[dict[str, Any]] = []
-    for summary in summaries:
-        try:
-            results.append(scholarly.fill(summary))
-        except Exception:
-            # A single detail page can be rate-limited even when the profile is
-            # available. The profile summary still contains the safe minimum.
-            results.append(summary)
-    return results
+    return hydrate_new_publications(summaries, existing_publications, scholarly.fill)
 
 
 def load_fixture(path: Path) -> list[dict[str, Any]]:
@@ -282,7 +311,8 @@ def main(argv: list[str] | None = None) -> int:
             raw_publications = load_fixture(args.fixture)
             source = "fixture"
         else:
-            raw_publications = load_live_scholar(args.scholar_id)
+            existing_publications = load_existing(args.output).get("publications", [])
+            raw_publications = load_live_scholar(args.scholar_id, existing_publications)
             source = "google-scholar"
         changed = update_publication_file(
             args.output,
