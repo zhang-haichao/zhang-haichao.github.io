@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "archive:legacy": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/archive_legacy.ps1",
     "check": "astro check",
     "test": "npm run test:content",
     "test:content": "node --test tests/*.test.mjs",

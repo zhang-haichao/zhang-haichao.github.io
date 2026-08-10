@@ -12,6 +12,7 @@ A bilingual, single-page academic homepage for GitHub Pages. English is the defa
 - Education and industry timelines with locally archived, source-documented institution logos
 - Open Source featuring only `senpai-skill` and `PaperReader`
 - Original English and Chinese CV PDFs
+- Unlisted, noindex archive of the previous Jekyll homepage at `/legacy/`
 - Automated Scholar updates and GitHub Pages deployment
 
 ## Local development
@@ -56,6 +57,7 @@ The gate checks local assets and privacy boundaries, Scholar normalization and f
 | Portrait | `public/images/portrait-haichao.png` |
 | Institution identifiers and logos | `public/images/institutions/` |
 | Downloadable CVs | `public/cv/` |
+| Previous homepage archive | `public/legacy/` |
 | Visual system | `src/styles/global.css` |
 
 The original source folders `PHOTO/`, `PAPER_FIGURES/`, and `CV/` remain local and are intentionally ignored by Git. The deployable copies in `public/` are tracked.
@@ -89,11 +91,19 @@ python scripts/update_scholar.py \
 
 The updater rejects any decrease in publication count by default, so a partial or rate-limited Scholar response cannot silently remove existing work. For an intentional, reviewed deletion, add `--allow-removals`; the scheduled Action never enables this override.
 
+## Archived previous homepage
+
+The previous Jekyll blog is preserved at `https://zhang-haichao.github.io/legacy/`. It is intentionally absent from the new homepage navigation and marked `noindex, nofollow, noarchive`; `public/robots.txt` also asks crawlers not to visit the path. This is an unlisted public URL, not password protection.
+
+The archived HTML is generated from the rendered legacy site and the `origin/master` static assets. Historical Gitalk credential configuration and service-worker registration are removed before files are written. To rebuild the archive locally:
+
+```powershell
+npm run archive:legacy -- -Proxy http://127.0.0.1:7897
+```
+
 ## Deploying to `zhang-haichao.github.io`
 
-This directory is an independent local Git repository; it has not been pushed automatically and does not delete the existing remote homepage.
-
-1. Put these files on the `main` branch of `zhang-haichao/zhang-haichao.github.io`.
+1. Put these files on the `main` branch of `zhang-haichao/zhang-haichao.github.io` while retaining the previous `master` history.
 2. In the repository, open **Settings → Pages**.
 3. Set **Source** to **GitHub Actions**.
 4. Push `main` or manually run **Build and deploy GitHub Pages**.

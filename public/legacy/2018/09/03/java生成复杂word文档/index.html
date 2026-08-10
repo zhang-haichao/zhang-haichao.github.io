@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="java工程师，热爱技术。很高兴能在这里与你分享我对技术和生活的思考。">
+    <meta name="keywords"  content="张海超, 张海超的个人博客, 张海超的博客, 后端, 后端开发, 后端博客, java, python, android">
+    <meta name="theme-color" content="#000000">
+
+    <title>Java生成word文档调研 - 张海超的个人博客</title>
+
+    <!-- Web App Manifest -->
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/legacy/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/legacy/img/apple-touch-icon.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://zhanghaichao520.github.io/2018/09/03/java%E7%94%9F%E6%88%90%E5%A4%8D%E6%9D%82word%E6%96%87%E6%A1%A3/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/legacy/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/legacy/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/legacy/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/legacy/">越努力越幸运</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/legacy/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/about/">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/tags/">Tags</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/vip-parse/">Vip</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from
+     * $toggle/$collapse will break global delegation.
+     *
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/legacy/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/legacy/img/post-bg-cook.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/legacy/img/post-bg-cook.jpg')
+    }
+
+
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+
+                        <a class="tag" href="/legacy/tags/#Java" title="Java">Java</a>
+
+                    </div>
+                    <h1>Java生成word文档调研</h1>
+
+
+                    <h2 class="subheading">java读写word</h2>
+
+                    <span class="meta">Posted by zhanghaichao on September 3, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p><strong>使用Java操作word的方法有这几个：IText，Apache的POI包，tm-extractors包，jacob包，java2word包。</strong></p>
+
+<ul>
+  <li>
+    <p>IText包比较大，但是功能比较全。而且比较成熟，用的人也多。</p>
+  </li>
+  <li>
+    <p>POI包是Apache的一个项目，不过现在已经停止更新了,它包括一系列的API，它们可以操作基于MicroSoft OLE 2 Compound Document Format的各种格式文件，可以通过这些API在Java中读写Excel、Word等文件。他的excel处理很强大，对于word还局限于实现一些简单文件的操作，不能设置样式。</p>
+  </li>
+  <li>
+    <p>tm-extractors包的API比较简单，调用起来很方便，代码量也少,但主要针对读取操作。</p>
+  </li>
+  <li>
+    <p>jacob包，可以操作word，excel。因为调用的是微软底层的dll文件，需要在system32目录下放置jacob.dll，然后在classpath里面添加jacob.jar文件。</p>
+  </li>
+  <li>
+    <p>java2word也是调用微软的底层dll文件，有安装包，也有解压包，安装包会将jacob.dll文件装在system32目录下。之后将java2word.jar加到classpath就可以使用了。感觉如果只是操作word文档的话，比jacob用起来要简单和舒服。代码量也少，很清晰。</p>
+  </li>
+  <li>
+    <p>FreeMarker适合有固定模版的文档，将Word文档另存为XML格式，将后缀名“xml”修改为“ftl”，使用Freemarker填充内容</p>
+  </li>
+  <li>
+    <p>PageOffice主要针对Web应用系统，可以在线读取编辑word，如果有固定模板可以进行数据填充，没有模板也可以使用空白文档作为模板然后自由发挥，总体来说功能比较强大，基于jacob不兼容Linux以及poi代码复杂功能不完善这些缺点给出的解决方案，但是商业需要收费。</p>
+  </li>
+  <li>
+    <p>docx4j主要用于word2007，同时也可以用于office 2007中的PowerPoint和Excel，弥补了poi对于2007支持不好，但是同样</p>
+  </li>
+</ul>
+
+<p>综上，使用jacob和java2word的话，会在调用WINWORD进程，并且无法将服务部署到 Linux平台，要求安装office，</p>
+
+<p>tm-extractors主要是进行word读取也不做考虑，</p>
+
+<p>freemarker适合固定word模板填充，如果有定制化需求可以考虑。</p>
+
+<p>iText是Java中用于创建和操作PDF文件的开源库，也支持对word的读写操作，但包比较大，且和pdfbox很多功能重复，可以考虑使用。</p>
+
+<p>apache POI主要处理excel，但对于word也有支持，可以读写标题、段落、表格，缺点是不支持样式的设置和图片等插入。</p>
+
+<p><img src="https://ws3.sinaimg.cn/large/0069RVTdgy1fv1ws4cr3hj30p40agt96.jpg" alt="" /></p>
+
+<p>1：Jacob是Java-COM Bridge的缩写，它在Java与微软的COM组件之间构建一座桥梁。通过Jacob实现了在Java平台上对微软Office的COM接口进行调用。</p>
+
+<p>　　优点：调用微软Office的COM接口，生成的word文件格式规范。</p>
+
+<p>　　缺点：服务器只能是windows平台，不支持unix和linux，且服务器上必须安装微软Office。</p>
+
+<p>2：Apache POI包括一系列的API，它们可以操作基于MicroSoft OLE 2 Compound Document Format的各种格式文件，可以通过这些API在Java中读写Excel、Word等文件。</p>
+
+<p>　　优点：跨平台支持windows、unix和linux。</p>
+
+<p>　　缺点：相对与对word文件的处理来说，POI更适合excel处理，对于word实现一些简单文件的操作凑合，不能设置样式且生成的word文件格式不够规范。</p>
+
+<p>3：Java2word是一个在java程序中调用 MS Office Word 文档的组件(类库)。该组件提供了一组简单的接口，以便java程序调用他的服务操作Word 文档。 这些服务包括： 打开文档、新建文档、查找文字、替换文字，插入文字、插入图片、插入表格，在书签处插入文字、插入图片、插入表格等。</p>
+
+<p>　　优点：足够简单，操作起来要比FreeMarker简单的多。</p>
+
+<p>　　缺点：没有FreeMarker强大，不能够根据模版生成Word文档，word的文档的样式等信息都不能够很好的操作。</p>
+
+<p>4：FreeMarker生成word文档的功能是由XML+FreeMarker来实现的。先把word文件另存为xml，在xml文件中插入特殊的字符串占位符，将xml翻译为FreeMarker模板，最后用java来解析FreeMarker模板，编码调用FreeMarker实现文本替换并输出Doc。</p>
+
+<p>　　优点：比Java2word功能强大，也是纯Java编程。</p>
+
+<p>　　缺点：生成的文件本质上是xml，不是真正的word文件格式，有很多常用的word格式无法处理或表现怪异，比如：超链、换行、乱码、部分生成的文件打不开等。</p>
+
+<p>5：PageOffice生成word文件。PageOffice封装了微软Office繁琐的vba接口，提供了简洁易用的Java编程对象，支持生成word文件，同时实现了在线编辑word文档和读取word文档内容。</p>
+
+<p>　　优点：跨平台支持windows、unix和linux，生成word文件格式标准，支持文本、图片、表格、字体、段落、颜色、超链、页眉等各种格式的操作，支持多word合并，无需处理并发，不耗费服务器资源，运行稳定。</p>
+
+<p>　　缺点：必须在客户端生成文件（可以不显示界面），不支持纯服务器端生成文件。</p>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+
+                    <li class="previous">
+                        <a href="/legacy/2018/08/30/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" data-toggle="tooltip" data-placement="top" title="数字图像处理">
+                        Previous<br>
+                        <span>数字图像处理</span>
+                        </a>
+                    </li>
+
+
+                    <li class="next">
+                        <a href="/legacy/2018/09/04/Java%E4%B8%AD%E8%A7%A3%E5%86%B3Json%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%AD%97%E6%AE%B5%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="Java中解决Json序列化与反序列化字段匹配问题">
+                        Next<br>
+                        <span>Java中解决Json序列化与反序列化字段匹配问题</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+
+                <!-- 引入Gitalk评论插件  -->
+
+
+
+
+
+                <!-- Gitalk end -->
+
+
+
+            </div>
+
+    <!-- Side Catalog Container -->
+
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/legacy/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+
+
+                                <a href="/legacy/tags/#markdown" title="markdown" rel="1">
+                                    markdown
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#标记语言" title="标记语言" rel="1">
+                                    标记语言
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#图像处理" title="图像处理" rel="2">
+                                    图像处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#算法" title="算法" rel="3">
+                                    算法
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#论文" title="论文" rel="5">
+                                    论文
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Java" title="Java" rel="4">
+                                    Java
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#springboot" title="springboot" rel="1">
+                                    springboot
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Json" title="Json" rel="1">
+                                    Json
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Linux" title="Linux" rel="4">
+                                    Linux
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#小工具" title="小工具" rel="2">
+                                    小工具
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Hadoop" title="Hadoop" rel="1">
+                                    Hadoop
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#大数据" title="大数据" rel="1">
+                                    大数据
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#flink" title="flink" rel="1">
+                                    flink
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#流处理" title="流处理" rel="1">
+                                    流处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据压缩" title="数据压缩" rel="1">
+                                    数据压缩
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#杂项" title="杂项" rel="1">
+                                    杂项
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据库" title="数据库" rel="1">
+                                    数据库
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Nosql" title="Nosql" rel="1">
+                                    Nosql
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#分布式" title="分布式" rel="3">
+                                    分布式
+                                </a>
+
+
+                    </div>
+                </section>
+
+
+                <!-- Friends Blog -->
+
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                        <li><a href="https://github.com/zhouzhou-96">周老师</a></li>
+
+                        <li><a href="https://apple.com">Apple</a></li>
+
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+
+
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/xiao-chao-99-1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3534383631?refer_flag=1001030101_&is_all=1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+
+
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=100010723339047">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="https://github.com/zhanghaichao520">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 越努力越幸运 2026
+                    <br>
+                    Theme on <a href="https://github.com/zhanghaichao520/zhanghaichao520.github.io">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhanghaichao520&repo=zhanghaichao520.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/legacy/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/legacy/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/legacy/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-124605651-1';
+    var _gaDomain = 'auto';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'b68d6f7a2f0c5e20399f5f453d3e32ec';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/legacy/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

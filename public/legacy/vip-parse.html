@@ -1,0 +1,44 @@
+---
+title: Vip
+layout: default
+description: 曾经沧海难为水，除却巫山不是云。
+header-img: "img/post-bg-e2e-ux.jpg"
+---
+
+<!-- Page Header -->
+<header class="intro-header" style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading" id="tag-heading">
+                    <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
+                    <span class="subheading">{{ page.description }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+
+<iframe src="https://zhang-haichao.github.io/legacy/vip.html" id="mainiframe" width="100%" height="1100" frameborder="0" scrolling="auto"></iframe>
+<script>
+
+function changeFrameHeight(){
+        var ifm= document.getElementById("mainiframe");
+        ifm.height=document.documentElement.clientHeight-56;
+    }
+    window.onresize=function(){ changeFrameHeight();}
+    $(function(){changeFrameHeight();});
+
+</script>
+<!-- Gitalk 评论 start  -->
+{% if site.gitalk.enable %}
+<!-- Gitalk link  -->
+
+
+
+
+
+{% endif %}
+<!-- Gitalk end -->

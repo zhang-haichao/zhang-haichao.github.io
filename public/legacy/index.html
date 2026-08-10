@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="java工程师，热爱技术。很高兴能在这里与你分享我对技术和生活的思考。">
+    <meta name="keywords"  content="张海超, 张海超的个人博客, 张海超的博客, 后端, 后端开发, 后端博客, java, python, android">
+    <meta name="theme-color" content="#000000">
+
+    <title>张海超的个人博客</title>
+
+    <!-- Web App Manifest -->
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/legacy/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/legacy/img/apple-touch-icon.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://zhanghaichao520.github.io/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/legacy/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/legacy/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/legacy/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/legacy/">越努力越幸运</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/legacy/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/about/">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/tags/">Tags</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/vip-parse/">Vip</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from
+     * $toggle/$collapse will break global delegation.
+     *
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/legacy/img/post-bg-coffee.jpeg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>越努力越幸运</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">至尊宝：长夜漫漫无心睡眠，我以为只有我睡不着，原来晶晶姑娘呢也睡不着！</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+
+
+<!-- USE SIDEBAR -->
+    <!-- PostList Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                postlist-container
+            ">
+
+<div class="post-preview">
+    <a href="/legacy/2018/11/30/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FGFS-google-File-Syste/">
+        <h2 class="post-title">
+            分布式文件系统GFS（google File Syste）
+        </h2>
+
+        <h3 class="post-subtitle">
+            Google三大论文
+        </h3>
+
+        <div class="post-content-preview">
+            论文地址：https://blog.csdn.net/together_cz/article/details/66969003
+
+
+  GFS是一个大规模分布式文件系统，具有容错的特性（机器崩溃后的处理），并且具有较高性能，能够响应众多的客户端。
+
+
+1. 设计背景
+
+  因为机器众多，难免会有机器崩溃
+  存储的文件比较大
+  在文件后追加操作较多
+  主要包括两种读取 （read）操作：...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on November 30, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/legacy/2018/11/30/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9FBigTable/">
+        <h2 class="post-title">
+            分布式存储系统BigTable
+        </h2>
+
+        <h3 class="post-subtitle">
+            Google三大论文
+        </h3>
+
+        <div class="post-content-preview">
+
+  Bigtable是一个分布式的结构化数据存储系统，它被设计用来处理海量数据：通常是分布在数千台普通服务器上的PB级得数据。
+
+
+1.数据模型
+Bigtable是一个稀疏的，分布式的，持久化存储的多维度排序Map，Map的key是行关键字，列关键字以及时间戳组成，Map的value是一个未经解析的字节数组。
+
+
+
+    行(字符串)
+同一个行关键字的读或者写都是原子的，Bigtab...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on November 30, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/legacy/2018/11/30/%E5%88%86%E5%B8%83%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6MapReduce/">
+        <h2 class="post-title">
+            分布式处理框架MapReduce
+        </h2>
+
+        <h3 class="post-subtitle">
+            Google三大论文
+        </h3>
+
+        <div class="post-content-preview">
+
+  MapReduce是一个编程模型，用于大规模数据集（大于1TB）的并行运算。用户首先创建一个Map函数处理一个基于 key/value pair的数据集合，输出中间的基于key/value pair的数据集合；然后再创建一个Reduce函数用来合并所有的具有相同中间key值的中间value值
+
+
+1.定义
+把Map和Reduce分开，它实现的主要思想也是依赖于Map(映射)和Reduc...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on November 30, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/legacy/2018/11/30/HBASE%E6%A6%82%E8%BF%B0/">
+        <h2 class="post-title">
+            HBASE概述
+        </h2>
+
+        <h3 class="post-subtitle">
+            在Java使用HBASE
+        </h3>
+
+        <div class="post-content-preview">
+            物理视图
+
+
+
+Java API
+
+  configuration
+HBaseConfiguration是每一个hbase client都会使用到的对象，它代表的是HBase配置信息。它有两种构造方式：
+
+
+public HBaseConfiguration()
+public HBaseConfiguration(final Configuration c)
+
+默认的构造方式会尝试从hbas...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on November 30, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/legacy/2018/11/20/qps%E8%AE%A1%E7%AE%97/">
+        <h2 class="post-title">
+            qps计算
+        </h2>
+
+        <h3 class="post-subtitle">
+            qps计算
+        </h3>
+
+        <div class="post-content-preview">
+
+  qps(query per second),每秒查询率QPS是对一个特定的查询服务器在规定时间内所处理流量多少的衡量标准，在因特网上，作为域名系统服务器的机器的性能经常用每秒查询率来衡量。
+  概念
+  pv 是指页面被浏览的次数，比如你打开一网页，那么这个网站的pv就算加了一次；
+tps是每秒内的事务数，比如执行了dml操作，那么相应的tps会增加；
+qps是指每秒内查询次数，比如执...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on November 20, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/legacy/2018/11/20/Java%E4%BD%BF%E7%94%A8Protocol-Buffers/">
+        <h2 class="post-title">
+            Java使用Protocol Buffers
+        </h2>
+
+        <h3 class="post-subtitle">
+            高效数据压缩格式
+        </h3>
+
+        <div class="post-content-preview">
+            1、介绍
+pb是用于将结构化的数据序列化、反序列化。经经常使用于网络传输。
+
+  效率高
+  生成的是字节码文件
+  与json、xml等类似
+
+
+2、编译器安装
+github下载地址（v2.5.0）
+https://github.com/protocolbuffers/protobuf/tree/v2.5.0
+releases版本i地址（v2.5.0）
+https://github.com...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on November 20, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/legacy/2018/11/20/FLink-DataStream/">
+        <h2 class="post-title">
+            FLink DataStream
+        </h2>
+
+        <h3 class="post-subtitle">
+            在Java中使用flink流处理
+        </h3>
+
+        <div class="post-content-preview">
+            数据源（Data Sources）
+
+  StreamExecutionEnvironment.addSource(sourceFunction)来创建数据源。
+  通过实现SourceFunction来编写自定义的非并行数据源
+  通过实现ParallelSourceFunction接口或继承RichParallelSourceFunction来编写自定义并行数据源。
+
+
+
+
+    ...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on November 20, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/legacy/2018/10/16/vim-%E4%B8%AD%E7%9A%84-wq-%E5%92%8C-x-%E7%9A%84%E5%8C%BA%E5%88%AB/">
+        <h2 class="post-title">
+            vim 中的＂:wq＂和＂:x＂的区别
+        </h2>
+
+        <h3 class="post-subtitle">
+            vim命令应用
+        </h3>
+
+        <div class="post-content-preview">
+            “:x” 和 “:wq” 的区别如下：
+
+
+  :wq 强制性写入文件并退出（存盘并退出 write and quite）。即使文件没有被修改也强制写入，并更新文件的修改时间。
+  :x 写入文件并退出。仅当文件被修改时才写入，并更新文件修改时间；否则不会更新文件修改时间。
+
+
+这两者一般情况下没什么不一样，但是在编程方面，对编辑源文件可能会产生重要影响。因为文件即使没有修改，”:wq” 强...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on October 16, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/legacy/2018/09/19/Linux%E4%B8%8B%E6%96%87%E4%BB%B6%E5%8A%A0%E5%AF%86%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/">
+        <h2 class="post-title">
+            Linux下文件加密压缩和解压
+        </h2>
+
+        <h3 class="post-subtitle">
+            压缩命令应用
+        </h3>
+
+        <div class="post-content-preview">
+            方法一：用tar命令 对文件加密压缩和解压
+
+压缩：
+
+tar -zcf  - filename |openssl des3 -salt -k password | dd of=filename.des3
+
+
+
+此命令对filename文件进行加码压缩 生成filename.des3加密压缩文件， password 为加密的密码
+
+解压：
+
+dd if=filename.des3 |open...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on September 19, 2018
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/legacy/2018/09/19/Leetcode-%E4%B8%80%E6%89%8B%E9%A1%BA%E5%AD%90/">
+        <h2 class="post-title">
+            Leetcode——一手顺子
+        </h2>
+
+        <h3 class="post-subtitle">
+            算法题解
+        </h3>
+
+        <div class="post-content-preview">
+            题目描述：
+
+
+  爱丽丝有一手（hand）由整数数组给定的牌。
+现在她想把牌重新排列成组，使得每个组的大小都是 W，且由 W 张连续的牌组成。
+如果她可以完成分组就返回 true，否则返回 false。
+示例 1：
+输入：hand = [1,2,3,6,2,3,4,7,8], W = 3
+输出：true
+解释：爱丽丝的手牌可以被重新排列为 [1,2,3]，[2,3,4]...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by zhanghaichao on September 19, 2018
+    </p>
+</div>
+<hr>
+
+
+<!-- Pager -->
+
+<ul class="pager">
+
+
+    <li class="next">
+        <a href="/legacy/page2">Older Posts &rarr;</a>
+    </li>
+
+</ul>
+
+
+            </div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/legacy/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+
+
+                                <a href="/legacy/tags/#markdown" title="markdown" rel="1">
+                                    markdown
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#标记语言" title="标记语言" rel="1">
+                                    标记语言
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#图像处理" title="图像处理" rel="2">
+                                    图像处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#算法" title="算法" rel="3">
+                                    算法
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#论文" title="论文" rel="5">
+                                    论文
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Java" title="Java" rel="4">
+                                    Java
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#springboot" title="springboot" rel="1">
+                                    springboot
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Json" title="Json" rel="1">
+                                    Json
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Linux" title="Linux" rel="4">
+                                    Linux
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#小工具" title="小工具" rel="2">
+                                    小工具
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Hadoop" title="Hadoop" rel="1">
+                                    Hadoop
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#大数据" title="大数据" rel="1">
+                                    大数据
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#flink" title="flink" rel="1">
+                                    flink
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#流处理" title="流处理" rel="1">
+                                    流处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据压缩" title="数据压缩" rel="1">
+                                    数据压缩
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#杂项" title="杂项" rel="1">
+                                    杂项
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据库" title="数据库" rel="1">
+                                    数据库
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Nosql" title="Nosql" rel="1">
+                                    Nosql
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#分布式" title="分布式" rel="3">
+                                    分布式
+                                </a>
+
+
+                    </div>
+                </section>
+
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/legacy/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+
+                            <a href="/legacy/about">
+                                <img src="/legacy/img/avatar_m.jpg"/>
+                            </a>
+
+
+                            <p>我们一起玩，顺便赚点钱，然后活到一百岁</p>
+
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+
+                            <!-- add jianshu add target = "_blank" to <a> by BY -->
+
+
+
+                            <li>
+                                <a target="_blank" href="https://www.zhihu.com/people/xiao-chao-99-1">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
+                                    </span>
+                                </a>
+                            </li>
+
+
+                            <li>
+                                <a target="_blank" href="http://weibo.com/u/3534383631?refer_flag=1001030101_&is_all=1">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+
+
+                            <li>
+                                <a target="_blank" href="https://www.facebook.com/profile.php?id=100010723339047">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+
+
+                            <li>
+                                <a target="_blank" href="https://github.com/zhanghaichao520">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+
+                            <p>✉️ zhanghaichao961@gmail.com</p>
+
+                    </div>
+                </section>
+                <!-- Friends Blog -->
+
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                        <li><a href="https://github.com/zhouzhou-96">周老师</a></li>
+
+                        <li><a href="https://apple.com">Apple</a></li>
+
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+
+                </ul>
+
+            </div>
+
+    </div>
+</div>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+
+
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/xiao-chao-99-1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3534383631?refer_flag=1001030101_&is_all=1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+
+
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=100010723339047">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="https://github.com/zhanghaichao520">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 越努力越幸运 2026
+                    <br>
+                    Theme on <a href="https://github.com/zhanghaichao520/zhanghaichao520.github.io">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhanghaichao520&repo=zhanghaichao520.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/legacy/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/legacy/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/legacy/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-124605651-1';
+    var _gaDomain = 'auto';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'b68d6f7a2f0c5e20399f5f453d3e32ec';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/legacy/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

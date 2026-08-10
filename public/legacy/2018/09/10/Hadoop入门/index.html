@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="java工程师，热爱技术。很高兴能在这里与你分享我对技术和生活的思考。">
+    <meta name="keywords"  content="张海超, 张海超的个人博客, 张海超的博客, 后端, 后端开发, 后端博客, java, python, android">
+    <meta name="theme-color" content="#000000">
+
+    <title>Hadoop入门 - 张海超的个人博客</title>
+
+    <!-- Web App Manifest -->
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/legacy/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/legacy/img/apple-touch-icon.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://zhanghaichao520.github.io/2018/09/10/Hadoop%E5%85%A5%E9%97%A8/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/legacy/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/legacy/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/legacy/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/legacy/">越努力越幸运</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/legacy/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/about/">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/tags/">Tags</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/vip-parse/">Vip</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from
+     * $toggle/$collapse will break global delegation.
+     *
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/legacy/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/legacy/img/post-bg-ioses.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/legacy/img/post-bg-ioses.jpg')
+    }
+
+
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+
+                        <a class="tag" href="/legacy/tags/#Hadoop" title="Hadoop">Hadoop</a>
+
+                        <a class="tag" href="/legacy/tags/#大数据" title="大数据">大数据</a>
+
+                    </div>
+                    <h1>Hadoop入门</h1>
+
+
+                    <h2 class="subheading">惜我十年前，与君始相识</h2>
+
+                    <span class="meta">Posted by zhanghaichao on September 10, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="一初识hadoop">一、初识Hadoop</h2>
+<ol>
+  <li>
+    <p>分布式文件系统-HDFS</p>
+  </li>
+  <li>
+    <p>资源调度系统-YARN
+     <img src="https://ws2.sinaimg.cn/large/0069RVTdly1fv47hrpdw4j30rv0ehq5b.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p>分布式计算框架-MapReduce
+     <img src="https://ws2.sinaimg.cn/large/0069RVTdly1fv47r5j0chj30u40e240p.jpg" alt="" /></p>
+  </li>
+  <li>优势
+    <ul>
+      <li>高可靠性</li>
+      <li>高扩展性</li>
+      <li>其他：存储在廉价机器；成熟的生态圈</li>
+    </ul>
+  </li>
+  <li>生态系统</li>
+</ol>
+
+     <img src="https://ws1.sinaimg.cn/large/0069RVTdly1fv48jbpzdbj30k10ac0sz.jpg" alt="" />
+
+<ol>
+  <li>常用发行版及选型
+    <ul>
+      <li>apache hadoop</li>
+      <li>CDH：不开源，安装方便，jar冲突较少。https://archive.cloudera.com/cdh5/cdh/5/</li>
+      <li>HDP：原装hadoop，开源</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="二分布式文件系统hdfs">二、分布式文件系统HDFS</h2>
+<ol>
+  <li>HDFS概述.
+    <ul>
+      <li>源于谷歌2003年论文GFS的开源实现。</li>
+      <li>设计目标：非常巨大的分布式文件系统；运行在普通廉价的硬件上；易扩展，为用户提供不错的文件存储服务</li>
+    </ul>
+  </li>
+  <li>HDFS架构.
+    <ul>
+      <li>Client：切分文件；访问HDFS；与NameNode交互，获取文件位置信息；与DataNode交互，读取和写入数据。</li>
+      <li>NameNode：Master节点，负责客户端请求的响应；负责元数据（文件名称、副本系数、block存档的datanode）的管理</li>
+      <li>DataNode：Slave节点，存储实际的数据，汇报存储信息给NameNode。</li>
+      <li>Secondary NameNode：辅助NameNode，分担其工作量；定期合并fsimage和fsedits，推送给NameNode；紧急情况下，可辅助恢复NameNode，但Secondary NameNode并非NameNode的热备。</li>
+      <li>NameNode+N个DataNode：最好部署在不同的节点上。</li>
+    </ul>
+  </li>
+  <li>HDFS副本机制.<br />
+<img src="https://ws2.sinaimg.cn/large/0069RVTdgy1fv4a4c6zr5j30or05wjse.jpg" alt="" />
+副本存放策略：默认3个副本，第一个节点存在当前操作客户端机架上，另外两个节点存在另一台机架上</li>
+  <li>HDFS环境搭建.
+    <ul>
+      <li>需要预先装的软件：java（jdk，配置环境变量）、<a href="https://zhanghaichao520.github.io/2018/09/08/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8Blinux/#1ssh%E5%91%BD%E4%BB%A4">SSH</a></li>
+      <li>解压hadoop安装包： <br />
+  <code class="language-plaintext highlighter-rouge">tar -zxvf hadoop-2.6.0-cdh5.7.0.tar.gz -C ~/hadoop</code></li>
+      <li>
+        <p>配置文件修改（～/hadoop/etc/hadoop/):</p>
+
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  1.hadoop-env.sh:加入JAVA_HOME环境.
+  export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home
+
+  2.core-site.xml
+   &lt;property&gt;
+      &lt;name&gt;fs.defaultFS&lt;/name&gt;
+      &lt;value&gt;hdfs://hadoop-1:9000&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+      &lt;name&gt;io.file.buffer.size&lt;/name&gt;
+      &lt;value&gt;131072&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property&gt;
+      &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
+      &lt;value&gt;/hadoop &lt;/value&gt;
+   &lt;/property&gt;
+
+  3.hdfs-site.xml
+   &lt;property&gt;
+         &lt;name&gt;dfs.replication&lt;/name&gt;
+         &lt;value&gt;2&lt;/value&gt;
+ &lt;/property&gt;
+
+  4.slaves:存储datanode的所有机器的hostname集群环境）
+</code></pre></div>        </div>
+      </li>
+      <li>启动hdfs.
+        <ul>
+          <li>格式化文件系统（仅第一次执行）：bin/hdfs namenode -format</li>
+          <li>启动hdfs：sbin.start-dfs.sh</li>
+          <li>验证是否启动成功：jps、http://hadoop-1:50070</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>HDFS shell.
+    <ul>
+      <li>查看文件：hadoop fs -ls /</li>
+      <li>上传文件 hadoop fs -put file /</li>
+      <li>查看文件内容：hadoop fs -text /file    hadoop fs -cat  /file</li>
+      <li>创建目录：hadoop fs -mkdir /test</li>
+      <li>递归创建目录: hadoop fs -mkdir -p /test/a/b</li>
+      <li>查看递归目录: hadoop fs -ls -R /</li>
+      <li>从本地拷贝: hadoop fs -copyFromLocal file /test/a/b/desfile</li>
+      <li>从文件系统拷贝:hadoop fs -get /test/a/b/desfile</li>
+      <li>删除文件系统文件:hadoop fs -rm file</li>
+      <li>删除文件系统目录:hadoop fs -rm -rf dir</li>
+    </ul>
+  </li>
+  <li>
+    <p>Java API操作HDFS.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.引入依赖(pom.xml)
+      &lt;properties&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;hadoop.version&gt;2.8.4&lt;/hadoop.version&gt;
+&lt;/properties&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;
+    &lt;artifactId&gt;hadoop-client&lt;/artifactId&gt;
+    &lt;version&gt;${hadoop.version}&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;repository&gt;
+    &lt;id&gt;cloudera&lt;/id&gt;
+    &lt;url&gt;https://repository.cloudera.com/artifactory/cloudera-repos&lt;/url&gt;
+&lt;/repository&gt;
+   2.测试示例
+  /**
+ * 创建hdfs目录
+ *
+ * @throws IOException
+ */
+@Test
+public void mkdir() throws IOException {
+    fileSystem.mkdirs(new Path("/hdfs/api"));
+}
+
+/**
+ * 创建文件
+ *
+ * @throws IOException
+ */
+@Test
+public void create() throws IOException {
+    FSDataOutputStream output = fileSystem.create(new Path("/hdfs/api/test.txt"));
+    output.write("hello hadoop api".getBytes());
+    output.flush();
+    output.close();
+}
+
+/**
+ * 查看HDFS内容
+ *
+ * @throws IOException
+ */
+@Test
+public void cat() throws IOException {
+    FSDataInputStream inputStream = fileSystem.open(new Path("/hdfs/api/test.txt"));
+    IOUtils.copyBytes(inputStream, System.out, 1024);
+    inputStream.close();
+}
+
+/**
+ * 重命名HDFS文件
+ *
+ * @throws IOException
+ */
+@Test
+public void rename() throws IOException {
+    Path oldPath = new Path("/hdfs/api/test.txt");
+    Path newPath = new Path("/hdfs/api/newtest.txt");
+    fileSystem.rename(oldPath, newPath);
+}
+
+/**
+ * 上传文件到HDFS
+ *
+ * @throws IOException
+ */
+@Test
+public void copyFromLocalFile() throws IOException {
+    Path localPath = new Path("/Users/zhanghaichao/hdu/1.cpp");
+    Path hdfsPath = new Path("/hdfs/api/1.cpp");
+    fileSystem.copyFromLocalFile(localPath, hdfsPath);
+}
+
+/**
+ * 上传文件到HDFS,带进度条
+ *
+ * @throws IOException
+ */
+@Test
+public void copyFromLocalFileWithProgress() throws IOException {
+    Path hdfsPath = new Path("/hdfs/api/hadoop-2.8.4.tar.gz");
+
+    InputStream inputStream = new BufferedInputStream(new FileInputStream(
+            new File("/Users/zhanghaichao/Downloads/hadoop-2.8.4.tar.gz")));
+
+    FSDataOutputStream outputStream = fileSystem.create(hdfsPath, new Progressable() {
+        @Override
+        public void progress() {
+            System.out.println(".");
+        }
+    });
+    IOUtils.copyBytes(inputStream, outputStream, 4096);
+
+}
+
+/**
+ * 下载HDFS文件
+ *
+ * @throws IOException
+ */
+@Test
+public void copyToLocalFile() throws IOException {
+    Path localPath = new Path("/Users/zhanghaichao/1.cpp");
+    Path hdfsPath = new Path("/hdfs/api/1.cpp");
+    fileSystem.copyToLocalFile(hdfsPath, localPath);
+}
+
+/**
+ * 查看HDFS目录下的所有文件
+ *
+ * @throws IOException
+ */
+@Test
+public void listFiles() throws IOException {
+    Path hdfsPath = new Path("/hdfs/api");
+    FileStatus[] fileStatuses = fileSystem.listStatus(hdfsPath);
+    for (FileStatus fileStatus : fileStatuses) {
+        String isDir  = fileStatus.isDirectory() ? " is directory," : " is file,";
+        short replication = fileStatus.getReplication();
+        //hdfs shell 上传，副本系数使用配置文件中配置的，java api上传使用默认的（3）
+        System.out.println(fileStatus.getPath().toString() + isDir
+                + "  replication is " + replication + "  length is :" + fileStatus.getLen());
+    }
+}
+
+/**
+ * 删除HDFS文件
+ *
+ * @throws IOException
+ */
+@Test
+public void delete() throws IOException {
+    Path hdfsPath = new Path("/fz");
+    fileSystem.delete(hdfsPath,false); //默认递归删除，加参数控制
+}
+
+@Before
+public void setUp() throws URISyntaxException, IOException {
+    configuration = new Configuration();
+    fileSystem = FileSystem.get(new URI(HDFS_PATH), configuration);
+    System.out.println("\n hdfs app setup\n");
+}
+
+@After
+public void tearDown() {
+    configuration = null;
+    fileSystem = null;
+
+    System.out.println("\nhdfs app tear down\n");
+
+}
+
+</code></pre></div>    </div>
+  </li>
+  <li>HDFS文件读写流程 <br />
+     <a href="https://blog.csdn.net/eric_sunah/article/details/41546863">通过漫画轻松掌握HDFS工作原理</a></li>
+  <li>HDFS优缺点 <br />
+优点：a.数据冗余，硬件容错;b.处理流失的数据访问；c.适合存储大量数据;d.存储在廉价机器。<br />
+      缺点：a.低延迟的数据访问；b.不适合小文件存储（元数据较多，namenode压力大）。</li>
+</ol>
+
+<h2 id="三资源调度框架yarn">三、资源调度框架YARN</h2>
+
+<ol>
+  <li>
+    <p>YARN产生背景.<br />
+     Hadoop1.x时：<br />
+MapReduce：Master/Slave架构，1个JobTracker带多个TaskTracker</p>
+
+    <p>JobTracker： 负责资源管理和作业调度.<br />
+TaskTracker：
+定期向JobTracker汇报本节点的健康状况、资源使用情况、作业执行情况；
+接收来自JobTracker的命令：启动任务/杀死任务.</p>
+
+    <p>缺点：单点（jt）压力大，不易扩展；资源利用率低，运维成本高（跨集群数据移动）</p>
+
+    <p>YARN：不同计算框架可以共享同一个HDFS集群上的数据，享受整体的资源调度  <br />
+XXX on YARN的好处：
+    与其他计算框架共享集群资源，按资源需要分配，进而提高集群资源的利用率。  <br />
+XXX: Spark/MapReduce/Storm/Flink</p>
+  </li>
+  <li>YARN概述
+    <ul>
+      <li>Yet Another Resource Negotiator。
+     - 通用的资源管理系统。<br />
+     - 为上层的应用提供统一的资源和调度。</li>
+    </ul>
+  </li>
+  <li>
+    <p>YARN架构 <br />
+     - ResourceManager: RM <br />
+整个集群同一时间提供服务的RM只有一个，负责集群资源的统一管理和调度 <br />
+处理客户端的请求： 提交一个作业、杀死一个作业 <br />
+监控我们的NM，一旦某个NM挂了，那么该NM上运行的任务需要告诉我们的AM来如何进行处理</p>
+
+    <ul>
+      <li>
+        <p>NodeManager: NM <br />
+整个集群中有多个，负责自己本身节点资源管理和使用 <br />
+定时向RM汇报本节点的资源使用情况 <br />
+接收并处理来自RM的各种命令：启动Container <br />
+处理来自AM的命令 <br />
+单个节点的资源管理</p>
+      </li>
+      <li>
+        <p>ApplicationMaster: AM <br />
+每个应用程序对应一个：RM、Spark，负责应用程序的管理 <br />
+为应用程序向RM申请资源（core、memory），分配给内部task <br />
+需要与NM通信：启动/停止task，task是运行在container里面，AM也是运行在container里面</p>
+      </li>
+      <li>
+        <p>Container <br />
+封装了CPU、Memory等资源的一个容器 <br />
+是一个任务运行环境的抽象</p>
+      </li>
+      <li>
+        <p>Client <br />
+提交作业   <br />
+查询作业的运行进度 <br />
+杀死作业</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>YARN环境搭建</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 1）mapred-site.xml,mr指定框架YARN
+ &lt;property&gt;
+     &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+     &lt;value&gt;yarn&lt;/value&gt;
+ &lt;/property&gt;
+
+ 2）yarn-site.xml
+ &lt;property&gt;
+     &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+     &lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+ &lt;/property&gt;
+
+ 3) 启动YARN相关的进程
+ sbin/start-yarn.sh
+
+ 4）验证
+     jps
+         ResourceManager
+         NodeManager
+     http://localhost:8088
+
+ 5）停止YARN相关的进程
+     sbin/stop-yarn.sh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>提交mr作业到YARN上运行： <br />
+ /Users/zhanghaichao/hadoop-2.8.4/share/hadoop/mapreducehadoop-mapreduce-examples-2.8.4.jar.</p>
+
+    <p>hadoop jar</p>
+
+    <p>hadoop jar hadoop-mapreduce-examples-2.6.0-cdh5.7.0.jar pi 2 3</p>
+  </li>
+</ol>
+
+<h2 id="四分布式处理框架mapreduce">四、分布式处理框架MapReduce</h2>
+
+<ol>
+  <li>MapReduce概述。
+    <ul>
+      <li>源于google论文，2004.12发表。 Hadoop MapReduce是Google MapReduce的克隆版</li>
+      <li>优点：海量数据离线处理&amp;易开发&amp;易运行</li>
+      <li>缺点：不能实时流式计算</li>
+    </ul>
+  </li>
+  <li>MapReduce编程模型。
+    <ul>
+      <li>作业拆分成map阶段和reduce阶段.</li>
+      <li>Map阶段：map tasks.</li>
+      <li>Reduce极端:reduce tasks.</li>
+      <li>核心概念。<br />
+ Split：交由MapReduce作业来处理的数据块，是MapReduce中最小的计算单元 <br />
+ HDFS：blocksize 是HDFS中最小的存储单元  128M <br />
+ 默认情况下：他们两是一一对应的，也可以手工设置他们之间的关系（不建议）  <br />
+ InputFormat：
+ 将我们的输入数据进行分片(split):  InputSplit[] getSplits(JobConf job, int numSplits) <br />
+ TextInputFormat: 处理文本格式的数据
+ OutputFormat: 输出</li>
+    </ul>
+  </li>
+  <li>MapReduce架构。
+    <ul>
+      <li>
+        <p>MapReduce1.x的架构 <br />
+  1）JobTracker: JT <br />
+      作业的管理者 <br />
+      将作业分解成一堆的任务：Task（MapTask和ReduceTask）  <br />
+      将任务分派给TaskTracker运行  <br />
+      作业的监控、容错处理（task作业挂了，重启task的机制）   <br />
+      在一定的时间间隔内，JT没有收到TT的心跳信息，TT可能是挂了，TT上运行的任务会被指派到其他TT上去执行</p>
+
+        <p>2）TaskTracker: TT
+      任务的执行者 <br />
+      在TT上执行我们的Task（MapTask和ReduceTask） <br />
+      会与JT进行交互：执行/启动/停止作业，发送心跳信息给JT</p>
+
+        <p>3）MapTask <br />
+      自己开发的map任务交由该Task  <br />
+      解析每条记录的数据，交给自己的map方法处理   <br />
+      将map的输出结果写到本地磁盘（有些作业只仅有map没有reduce==&gt;HDFS）</p>
+
+        <p>4）ReduceTask <br />
+      将Map Task输出的数据进行读取 <br />
+      按照数据进行分组传给我们自己编写的reduce方法处理 <br />
+      输出结果写到HDFS</p>
+      </li>
+      <li>
+        <p>MapReduce2.x的架构
+  <img src="https://ws3.sinaimg.cn/large/0069RVTdgy1fv5uzihhr4j30jt0do0u1.jpg" alt="" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>MapReduce实现WordCount(使用IDEA+Maven开发)。<br />
+ <a href="https://github.com/zhanghaichao520/hadoopdemo/blob/master/src/main/java/com/cc/hadoop/mapreduce/WordCount.java">详细代码</a>
+    <ul>
+      <li>开发</li>
+      <li>编译：mvn clean package -DskipTests</li>
+      <li>上传到服务器：scp target/hadoop-train-1.0.jar hadoop@hadoop000:~/lib</li>
+      <li>运行
+ hadoop jar hadoop-demo-1.0-SNAPSHOT.jar com.cc.hadoop.mapreduce.WordCount hdfs://localhost:9000/in hdfs://localhost:9000/out</li>
+    </ul>
+
+    <p>相同的代码和脚本再次执行，会报错
+ security.UserGroupInformation:
+ PriviledgedActionException as:hadoop (auth:SIMPLE) cause:
+ org.apache.hadoop.mapred.FileAlreadyExistsException:
+ Output directory hdfs://hadoop000:8020/output/wc already exists
+ Exception in thread “main” org.apache.hadoop.mapred.FileAlreadyExistsException:
+ Output directory hdfs://hadoop000:8020/output/wc already exists</p>
+
+    <p><strong>注：在MR中，输出文件是不能事先存在的</strong> <br />
+ 1）先手工通过shell的方式将输出文件夹先删除
+     hadoop fs -rm -r /output/wc  <br />
+ 2) 在代码中完成自动删除功能:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Path outputPath = new Path(args[1]);
+
+ FileSystem fileSystem = FileSystem.get(configuration);
+
+ if(fileSystem.exists(outputPath)){
+
+     fileSystem.delete(outputPath, true);
+
+     System.out.println("output file exists, but is has deleted");
+
+ }  - MapReduce编程之Combiner     在map端做一个reduce操作，简化数据，提高传输速度  - MapReduce编程之Partitioner     [详细代码](https://github.com/zhanghaichao520/hadoopdemo/blob/master/src/main/java/com/cc/hadoop/mapreduce/Parititoner.java)
+</code></pre></div>    </div>
+  </li>
+  <li>jobHistory
+    <ul>
+      <li>记录运行完的MR信息到指定的HDFS目录下</li>
+      <li>默认不开启</li>
+      <li>启动方法：</li>
+    </ul>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cd hadoop-2.8.4/etc/hadoop/
+ vim mapred-site.xml
+ 加入下面四组标签：
+ &lt;property&gt;
+    &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;
+    &lt;value&gt;localhost:10020&lt;/value&gt;
+&lt;/property&gt;
+ &lt;property&gt;
+    &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;
+    &lt;value&gt;localhost:19888&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+    &lt;name&gt;mapreduce.jobhistory.done-dir&lt;/name&gt;
+    &lt;value&gt;/history/done&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+    &lt;name&gt;mapreduce.jobhistory.intermediate-done-dir&lt;/name&gt;
+    &lt;value&gt;/history/done_intermediate&lt;/value&gt;
+&lt;/property&gt;
+vim yarn-site.xml
+加入下面的标签
+&lt;property&gt;
+     &lt;name&gt;yarn.log-aggregation-enable&lt;/name&gt;
+     &lt;value&gt;true&lt;/value&gt;
+&lt;/property&gt;
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="五hadoop项目实战">五、Hadoop项目实战</h2>
+<p>用户行为日志：用户每次访问网站时所有的行为数据（访问、浏览、搜索、点击…）
+    用户行为轨迹、流量日志</p>
+
+<p>日志数据内容： <br />
+1）访问的系统属性： 操作系统、浏览器等等。 <br />
+2）访问特征：点击的url、从哪个url跳转过来的(referer)、页面上的停留时间等    <br />
+3）访问信息：session_id、访问ip(访问城市)等</p>
+
+<p>数据处理流程</p>
+
+<p>1）数据采集   <br />
+    Flume： web日志写入到HDFS</p>
+
+<p>2）数据清洗 <br />
+    脏数据 <br />
+    Spark、Hive、MapReduce 或者是其他的一些分布式计算框架   <br />
+    清洗完之后的数据可以存放在HDFS(Hive/Spark SQL)</p>
+
+<p>3）数据处理  <br />
+    按照我们的需要进行相应业务的统计和分析 <br />
+    Spark、Hive、MapReduce 或者是其他的一些分布式计算框架</p>
+
+<p>4）处理结果入库 <br />
+    结果可以存放到RDBMS、NoSQL</p>
+
+<p>5）数据的可视化  <br />
+    通过图形化展示的方式展现出来：饼图、柱状图、地图、折线图  <br />
+    ECharts、HUE、Zeppelin</p>
+
+<h2 id="六hadoop分布式集群搭建">六、Hadoop分布式集群搭建</h2>
+
+<ol>
+  <li>前置准备：
+    <ul>
+      <li>配置每台机器hostname，并将主机名和ip写入主节点hosts中</li>
+      <li>配置ssh免密码登陆：ssh-keygen -t rsa</li>
+      <li>在主节点机器中添加每台机器的sshkey：ssh-copy-id -i ~/.ssh/id_rsa.pub hostname</li>
+      <li>jdk安装，并配置环境变量</li>
+    </ul>
+  </li>
+  <li>集群安装
+    <ul>
+      <li>hadoop安装：解压hadoop安装包，并配置环境变量</li>
+      <li>hadoop配置：参考2.4和3.4配置，需额外在yarn-site.xml中配置yarn.resourcemanager.hostname为主节点机器</li>
+      <li>slaves：配置从结点，顶格写入所有从结点机器的主机名</li>
+      <li>分发安装包到所有结点机器中(包括jdk和hadoop)：scp -r ~/app hostname2:~/app</li>
+      <li>分发环境变量并生效:.bash_profile：scp ~/.bash_profile ~/</li>
+    </ul>
+  </li>
+  <li>启动集群
+    <ul>
+      <li>在主节点对namenode格式化：bin/hdfs namenode -format</li>
+      <li>在主节点启动：sbin/start-all.sh</li>
+      <li>验证：jps，主节点5个进程，从结点2个进程。访问50070(hdfs)或者8088(yarn)端口。</li>
+      <li>停止：sbin/stop-all.sh</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="七前沿技术sparkflinkbeam">七、前沿技术Spark、Flink、Beam</h2>
+
+<ol>
+  <li>
+    <p>分布式计算框架spark.  <br />
+spark启动：spark-shell –master local[2]<br />
+spark实现wc：</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> val file = sc.textFile("file:///home/hadoop/data/hello.txt")
+ val a = file.flatMap(line =&gt; line.split(" "))
+ val b = a.map(word =&gt; (word,1))
+ val c = b.reduceByKey(_ + _)
+ c.collect
+
+ sc.textFile("file:///home/hadoop/data/hello.txt").flatMap(line =&gt; line.split(" ")).map(word =&gt; (word,1)).reduceByKey(_ + _).collect
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>分布式计算框架flink.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./bin/flink run ./examples/batch/WordCount.jar \
+  --input file:///home/hadoop/data/hello.txt --output file:///home/hadoop/tmp/flink_wc_output
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>统一编程模型beam.</p>
+
+    <p>wc的beam程序以多种不同的runner运行。</p>
+
+    <ul>
+      <li>
+        <p>direct方式运行
+ mvn compile exec:java -Dexec.mainClass=org.apache.beam.examples.WordCount <br />
+ -Dexec.args=”–inputFile=/home/hadoop/data/hello.txt –output=counts” <br />
+ -Pdirect-runner</p>
+      </li>
+      <li>
+        <p>spark方式运行
+ mvn compile exec:java -Dexec.mainClass=org.apache.beam.examples.WordCount <br />
+ -Dexec.args=”–runner=SparkRunner –inputFile=/home/hadoop/data/hello.txt –output=counts” -Pspark-runner</p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+     - flink方式运行
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn compile exec:java -Dexec.mainClass=org.apache.beam.examples.WordCount \
+-Dexec.args="--runner=FlinkRunner --inputFile=/home/hadoop/data/hello.txt --output=counts" -Pflink-runner
+</code></pre></div></div>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+
+                    <li class="previous">
+                        <a href="/legacy/2018/09/08/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8Blinux/" data-toggle="tooltip" data-placement="top" title="快速上手Linux">
+                        Previous<br>
+                        <span>快速上手Linux</span>
+                        </a>
+                    </li>
+
+
+                    <li class="next">
+                        <a href="/legacy/2018/09/19/Leetcode-%E4%B8%80%E6%89%8B%E9%A1%BA%E5%AD%90/" data-toggle="tooltip" data-placement="top" title="Leetcode——一手顺子">
+                        Next<br>
+                        <span>Leetcode——一手顺子</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+
+                <!-- 引入Gitalk评论插件  -->
+
+
+
+
+
+                <!-- Gitalk end -->
+
+
+
+            </div>
+
+    <!-- Side Catalog Container -->
+
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/legacy/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+
+
+                                <a href="/legacy/tags/#markdown" title="markdown" rel="1">
+                                    markdown
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#标记语言" title="标记语言" rel="1">
+                                    标记语言
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#图像处理" title="图像处理" rel="2">
+                                    图像处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#算法" title="算法" rel="3">
+                                    算法
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#论文" title="论文" rel="5">
+                                    论文
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Java" title="Java" rel="4">
+                                    Java
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#springboot" title="springboot" rel="1">
+                                    springboot
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Json" title="Json" rel="1">
+                                    Json
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Linux" title="Linux" rel="4">
+                                    Linux
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#小工具" title="小工具" rel="2">
+                                    小工具
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Hadoop" title="Hadoop" rel="1">
+                                    Hadoop
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#大数据" title="大数据" rel="1">
+                                    大数据
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#flink" title="flink" rel="1">
+                                    flink
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#流处理" title="流处理" rel="1">
+                                    流处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据压缩" title="数据压缩" rel="1">
+                                    数据压缩
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#杂项" title="杂项" rel="1">
+                                    杂项
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据库" title="数据库" rel="1">
+                                    数据库
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Nosql" title="Nosql" rel="1">
+                                    Nosql
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#分布式" title="分布式" rel="3">
+                                    分布式
+                                </a>
+
+
+                    </div>
+                </section>
+
+
+                <!-- Friends Blog -->
+
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                        <li><a href="https://github.com/zhouzhou-96">周老师</a></li>
+
+                        <li><a href="https://apple.com">Apple</a></li>
+
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+
+
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/xiao-chao-99-1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3534383631?refer_flag=1001030101_&is_all=1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+
+
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=100010723339047">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="https://github.com/zhanghaichao520">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 越努力越幸运 2026
+                    <br>
+                    Theme on <a href="https://github.com/zhanghaichao520/zhanghaichao520.github.io">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhanghaichao520&repo=zhanghaichao520.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/legacy/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/legacy/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/legacy/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-124605651-1';
+    var _gaDomain = 'auto';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'b68d6f7a2f0c5e20399f5f453d3e32ec';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/legacy/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

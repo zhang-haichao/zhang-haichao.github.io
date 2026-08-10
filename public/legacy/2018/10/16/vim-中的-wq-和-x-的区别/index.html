@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="java工程师，热爱技术。很高兴能在这里与你分享我对技术和生活的思考。">
+    <meta name="keywords"  content="张海超, 张海超的个人博客, 张海超的博客, 后端, 后端开发, 后端博客, java, python, android">
+    <meta name="theme-color" content="#000000">
+
+    <title>vim 中的＂:wq＂和＂:x＂的区别 - 张海超的个人博客</title>
+
+    <!-- Web App Manifest -->
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/legacy/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/legacy/img/apple-touch-icon.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://zhanghaichao520.github.io/2018/10/16/vim-%E4%B8%AD%E7%9A%84-wq-%E5%92%8C-x-%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/legacy/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/legacy/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/legacy/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/legacy/">越努力越幸运</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/legacy/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/about/">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/tags/">Tags</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/vip-parse/">Vip</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from
+     * $toggle/$collapse will break global delegation.
+     *
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/legacy/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/legacy/img/post-bg-e2e-ux.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/legacy/img/post-bg-e2e-ux.jpg')
+    }
+
+
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+
+                        <a class="tag" href="/legacy/tags/#Linux" title="Linux">Linux</a>
+
+                    </div>
+                    <h1>vim 中的＂:wq＂和＂:x＂的区别</h1>
+
+
+                    <h2 class="subheading">vim命令应用</h2>
+
+                    <span class="meta">Posted by zhanghaichao on October 16, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>“:x” 和 “:wq” 的区别如下：</p>
+
+<ol>
+  <li>:wq 强制性写入文件并退出（存盘并退出 write and quite）。即使文件没有被修改也强制写入，并更新文件的修改时间。</li>
+  <li>:x 写入文件并退出。仅当文件被修改时才写入，并更新文件修改时间；否则不会更新文件修改时间。</li>
+</ol>
+
+<p>这两者一般情况下没什么不一样，但是在编程方面，对编辑源文件可能会产生重要影响。因为文件即使没有修改，”:wq” 强制更新文件的修改时间，</p>
+
+<p>这样会让 make 编译整个项目时以为文件被修改过了，然后就得重新编译链接生成可执行文件。这可能会产生让人误解的后果，当然也产生了不必要的系统资源花销。不过像是版本控制的软件一般首选还是比较文件内容，修改时间一般不加以理会。</p>
+
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+
+                    <li class="previous">
+                        <a href="/legacy/2018/09/19/Linux%E4%B8%8B%E6%96%87%E4%BB%B6%E5%8A%A0%E5%AF%86%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B/" data-toggle="tooltip" data-placement="top" title="Linux下文件加密压缩和解压">
+                        Previous<br>
+                        <span>Linux下文件加密压缩和解压</span>
+                        </a>
+                    </li>
+
+
+                    <li class="next">
+                        <a href="/legacy/2018/11/20/FLink-DataStream/" data-toggle="tooltip" data-placement="top" title="FLink DataStream">
+                        Next<br>
+                        <span>FLink DataStream</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+
+                <!-- 引入Gitalk评论插件  -->
+
+
+
+
+
+                <!-- Gitalk end -->
+
+
+
+            </div>
+
+    <!-- Side Catalog Container -->
+
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/legacy/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+
+
+                                <a href="/legacy/tags/#markdown" title="markdown" rel="1">
+                                    markdown
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#标记语言" title="标记语言" rel="1">
+                                    标记语言
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#图像处理" title="图像处理" rel="2">
+                                    图像处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#算法" title="算法" rel="3">
+                                    算法
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#论文" title="论文" rel="5">
+                                    论文
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Java" title="Java" rel="4">
+                                    Java
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#springboot" title="springboot" rel="1">
+                                    springboot
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Json" title="Json" rel="1">
+                                    Json
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Linux" title="Linux" rel="4">
+                                    Linux
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#小工具" title="小工具" rel="2">
+                                    小工具
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Hadoop" title="Hadoop" rel="1">
+                                    Hadoop
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#大数据" title="大数据" rel="1">
+                                    大数据
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#flink" title="flink" rel="1">
+                                    flink
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#流处理" title="流处理" rel="1">
+                                    流处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据压缩" title="数据压缩" rel="1">
+                                    数据压缩
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#杂项" title="杂项" rel="1">
+                                    杂项
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据库" title="数据库" rel="1">
+                                    数据库
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Nosql" title="Nosql" rel="1">
+                                    Nosql
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#分布式" title="分布式" rel="3">
+                                    分布式
+                                </a>
+
+
+                    </div>
+                </section>
+
+
+                <!-- Friends Blog -->
+
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                        <li><a href="https://github.com/zhouzhou-96">周老师</a></li>
+
+                        <li><a href="https://apple.com">Apple</a></li>
+
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+
+
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/xiao-chao-99-1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3534383631?refer_flag=1001030101_&is_all=1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+
+
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=100010723339047">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="https://github.com/zhanghaichao520">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 越努力越幸运 2026
+                    <br>
+                    Theme on <a href="https://github.com/zhanghaichao520/zhanghaichao520.github.io">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhanghaichao520&repo=zhanghaichao520.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/legacy/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/legacy/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/legacy/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-124605651-1';
+    var _gaDomain = 'auto';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'b68d6f7a2f0c5e20399f5f453d3e32ec';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/legacy/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

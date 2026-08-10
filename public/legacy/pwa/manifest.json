@@ -1,0 +1,19 @@
+{
+  "name": "张海超的个人博客",
+  "short_name": "张海超的个人博客",
+  "description": "A personal blog by engineer",
+  "icons": [{
+    "src": "icons/pwa_icon_128.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  }, {
+    "src": "icons/pwa_icon_512.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "background_color": "#fff",
+  "theme_color": "#000",
+  "start_url": "/legacy/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

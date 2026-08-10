@@ -15,5 +15,6 @@ This file records the public sources used to seed publication metadata and insti
 - East China Jiaotong University identifier: user-provided local asset from `PAPER_FIGURES/ecjtu.png`, published as `public/images/institutions/ecjtu-user.png`.
 - Alibaba identifier: user-provided local asset from `PAPER_FIGURES/alilogo.png`, published as `public/images/institutions/alibaba-user.png`.
 - Dingfu Data company profile and archived logo: https://pitchhub.36kr.com/project/2316725606435333
+- Previous homepage archive: rendered pages from https://zhang-haichao.github.io/ and static assets from remote commit `1dc77dd` on the former `master` branch; Gitalk credential configuration is intentionally excluded.
 
 The local copies are used only to identify the corresponding education or employment record. The ECJTU and Alibaba files are the user-provided versions requested for this homepage. All trademarks remain the property of their owners; the page does not imply endorsement. The Dingfu Data website listed by its company profile (`http://www.dingfudata.com/`) was unavailable during implementation, so the exact-company 36Kr profile image is retained as a documented archival fallback rather than presented as a current official download. If an employer-supplied original becomes available, replace that one file before publication.

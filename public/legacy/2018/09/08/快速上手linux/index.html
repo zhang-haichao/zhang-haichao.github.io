@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="java工程师，热爱技术。很高兴能在这里与你分享我对技术和生活的思考。">
+    <meta name="keywords"  content="张海超, 张海超的个人博客, 张海超的博客, 后端, 后端开发, 后端博客, java, python, android">
+    <meta name="theme-color" content="#000000">
+
+    <title>快速上手Linux - 张海超的个人博客</title>
+
+    <!-- Web App Manifest -->
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/legacy/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/legacy/img/apple-touch-icon.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://zhanghaichao520.github.io/2018/09/08/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8Blinux/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/legacy/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/legacy/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/legacy/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/legacy/">越努力越幸运</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/legacy/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/about/">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/tags/">Tags</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/vip-parse/">Vip</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from
+     * $toggle/$collapse will break global delegation.
+     *
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/legacy/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/legacy/img/post-bg-cook.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/legacy/img/post-bg-cook.jpg')
+    }
+
+
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+
+                        <a class="tag" href="/legacy/tags/#Linux" title="Linux">Linux</a>
+
+                    </div>
+                    <h1>快速上手Linux</h1>
+
+
+                    <h2 class="subheading">Linux学习记录</h2>
+
+                    <span class="meta">Posted by zhanghaichao on September 8, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="1ssh命令">1.SSH命令</h2>
+<blockquote>
+  <p>SSH是指Secure Shell,是一种安全的传输协议，Ubuntu客户端可以通过SSH访问远程服务器  <br />
+SSH分客户端openssh-client和openssh-server.<br />
+如果你只是想登陆别的机器的SSH只需要安装openssh-client（ubuntu有默认安装，如果没有则sudoapt-get install openssh-client），如果要使本机开放SSH服务就需要安装openssh-server。</p>
+</blockquote>
+
+<h4 id="11-ssh安装">1.1 ssh安装</h4>
+
+<p>客户端安装.  sudo apt-get install ssh  或者 sudo apt-get installopenssh-client</p>
+
+<p>安装服务端。
+        sudo apt-get install openssh-server</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>确认sshserver是否启动了：（或用“netstat -tlp”命令）ps -e</td>
+      <td>grep ssh</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>如果只有ssh-agent那ssh-server还没有启动，需要/etc/init.d/ssh start，如果看到sshd那说明ssh-server已经启动了。</p>
+
+<p>如果没有则可以这样启动：sudo/etc/init.d/ssh start</p>
+
+<h4 id="12-ssh服务命令">1.2 ssh服务命令</h4>
+<p>停止服务：sudo /etc/init.d/ssh stop</p>
+
+<p>启动服务：sudo /etc/init.d/ssh start</p>
+
+<p>重启服务：sudo /etc/init.d/sshresart</p>
+
+<p>断开连接：exit</p>
+
+<p>登录：sshroot@192.168.0.100</p>
+
+<h4 id="13-ssh登陆服务器">1.3 ssh登陆服务器</h4>
+<p>常用格式：ssh [-llogin_name] [-p port] [user@]hostname <br />
+例如
+        ssh -p 22 zhanghaichao@192.168.1.1</p>
+<h4 id="14-ssh-config">1.4 ssh config</h4>
+<ul>
+  <li>路径：~/.ssh/config</li>
+  <li>
+    <p>语法关键字
+<img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fv112aoaivj30tv0hfmxv.jpg" alt="" /></p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  touch config
+  vim config
+
+  host "zhanghaichao"
+  HostName 192.168.1.1
+  User root
+  Port 22
+
+  host "zhanghaichao2"
+  HostName 192.168.1.2
+  User root
+  Port 22
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>加入配置文件之后可以通过别名连接服务器。<br />
+如：ssh zhanghaichao</p>
+
+<h4 id="15-ssh免密登陆">1.5 ssh免密登陆</h4>
+<p>命令：ssh-keygen -t rsa.<br />
+可以不要指定加密方式：ssh-keygen</p>
+
+<p>生成的密钥在 ~/.ssh/  目录下 <br />
+使用 cat ~/.ssh/id_rsa.pub 查看公钥，并将其写入到服务器中</p>
+
+<p>写入方法： <br />
+登陆服务器，使用<code class="language-plaintext highlighter-rouge">vim ~/.ssh/authorized_keys</code>命令,将生成的公钥复制进去，并保存。</p>
+
+<p><strong>注意，如果如果写入之后还需要密码登陆，在客户端使用<code class="language-plaintext highlighter-rouge">ssh-add ~/.ssh/id_rsa</code> 将生成的私钥加载一下</strong></p>
+
+<h4 id="16-修改ssh端口">1.6 修改ssh端口</h4>
+
+<p>命令:<code class="language-plaintext highlighter-rouge">vim /etc/ssh/sshd_config</code>.<br />
+在文件中加入<code class="language-plaintext highlighter-rouge">Port 10086</code>.<br />
+使用 <code class="language-plaintext highlighter-rouge">service sshd restart</code>,重启服务生效。</p>
+
+<h2 id="2linux常用命令">2.Linux常用命令</h2>
+
+<h4 id="21-软件操作命令">2.1 软件操作命令</h4>
+<ul>
+  <li>软件包管理器： yum</li>
+  <li>安装软件：yum install xxx</li>
+  <li>卸载软件：yum remove xxx</li>
+  <li>搜索软件：yum search xxx</li>
+  <li>清理缓存：yun clean packages</li>
+  <li>列出已安装：yum list</li>
+  <li>软件包信息：yum info xxx</li>
+</ul>
+
+<h4 id="22-服务器硬件资源和硬盘操作">2.2 服务器硬件资源和硬盘操作</h4>
+<ul>
+  <li>内存：free -m</li>
+  <li>硬盘：df -h</li>
+  <li>负载：w/top</li>
+  <li>cpu个数和核数：cat /proc/cpuinfo</li>
+</ul>
+
+<h4 id="23-文件和文件夹操作命令">2.3 文件和文件夹操作命令</h4>
+<ul>
+  <li>Linux文件的目录结构
+    <ul>
+      <li>根目录 /</li>
+      <li>家目录 /home</li>
+      <li>临时目录 /tmp</li>
+      <li>配置目录 /etc</li>
+    </ul>
+  </li>
+  <li>
+    <p>文件基本操作
+ <img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fv12t2vhobj30vc0glgmf.jpg" alt="" />
+ <img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fv133cyihzj30v70fy74s.jpg" alt="" /></p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    cd /tmp
+
+    ls -al
+    ll
+
+    touch file.txt #创建文件
+    mkdir zhc_dir
+    mkdir -p zhc_dir/test #创建目录
+
+    rm file.txt #删除文件
+    rm -rf zhc_dir #删除目录
+
+    cp file1 /zhc_fir/file1 #复制
+
+    mv flie1 file2 #重命名或移动
+</code></pre></div>    </div>
+  </li>
+  <li>文本编辑vim
+    <ul>
+      <li>安装：yum install vim</li>
+      <li>一般模式：  <br />
+   esc进入该模式。 <br />
+   G光标移到行末尾， <br />
+   gg光标移到行首, <br />
+   dd删除行,数字加dd删除n行 <br />
+   u撤销删除 <br />
+   yy复制行，p粘贴</li>
+      <li>编辑模式：
+  一般模式输入i进入</li>
+      <li>命令行模式：
+  一般模式输入：进入</li>
+    </ul>
+  </li>
+  <li>
+    <p>文件权限421
+  <img src="https://ws3.sinaimg.cn/large/0069RVTdly1fv261f0bb5j30rt0dgjrh.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p>文件搜索，查找，读取
+ <img src="https://ws2.sinaimg.cn/large/0069RVTdgy1fv264r4mlyj30w10fvmy5.jpg" alt="" />
+ <img src="https://ws2.sinaimg.cn/large/0069RVTdgy1fv2659bvyej30v60fzq3p.jpg" alt="" /></p>
+
+    <ul>
+      <li>grep -n “findword” filename #查找文件中的字符</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>cat filename</td>
+              <td>wc -l #统计行数</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>grep “findword” filename</td>
+              <td>wc -l</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>find dirname -name “*.java “ #查找文件</li>
+      <li>find dirname -type f #f表示文件，d表示目录</li>
+      <li>find . -ctime -20 #20天内有修改的文件</li>
+      <li>find dirname -type f -mtime +7 #更改时间在7天以前的</li>
+      <li>find . -type f -perm 777 -exec ls -l {} \;</li>
+    </ul>
+  </li>
+  <li>
+    <p>文件压缩解压</p>
+
+    <ul>
+      <li>tar -cvf file.tar file # 创建压缩文件</li>
+      <li>tar -tf file.tar #显示压缩文件内容</li>
+      <li>tar -tvf file.tar #显示压缩文件详细内容</li>
+      <li>tar -xvf file.tar #解压缩文件内容</li>
+      <li>tar -czvf file.tar.gz file #gzip压缩</li>
+      <li>tar -xzvf file.tar #解压缩文件内容</li>
+      <li>指定解压目录：tar -zxvf file.tar.gz -C dirname</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="24-系统用户操作命令">2.4 系统用户操作命令</h4>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fvevq2g60jj311n0g70v1.jpg" alt="" />
+tips:</p>
+<ol>
+  <li>在root权限下，useradd只是创建了一个用户名，如 （useradd  +用户名 ），它并没有在/home目录下创建同名文件夹，也没有创建密码，因此利用这个用户登录系统，是登录不了的，为了避免这样的情况出现，可以用 （useradd -m +用户名）的方式创建，它会在/home目录下创建同名文件夹，然后利用（ passwd + 用户名）为指定的用户名设置密码。</li>
+  <li>
+    <p>可以直接利用adduser创建新用户（adduser +用户名）这样在/home目录下会自动创建同名文件夹</p>
+
+    <ul>
+      <li>useradd username</li>
+      <li>passwd username</li>
+      <li>userdel -r username</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="25-防火墙相关设置">2.5 防火墙相关设置</h4>
+<ul>
+  <li>安装：yum install firewalld</li>
+  <li>启动：service firewalld start</li>
+  <li>检查状态：service firewalld status</li>
+  <li>关闭禁用：service firewalld stop/disablecd ~</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>查找服务：ps -ef</td>
+          <td>grep firewall</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>查看版本：firewall-cmd –version</li>
+  <li>查看状态：firewall-cmd –state</li>
+  <li>查看区域：firewall-cmd –get-zones</li>
+  <li>区域详细信息：firewall-cmd –list-all-zone</li>
+  <li>列出服务：firewall-cmd –list-services</li>
+  <li>查询服务：firewall-cmd –query-service=ssh</li>
+  <li>删除服务：firewall-cmd –remove-service=ssh</li>
+  <li>添加服务：firewall-cmd –add-service=ssh</li>
+</ul>
+
+<h4 id="26-提权操作sudo和文件传输操作">2.6 提权操作sudo和文件传输操作</h4>
+<ul>
+  <li>visudo 允许普通用户提权</li>
+  <li>wget url</li>
+  <li>curl -o filename url</li>
+  <li>windows平台使用xshell连接服务器，文件传输使用（rz，sz）：yum install lrzsz</li>
+</ul>
+
+<h2 id="3scp命令">3.SCP命令</h2>
+<blockquote>
+  <p>scp [-1246BCpqrv] [-c cipher] [-F ssh_config] [-i identity_file] [-l limit] [-o ssh_option] [-P port] [-S program] [[user@]host1:]file1 … [[user@]host2:]file2. <br />
+DESCRIPTION :scp copies files between hosts on a network.</p>
+</blockquote>
+
+<p>利用scp传输文件</p>
+<h4 id="31-从服务器上下载文件">3.1 从服务器上下载文件</h4>
+<p>scp username@servername:/path/filename.  <br />
+  例如 scp zhanghaichao@192.168.0.101:/home/test.txt<br />
+  把192.168.0.101上的/home/test.txt的文件下载到当前目录</p>
+
+<h4 id="32-上传本地文件到服务器">3.2 上传本地文件到服务器</h4>
+<p>scp /path/filename username@servername:/path<br />
+  例如scp /home/test.txt    zhanghaichao@192.168.0.101:/home/test.txt  <br />
+  把本机/home/test.txt 目录下的test.txt文件上传到192.168.0.101这台服务器上的/home目录中</p>
+
+<h4 id="33-从服务器下载整个目录">3.3 从服务器下载整个目录</h4>
+<p>scp -r username@servername:remote_dir/ local_dir/
+  例如:scp -r zhanghaichao@192.168.0.101 /home/test  /home/</p>
+
+<h4 id="34-上传目录到服务器">3.4 上传目录到服务器</h4>
+<p>scp  -r local_dir username@servername:remote_dir
+  例如：scp -r test zhanghaichao@192.168.0.101:/home <br />
+  把当前目录下的test目录上传到服务器的/home目录</p>
+
+<h2 id="4websever">4.WebSever</h2>
+
+<h4 id="41-apache">4.1 Apache</h4>
+
+<ul>
+  <li>
+    <p>安装与启动
+<img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fvexmknikij30vd0gjab1.jpg" alt="" /></p>
+
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>ps -ef</td>
+              <td>grep httpd</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>netstat -anpl</td>
+              <td>grep ‘http’</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>配置虚拟主机</p>
+
+    <ul>
+      <li>
+        <p>vim /etc/httpd/conf/httpd.conf</p>
+
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;VirtualHost *:80&gt;
+   ServerName www.xxx.xxx
+   DocumentRoot /data/www
+   &lt;Directory "/data/www"&gt;
+       Options Indexes FollowSymLinks
+       AllowOverride None
+       Require all granted
+
+       &lt;!-配置伪静态，先在httpd.conf中加载rewrite模块，所有后缀为htmp都指向index.html--&gt;
+       &lt;IfModule mod_rewrite.c&gt;
+           RewriteEngine On
+           RewriteRule ^(.*).htmp$ index.html
+       &lt;/IfModule&gt;
+   &lt;/Directory&gt;
+
+   &lt;/VirtualHost&gt;
+
+</code></pre></div>        </div>
+      </li>
+      <li>services httpd restart</li>
+      <li>mkdir -p /data/www</li>
+      <li>cd /data/www</li>
+      <li>vim index.html</li>
+      <li>sudo setenforce 0</li>
+    </ul>
+
+    <p><a href="https://www.jb51.net/article/115272.htm">详解Mac自带apache配置</a></p>
+  </li>
+</ul>
+
+<h4 id="42-nginx">4.2 Nginx</h4>
+
+<ul>
+  <li>
+    <p>安装与启动
+<img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fvfsavphu1j30uf0ftjsa.jpg" alt="" />
+<img src="https://ws3.sinaimg.cn/large/006tNbRwly1fvfsh1oufuj310n0dlwfn.jpg" alt="" /></p>
+  </li>
+  <li>伪静态  nginx.conf</li>
+  <li>日志格式配置 log_format</li>
+  <li>反向代理和负载均衡
+<img src="https://ws2.sinaimg.cn/large/006tNbRwly1fvg1rxry5mj30vw0g2772.jpg" alt="" /></li>
+</ul>
+
+<p><a href="https://www.cnblogs.com/tandaxia/p/8810648.html">Mac安装nginx配置过程</a></p>
+
+<h2 id="5数据库服务">5.数据库服务</h2>
+
+<h4 id="51-mysql安装及链接">5.1 Mysql安装及链接</h4>
+
+<ul>
+  <li>yum remove mariadb   #卸载mariadb（mysql开源实现）</li>
+  <li>yum install mysql-community-server #安装mysql</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>cat /var/log/mysqld.log</td>
+          <td>grep ‘password’ #查找原始密码</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>mysql -uroot -p  #登陆mysql</li>
+  <li>set global validate_password_policy=0; #关闭密码安全策略</li>
+  <li>set global validate_password_length=1; #设置密码长度</li>
+</ul>
+
+<h4 id="52-远程链接">5.2 远程链接</h4>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fvg8cop5i2j30k908hgmi.jpg" alt="" /></p>
+
+<h4 id="53-开启genelog">5.3 开启genelog</h4>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fvg8e24d0lj30ll0bjdho.jpg" alt="" /></p>
+
+<ul>
+  <li>set global general_log_file=”/tmp/mysql.log”; #设置日志路径</li>
+  <li>set global general_log=on;    #开启日志</li>
+  <li>set global general_log=on; #关闭日志</li>
+</ul>
+
+<h4 id="54-新建用户">5.4 新建用户</h4>
+
+<ul>
+  <li>create user ‘zhc’@’%’ identified by ‘123456’; #新建用户</li>
+  <li>grant all privileges on <em>.</em> to ‘zhc’@’%’ with grant option; #赋予用户所有的权限</li>
+  <li>grant select,insert,update,delete privileges on <em>.</em> to ‘zhc’@’%’ with grant option; #赋予用户增删改查权限</li>
+  <li>revoke all privileges on <em>.</em> From zhc; #移除用户所有全乡</li>
+  <li>flush privileges; #刷新权限，相当于重启服务</li>
+  <li>mysql -uzhc -p123456 #登陆新建的用户</li>
+</ul>
+
+<h4 id="55-找回mysql密码">5.5 找回mysql密码</h4>
+
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fvg8425jbcj30ou04saai.jpg" alt="" /></p>
+
+<h2 id="6缓存服务">6.缓存服务</h2>
+
+<h4 id="61-memcached基本操作">6.1 Memcached基本操作</h4>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fvgxtcd9u4j30v40fjdge.jpg" alt="" /></p>
+
+<h4 id="62-redis基本操作">6.2 Redis基本操作</h4>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fvgxutkzzgj30uk0fhq3u.jpg" alt="" /></p>
+
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fvgyjdqm11j30m90f8abt.jpg" alt="" /></p>
+
+<p>源码编译安装方法：<br />
+    1. 从redis官网下载源码包，解压redis.tar.gz <br />
+    2. 安装所需依赖：gcc <br />
+    3. 进入解压目录，执行make（make malloc=libc）<br />
+    4. sudo make install</p>
+
+<p>redis命令：<br />
+    1. 启动redis服务后使用 ./redis-cli命令启动客户端  <br />
+    2. set key value #设置redis缓存   <br />
+    3. get key #得到key对应的value <br />
+    4. del key #删除这个键值对 <br />
+    5. LPUSH queuename value1   #队列存储。<br />
+    6. RPUSH queuename value2<br />
+    7. LPUSH queuename value3  <br />
+    8. LRANGE queuename 0 3    #查询队列。</p>
+
+<h2 id="7git版本管理工具">7.GIT版本管理工具</h2>
+
+<ol>
+  <li>安装：
+ sudo yum install git</li>
+  <li>生成ssh_key:见第一章第五小节</li>
+  <li>基本使用：<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">廖雪峰git</a></li>
+  <li>命令自动补全：
+    <ul>
+      <li>git clone git@github.com:git/git.git #下载github中的一个项目</li>
+      <li>sudo cp contrib/completion/git-completion.bash /etc/bash_completion.d/ #将项目中的一个脚本复制到指定目录</li>
+      <li>source /etc/bash_completion./git-completion.bash #加载bash脚本</li>
+      <li>编辑 ~/.bash_profile 加入下面语句自动加载脚本.<br />
+if[-f /etc/bash_completion./git-completion.bash];then  <br />
+      source /etc/bash_completion./git-completion.bash  <br />
+fi</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="8python运行环境配置">8.Python运行环境配置</h2>
+
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwly1fw8x4aesnpj30iq0d575a.jpg" alt="" /></p>
+
+<h2 id="9常用服务运维">9.常用服务（运维）</h2>
+
+<ol>
+  <li>
+    <p>定时任务：crontab <br />
+ crontab -e <br />
+ 五个星号按照时间排序为，分，时，天，月，周，后面接脚本命令</p>
+  </li>
+  <li>更新系统时间：ntpdate<br />
+ntpdate cn.pool.ntp.org</li>
+  <li>日志分割：logrotate</li>
+  <li>进程监控管理：Supervisor</li>
+  <li>监控神器：zabbix</li>
+</ol>
+
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+
+                    <li class="previous">
+                        <a href="/legacy/2018/09/08/Linux%E4%B8%8B%E7%BB%9F%E8%AE%A1%E4%BB%A3%E7%A0%81%E8%A1%8C%E6%95%B0/" data-toggle="tooltip" data-placement="top" title="Linux下统计代码行数">
+                        Previous<br>
+                        <span>Linux下统计代码行数</span>
+                        </a>
+                    </li>
+
+
+                    <li class="next">
+                        <a href="/legacy/2018/09/10/Hadoop%E5%85%A5%E9%97%A8/" data-toggle="tooltip" data-placement="top" title="Hadoop入门">
+                        Next<br>
+                        <span>Hadoop入门</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+
+                <!-- 引入Gitalk评论插件  -->
+
+
+
+
+
+                <!-- Gitalk end -->
+
+
+
+            </div>
+
+    <!-- Side Catalog Container -->
+
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/legacy/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+
+
+                                <a href="/legacy/tags/#markdown" title="markdown" rel="1">
+                                    markdown
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#标记语言" title="标记语言" rel="1">
+                                    标记语言
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#图像处理" title="图像处理" rel="2">
+                                    图像处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#算法" title="算法" rel="3">
+                                    算法
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#论文" title="论文" rel="5">
+                                    论文
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Java" title="Java" rel="4">
+                                    Java
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#springboot" title="springboot" rel="1">
+                                    springboot
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Json" title="Json" rel="1">
+                                    Json
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Linux" title="Linux" rel="4">
+                                    Linux
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#小工具" title="小工具" rel="2">
+                                    小工具
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Hadoop" title="Hadoop" rel="1">
+                                    Hadoop
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#大数据" title="大数据" rel="1">
+                                    大数据
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#flink" title="flink" rel="1">
+                                    flink
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#流处理" title="流处理" rel="1">
+                                    流处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据压缩" title="数据压缩" rel="1">
+                                    数据压缩
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#杂项" title="杂项" rel="1">
+                                    杂项
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据库" title="数据库" rel="1">
+                                    数据库
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Nosql" title="Nosql" rel="1">
+                                    Nosql
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#分布式" title="分布式" rel="3">
+                                    分布式
+                                </a>
+
+
+                    </div>
+                </section>
+
+
+                <!-- Friends Blog -->
+
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                        <li><a href="https://github.com/zhouzhou-96">周老师</a></li>
+
+                        <li><a href="https://apple.com">Apple</a></li>
+
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+
+
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/xiao-chao-99-1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3534383631?refer_flag=1001030101_&is_all=1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+
+
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=100010723339047">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="https://github.com/zhanghaichao520">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 越努力越幸运 2026
+                    <br>
+                    Theme on <a href="https://github.com/zhanghaichao520/zhanghaichao520.github.io">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhanghaichao520&repo=zhanghaichao520.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/legacy/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/legacy/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/legacy/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-124605651-1';
+    var _gaDomain = 'auto';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'b68d6f7a2f0c5e20399f5f453d3e32ec';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/legacy/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

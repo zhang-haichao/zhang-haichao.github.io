@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="java工程师，热爱技术。很高兴能在这里与你分享我对技术和生活的思考。">
+    <meta name="keywords"  content="张海超, 张海超的个人博客, 张海超的博客, 后端, 后端开发, 后端博客, java, python, android">
+    <meta name="theme-color" content="#000000">
+
+    <title>HBASE概述 - 张海超的个人博客</title>
+
+    <!-- Web App Manifest -->
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/legacy/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/legacy/img/apple-touch-icon.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://zhanghaichao520.github.io/2018/11/30/HBASE%E6%A6%82%E8%BF%B0/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/legacy/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/legacy/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/legacy/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/legacy/">越努力越幸运</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/legacy/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/about/">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/tags/">Tags</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/vip-parse/">Vip</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from
+     * $toggle/$collapse will break global delegation.
+     *
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/legacy/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/legacy/img/post-bg-e2e-ux.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/legacy/img/post-bg-e2e-ux.jpg')
+    }
+
+
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+
+                        <a class="tag" href="/legacy/tags/#数据库" title="数据库">数据库</a>
+
+                        <a class="tag" href="/legacy/tags/#Java" title="Java">Java</a>
+
+                        <a class="tag" href="/legacy/tags/#Nosql" title="Nosql">Nosql</a>
+
+                    </div>
+                    <h1>HBASE概述</h1>
+
+
+                    <h2 class="subheading">在Java使用HBASE</h2>
+
+                    <span class="meta">Posted by zhanghaichao on November 30, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h4 id="物理视图">物理视图</h4>
+
+<p><img src="https://cdn.nlark.com/lark/0/2018/png/164731/1543323677139-6a36330a-22b4-43cd-ab2a-c1b708006a11.png" alt="image.png" /></p>
+
+<h4 id="java-api">Java API</h4>
+<ol>
+  <li>configuration
+HBaseConfiguration是每一个hbase client都会使用到的对象，它代表的是HBase配置信息。它有两种构造方式：</li>
+</ol>
+
+<p>public HBaseConfiguration()
+public HBaseConfiguration(final Configuration c)</p>
+
+<p>默认的构造方式会尝试从hbase-default.xml和hbase-site.xml中读取配置。如果classpath没有这两个文件，就需要你自己设置配置。</p>
+
+<p>Configuration HBASE_CONFIG = new Configuration();
+HBASE_CONFIG.set(“hbase.zookeeper.quorum”, “zkServer”);
+HBASE_CONFIG.set(“hbase.zookeeper.property.clientPort”, “2181″);
+HBaseConfiguration cfg = new HBaseConfiguration(HBASE_CONFIG);</p>
+
+<ol>
+  <li>创建表</li>
+</ol>
+
+<p>创建表是通过HBaseAdmin对象来操作的。HBaseAdmin负责表的META信息处理。HBaseAdmin提供了createTable这个方法：</p>
+
+<p>public void createTable(HTableDescriptor desc)</p>
+
+<p>HTableDescriptor 代表的是表的schema, 提供的方法中比较有用的有</p>
+
+<p>setMaxFileSize，指定最大的region size</p>
+
+<p>setMemStoreFlushSize 指定memstore flush到HDFS上的文件大小</p>
+
+<p>增加family通过 addFamily方法</p>
+
+<p>public void addFamily(final HColumnDescriptor family)</p>
+
+<p>HColumnDescriptor 代表的是column的schema，提供的方法比较常用的有</p>
+
+<p>setTimeToLive:指定最大的TTL,单位是ms,过期数据会被自动删除。</p>
+
+<p>setInMemory:指定是否放在内存中，对小表有用，可用于提高效率。默认关闭</p>
+
+<p>setBloomFilter:指定是否使用BloomFilter,可提高随机查询效率。默认关闭</p>
+
+<p>setCompressionType:设定数据压缩类型。默认无压缩。</p>
+
+<p>setMaxVersions:指定数据最大保存的版本个数。默认为3。</p>
+
+<p>创建了4个family的表：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HBaseAdmin hAdmin = new HBaseAdmin(hbaseConfig);
+HTableDescriptor t = new HTableDescriptor(tableName);
+t.addFamily(new HColumnDescriptor(“f1″));
+t.addFamily(new HColumnDescriptor(“f2″));
+t.addFamily(new HColumnDescriptor(“f3″));
+t.addFamily(new HColumnDescriptor(“f4″));
+hAdmin.createTable(t);
+</code></pre></div></div>
+
+<ol>
+  <li>删除表</li>
+</ol>
+
+<p>删除表也是通过HBaseAdmin来操作，删除表之前首先要disable表。这是一个非常耗时的操作，所以不建议频繁删除表。</p>
+
+<p>disableTable和deleteTable分别用来disable和delete表。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HBaseAdmin hAdmin = new HBaseAdmin(hbaseConfig);
+
+if (hAdmin.tableExists(tableName)) {
+
+       hAdmin.disableTable(tableName);
+
+       hAdmin.deleteTable(tableName);
+
+}
+</code></pre></div></div>
+
+<ol>
+  <li>查询数据</li>
+</ol>
+
+<ul>
+  <li>查询分为单条随机查询和批量查询。</li>
+</ul>
+
+<p>单条查询是通过rowkey在table中查询某一行的数据。HTable提供了get方法来完成单条查询。</p>
+
+<p>批量查询是通过制定一段rowkey的范围来查询。HTable提供了个getScanner方法来完成批量查询。</p>
+
+<p>public Result get(final Get get)</p>
+
+<p>public ResultScanner getScanner(final Scan scan)</p>
+
+<p>Get对象包含了一个Get查询需要的信息。它的构造方法有两种：</p>
+
+<p>public Get(byte [] row)</p>
+
+<p>public Get(byte [] row, RowLock rowLock)</p>
+
+<p>Rowlock是为了保证读写的原子性，你可以传递一个已经存在Rowlock，否则HBase会自动生成一个新的rowlock。</p>
+
+<p>Scan对象提供了默认构造函数，一般使用默认构造函数。</p>
+
+<ul>
+  <li>Get/Scan的常用方法有：</li>
+</ul>
+
+<p>addFamily/addColumn:指定需要的family或者column,如果没有调用任何addFamily或者Column,会返回所有的columns.</p>
+
+<p>setMaxVersions:指定最大的版本个数。如果不带任何参数调用setMaxVersions,表示取所有的版本。如果不掉用setMaxVersions,只会取到最新的版本。</p>
+
+<p>setTimeRange:指定最大的时间戳和最小的时间戳，只有在此范围内的cell才能被获取。</p>
+
+<p>setTimeStamp:指定时间戳。</p>
+
+<p>setFilter:指定Filter来过滤掉不需要的信息</p>
+
+<ul>
+  <li>Scan特有的方法：</li>
+</ul>
+
+<p>setStartRow:指定开始的行。如果不调用，则从表头开始。</p>
+
+<p>setStopRow:指定结束的行（不含此行）。</p>
+
+<p>setBatch:指定最多返回的Cell数目。用于防止一行中有过多的数据，导致OutofMemory错误。</p>
+
+<p>ResultScanner是Result的一个容器，每次调用ResultScanner的next方法，会返回Result.</p>
+
+<p>public Result next() throws IOException;</p>
+
+<p>public Result [] next(int nbRows) throws IOException;</p>
+
+<p>Result代表是一行的数据。常用方法有：</p>
+
+<p>getRow:返回rowkey</p>
+
+<p>raw:返回所有的key value数组。</p>
+
+<p>getValue:按照column来获取cell的值</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Scan s = new Scan();
+
+s.setMaxVersions();
+
+ResultScanner ss = table.getScanner(s);
+
+for(Result r:ss){
+
+    System.out.println(new String(r.getRow()));
+
+    for(KeyValue kv:r.raw()){
+
+       System.out.println(new String(kv.getColumn()));
+
+    }
+
+}
+</code></pre></div></div>
+
+<ol>
+  <li>插入数据</li>
+</ol>
+
+<p>HTable通过put方法来插入数据。</p>
+
+<p>public void put(final Put put) throws IOException</p>
+
+<p>public void put(final List puts) throws IOException</p>
+
+<p>可以传递单个批Put对象或者List put对象来分别实现单条插入和批量插入。</p>
+
+<p>Put提供了3种构造方式：</p>
+
+<p>public Put(byte [] row)</p>
+
+<p>public Put(byte [] row, RowLock rowLock)</p>
+
+<p>public Put(Put putToCopy)</p>
+
+<ul>
+  <li>Put常用的方法有：</li>
+</ul>
+
+<p>add:增加一个Cell</p>
+
+<p>setTimeStamp:指定所有cell默认的timestamp,如果一个Cell没有指定timestamp,就会用到这个值。如果没有调用，HBase会将当前时间作为未指定timestamp的cell的timestamp.</p>
+
+<p>setWriteToWAL: WAL是Write Ahead Log的缩写，指的是HBase在插入操作前是否写Log。默认是打开，关掉会提高性能，但是如果系统出现故障(负责插入的Region Server挂掉)，数据可能会丢失。</p>
+
+<p>另外HTable也有两个方法也会影响插入的性能</p>
+
+<p>setAutoFlash: AutoFlush指的是在每次调用HBase的Put操作，是否提交到HBase Server。默认是true,每次会提交。如果此时是单条插入，就会有更多的IO,从而降低性能.</p>
+
+<p>setWriteBufferSize: Write Buffer Size在AutoFlush为false的时候起作用，默认是2MB,也就是当插入数据超过2MB,就会自动提交到Server</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> HTable table = new HTable(hbaseConfig, tableName);
+
+table.setAutoFlush(autoFlush);
+
+List lp = new ArrayList();
+
+int count = 10000;
+
+byte[] buffer = new byte[1024];
+
+Random r = new Random();
+
+for (int i = 1; i &lt;= count; ++i) {
+
+       Put p = new Put(String.format(“row%09d”,i).getBytes());
+
+       r.nextBytes(buffer);
+
+       p.add(“f1″.getBytes(), null, buffer);
+
+       p.add(“f2″.getBytes(), null, buffer);
+
+       p.add(“f3″.getBytes(), null, buffer);
+
+       p.add(“f4″.getBytes(), null, buffer);
+
+       p.setWriteToWAL(wal);
+
+       lp.add(p);
+
+       if(i%1000==0){
+
+           table.put(lp);
+
+           lp.clear();
+
+       }
+
+    }
+</code></pre></div></div>
+<ol>
+  <li>删除数据
+HTable 通过delete方法来删除数据。
+public void delete(final Delete delete)</li>
+</ol>
+
+<ul>
+  <li>Delete构造方法有：</li>
+</ul>
+
+<p>public Delete(byte [] row)</p>
+
+<p>public Delete(byte [] row, long timestamp, RowLock rowLock)</p>
+
+<p>public Delete(final Delete d)</p>
+
+<ul>
+  <li>Delete常用方法有</li>
+</ul>
+
+<p>deleteFamily/deleteColumns:指定要删除的family或者column的数据。如果不调用任何这样的方法，将会删除整行。</p>
+
+<p>注意：如果某个Cell的timestamp高于当前时间，这个Cell将不会被删除，仍然可以查出来。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  HTable table = new HTable(hbaseConfig, “mytest”);
+
+Delete d = new Delete(“row1″.getBytes());
+
+table.delete(d)
+</code></pre></div></div>
+
+<p>参考资料：https://www.cnblogs.com/tiantianbyconan/p/3557571.html。</p>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+
+                    <li class="previous">
+                        <a href="/legacy/2018/11/20/qps%E8%AE%A1%E7%AE%97/" data-toggle="tooltip" data-placement="top" title="qps计算">
+                        Previous<br>
+                        <span>qps计算</span>
+                        </a>
+                    </li>
+
+
+                    <li class="next">
+                        <a href="/legacy/2018/11/30/%E5%88%86%E5%B8%83%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6MapReduce/" data-toggle="tooltip" data-placement="top" title="分布式处理框架MapReduce">
+                        Next<br>
+                        <span>分布式处理框架MapReduce</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+
+                <!-- 引入Gitalk评论插件  -->
+
+
+
+
+
+                <!-- Gitalk end -->
+
+
+
+            </div>
+
+    <!-- Side Catalog Container -->
+
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/legacy/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+
+
+                                <a href="/legacy/tags/#markdown" title="markdown" rel="1">
+                                    markdown
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#标记语言" title="标记语言" rel="1">
+                                    标记语言
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#图像处理" title="图像处理" rel="2">
+                                    图像处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#算法" title="算法" rel="3">
+                                    算法
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#论文" title="论文" rel="5">
+                                    论文
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Java" title="Java" rel="4">
+                                    Java
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#springboot" title="springboot" rel="1">
+                                    springboot
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Json" title="Json" rel="1">
+                                    Json
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Linux" title="Linux" rel="4">
+                                    Linux
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#小工具" title="小工具" rel="2">
+                                    小工具
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Hadoop" title="Hadoop" rel="1">
+                                    Hadoop
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#大数据" title="大数据" rel="1">
+                                    大数据
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#flink" title="flink" rel="1">
+                                    flink
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#流处理" title="流处理" rel="1">
+                                    流处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据压缩" title="数据压缩" rel="1">
+                                    数据压缩
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#杂项" title="杂项" rel="1">
+                                    杂项
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据库" title="数据库" rel="1">
+                                    数据库
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Nosql" title="Nosql" rel="1">
+                                    Nosql
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#分布式" title="分布式" rel="3">
+                                    分布式
+                                </a>
+
+
+                    </div>
+                </section>
+
+
+                <!-- Friends Blog -->
+
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                        <li><a href="https://github.com/zhouzhou-96">周老师</a></li>
+
+                        <li><a href="https://apple.com">Apple</a></li>
+
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+
+
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/xiao-chao-99-1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3534383631?refer_flag=1001030101_&is_all=1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+
+
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=100010723339047">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="https://github.com/zhanghaichao520">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 越努力越幸运 2026
+                    <br>
+                    Theme on <a href="https://github.com/zhanghaichao520/zhanghaichao520.github.io">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhanghaichao520&repo=zhanghaichao520.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/legacy/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/legacy/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/legacy/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-124605651-1';
+    var _gaDomain = 'auto';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'b68d6f7a2f0c5e20399f5f453d3e32ec';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/legacy/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

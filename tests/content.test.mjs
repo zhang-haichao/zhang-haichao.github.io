@@ -101,3 +101,15 @@ test('experience and education follows news before publications', async () => {
   assert.ok(journeyPosition > newsPosition);
   assert.ok(publicationsPosition > journeyPosition);
 });
+
+test('legacy homepage is archived at an unlisted noindex path without old comment credentials', async () => {
+  const homepage = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+  const legacy = await readFile(new URL('public/legacy/index.html', root), 'utf8');
+  const robots = await readFile(new URL('public/robots.txt', root), 'utf8');
+
+  assert.match(legacy, /张海超的个人博客/);
+  assert.match(legacy, /name=["']robots["'][^>]+noindex/i);
+  assert.doesNotMatch(legacy, /clientSecret|new\s+Gitalk/i);
+  assert.match(robots, /Disallow:\s*\/legacy\//i);
+  assert.doesNotMatch(homepage, /href=["']\/legacy\//i);
+});

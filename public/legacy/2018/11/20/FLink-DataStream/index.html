@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="java工程师，热爱技术。很高兴能在这里与你分享我对技术和生活的思考。">
+    <meta name="keywords"  content="张海超, 张海超的个人博客, 张海超的博客, 后端, 后端开发, 后端博客, java, python, android">
+    <meta name="theme-color" content="#000000">
+
+    <title>FLink DataStream - 张海超的个人博客</title>
+
+    <!-- Web App Manifest -->
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/legacy/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/legacy/img/apple-touch-icon.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://zhanghaichao520.github.io/2018/11/20/FLink-DataStream/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/legacy/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/legacy/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/legacy/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/legacy/">越努力越幸运</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/legacy/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/about/">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/tags/">Tags</a>
+                    </li>
+
+                    <li>
+                        <a href="/legacy/vip-parse/">Vip</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from
+     * $toggle/$collapse will break global delegation.
+     *
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/legacy/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/legacy/img/post-bg-e2e-ux.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/legacy/img/post-bg-e2e-ux.jpg')
+    }
+
+
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+
+                        <a class="tag" href="/legacy/tags/#Java" title="Java">Java</a>
+
+                        <a class="tag" href="/legacy/tags/#flink" title="flink">flink</a>
+
+                        <a class="tag" href="/legacy/tags/#流处理" title="流处理">流处理</a>
+
+                    </div>
+                    <h1>FLink DataStream</h1>
+
+
+                    <h2 class="subheading">在Java中使用flink流处理</h2>
+
+                    <span class="meta">Posted by zhanghaichao on November 20, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h4 id="数据源data-sources">数据源（Data Sources）</h4>
+<ul>
+  <li>StreamExecutionEnvironment.addSource(sourceFunction)来创建数据源。</li>
+  <li>通过实现SourceFunction来编写自定义的非并行数据源</li>
+  <li>通过实现ParallelSourceFunction接口或继承RichParallelSourceFunction来编写自定义并行数据源。</li>
+</ul>
+
+<ol>
+  <li>
+    <p>基于文件
+readTextFile(path) // TextInputFormat - 以行读取方式读文件并返回字符串
+readFile(path) // 任意输入格式 - 按用输入格式的描述读取文件</p>
+  </li>
+  <li>
+    <p>基于Socket
+socketTextStream // 从socket读取，element可以通过分割符来分开</p>
+  </li>
+  <li>
+    <p>基于Collection
+fromCollection(Collection) - 从Java.util.Collection创建一个数据流。collection中所有的element都必须是同一类型的。
+fromCollection(Iterator, Class) - 从一个迭代器中创建一个数据流。class参数明确了迭代器返回的element的类型。
+fromElement(T …) - 从一个给定的对象序列创建一个数据流。所有对象都必须是同一类型的。
+fromParallelCollection(SplittableIterator, Class) - 从一个迭代器中创建一个并行数据流。class参数明确了迭代器返回的element的类型。
+generateSequence(from, to) - 从一个给定区间中生成一个并行数字序列。</p>
+  </li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Create a DataStream from a list of elements
+DataStream&lt;Integer&gt; myInts = env.fromElements(1, 2, 3, 4, 5);
+
+// Create a DataStream from any Java collection
+List&lt;Tuple2&lt;String, Integer&gt;&gt; data = ...
+DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; myTuples = env.fromCollection(data);
+
+// Create a DataStream from an Iterator
+Iterator&lt;Long&gt; longIt = ...
+DataStream&lt;Long&gt; myLongs = env.fromCollection(longIt, Long.class);
+</code></pre></div></div>
+<p>注意：当前Collection数据源需要实现Serializable接口的数据类型和迭代器。此外，Collection数据源无法并行执行（并行度=1）</p>
+
+<ol>
+  <li>自定义：
+addSource - 附上一个新的source方法。例如，通过调用addSource(new FlinkKafkaConsumer08&lt;&gt;(…))来从Apache Kafka读取数据</li>
+</ol>
+
+<h4 id="data-sink">Data Sink</h4>
+<p>Data Sink消耗DataStream并将它们转发到文件、socket、外部系统或打印它们。
+Flink自带了许多内置的输出格式，封装为DataStream的operation中：</p>
+
+<ol>
+  <li>
+    <p>writeAsText() / TextOutputFormat
+以行字符串的方式写文件，字符串通过调用每个element的toString()方法获得。</p>
+  </li>
+  <li>
+    <p>writeAsCsv(…) / CsvOutputFormat
+以逗号分隔的值来把Tuple写入文件，行和域的分隔符是可以配置的。每个域的值是通过调用object的toString()方法获得的。</p>
+  </li>
+  <li>
+    <p>print() / printToErr()
+将每个element的toString()值打印在标准输出 / 标准错误流中。可以提供一个前缀（msg）作为输出的前缀，使得在不同print的调用可以互相区分。如果并行度大于1，输出也会以task的标识符（identifier）为产生的输出的前缀。</p>
+  </li>
+  <li>
+    <p>writeUsingOutputFormat() / FileOutputFormat
+自定义文件输出所用的方法和基类，支持自定义object到byte的转换。</p>
+  </li>
+  <li>
+    <p>writeToSocket
+依据SerializationSchema将element写到socket中。</p>
+  </li>
+  <li>
+    <p>addSink
+调用自定义sink方法，Flink自带连接到其他系统的connector（如Apache Kafka），这些connector都以sink方法的形式实现。</p>
+  </li>
+</ol>
+
+<p>7.迭代器 data sink</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Iterator&lt; Integer&gt; myOutput = DataStreamUtils.collect(stream);
+while (myOutput.hasNext()) {
+    System.out.println(myOutput.next());
+}
+</code></pre></div></div>
+<h4 id="datastream的transformation操作">DataStream的Transformation操作</h4>
+<ol>
+  <li>
+    <p>Map:
+DataStream → DataStream: 输入一个参数产生一个参数
+数据翻倍等操作: <code class="language-plaintext highlighter-rouge">dataStream.map { x =&gt; x * 2 }</code></p>
+  </li>
+  <li>
+    <p>FlatMap
+DataStream → DataStream: 输入一个参数，产生0个、1个或者多个输出.
+这个 flatmap 的功能是将句子中的单词拆分出来: <code class="language-plaintext highlighter-rouge">dataStream.flatMap { str =&gt; str.split(" ") }</code></p>
+  </li>
+  <li>
+    <p>Filter
+DataStream → DataStream: 结算每个元素的布尔值，并返回布尔值为true的元素.
+过滤出非0的元素: <code class="language-plaintext highlighter-rouge">dataStream.filter { _ != 0 }</code></p>
+  </li>
+  <li>KeyBy
+DataStream → KeyedStream: 逻辑地将一个流拆分成不相交的分区，每个分区包含具有相同key的元素. 在内部是以hash的形式实现的.
+数组和POJO不可以作为key
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dataStream.keyBy("someKey") // 通过 "someKey"进行分组
+dataStream.keyBy(0) // 通过Tuple的第一个元素进行分组
+dataStream.keyBy(new KeySelector())
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Reduce
+KeyedStream → DataStream: 一个分组数据流的滚动规约操作. 合并当前的元素和上次规约的结果，产生一个新的值.
+创建部分流的和: <code class="language-plaintext highlighter-rouge">keyedStream.reduce { _ + _ }</code></p>
+  </li>
+  <li>Fold
+KeyedStream → DataStream: 一个有初始值的分组数据流的滚动折叠操作. 合并当前元素和前一次折叠操作的结果，并产生一个新的值.
+下面的fold函数就是当我们输入一个 (1,2,3,4,5)的序列, 将会产生一下面的句子:”start-1”, “start-1-2”, “start-1-2-3”, …
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> val result: DataStream[String] =
+ keyedStream.fold("start")((str, i) =&gt; { str + "-" + i })
+</code></pre></div>    </div>
+  </li>
+  <li>Aggregations
+KeyedStream → DataStream: 分组数据流上的滚动聚合操作. min和minBy的区别是min返回的是一个最小值，而minBy返回的是其字段中包含最小值的元素(同样原理适用于max和maxBy)
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keyedStream.sum(0)
+keyedStream.sum("key")
+keyedStream.min(0)
+keyedStream.min("key")
+keyedStream.max(0)
+keyedStream.max("key")
+keyedStream.minBy(0)
+keyedStream.minBy("key")
+keyedStream.maxBy(0)
+keyedStream.maxBy("key")
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Window
+KeyedStream → WindowedStream: Windows 是在一个分区的 KeyedStreams中定义的. Windows 根据某些特性将每个key的数据进行分组
+一段时间内到达的数据，并且按照tupple的第一个元素聚合：<code class="language-plaintext highlighter-rouge">dataStream.keyBy(0).window(TumblingEventTimeWindows.of(Time.seconds(5))) </code>
+<code class="language-plaintext highlighter-rouge">dataStream.keyBy(0)..timeWindow(Time.minutes(2L))</code></p>
+  </li>
+  <li>
+    <p>WindowAll
+DataStream → AllWindowedStream:这个操作在许多情况下并非并行操作. 所有的记录都会聚集到一个windowAll操作的任务中。
+一段时间内到达的所有数据： <code class="language-plaintext highlighter-rouge">dataStream.windowAll(TumblingEventTimeWindows.of(Time.seconds(5)))</code></p>
+  </li>
+  <li>
+    <p>Window Apply
+WindowedStream → DataStream、AllWindowedStream → DataStream 将一个通用函数作为一个整体传给window.
+<code class="language-plaintext highlighter-rouge">windowedStream.apply { WindowFunction }</code></p>
+  </li>
+  <li>
+    <p>Window Reduce
+WindowedStream → DataStream 给window赋一个reduce功能的函数，并返回一个规约的结果.参考5</p>
+  </li>
+  <li>
+    <p>Window Fold
+WindowedStream → DataStream 给窗口赋一个fold功能的函数，并返回一个fold后的结果. 参考6</p>
+  </li>
+  <li>
+    <p>Aggregations on windows
+WindowedStream → DataStream 对window的元素做聚合操作.参考7</p>
+  </li>
+  <li>
+    <p>Union
+DataStream → DataStream 对两个或者两个以上的DataStream进行union操作，产生一个包含所有DataStream元素的新DataStream.<strong><em>在2个DataStream中指定连接的key以及window下来运算。</em></strong>
+注意:如果你将一个DataStream跟它自己做union操作，在新的DataStream中，你将看到每一个元素都出现两次.
+<code class="language-plaintext highlighter-rouge">dataStream.union(otherStream1, otherStream2, ...)</code></p>
+  </li>
+  <li>Window Join
+DataStream,DataStream → DataStream <strong>根据一个给定的key和window</strong>对两个DataStream做join操作.筛选两个stream中符合指定条件等数据。
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dataStream.join(otherStream)
+.where(&lt;key selector&gt;).equalTo(&lt;key selector&gt;)
+.window(TumblingEventTimeWindows.of(Time.seconds(3)))
+.apply { ... }
+</code></pre></div>    </div>
+  </li>
+  <li>Window CoGroup
+DataStream,DataStream → DataStream 根据一个给定的key和window对两个DataStream做Cogroups操作.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dataStream.coGroup(otherStream)
+.where(0).equalTo(1)
+.window(TumblingEventTimeWindows.of(Time.seconds(3)))
+.apply (new CoGroupFunction () {...});
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p><a href="https://blog.csdn.net/lmalds/article/details/51743038">join可coGroup对比</a>
+apply方法中的参数类型不一样，join中提供的apply方法，参数是T1与T2这2种数据类型，对应到SQL中就是T1.* 与 T2.*的一行数据。而coGroup中提供的apply方法，参数是Iterator[T1]与Iterator[2]这2种集合，对应SQL中类似于Table[T1]与Table[T2]。</p>
+
+<p>基于这2种方式，如果我们的逻辑不仅仅是对一条record做处理，而是要与上一record或更复杂的判断与比较，甚至是对结果排序，那么join中的apply方法显得比较困难。</p>
+
+<ol>
+  <li>Connect
+DataStream,DataStream → ConnectedStreams: 连接两个保持他们类型的数据流.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DataStream&lt;Integer&gt; someStream = //...
+DataStream&lt;String&gt; otherStream = //...
+
+ConnectedStreams&lt;Integer, String&gt; connectedStreams = someStream.connect(otherStream);
+</code></pre></div></div>
+
+<p>CoMap, CoFlatMap
+ConnectedStreams → DataStream 作用于connected 数据流上，功能与map和flatMap一样</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>connectedStreams.map(new CoMapFunction&lt;Integer, String, Boolean&gt;() {
+　　@Override
+　　public Boolean map1(Integer value) {
+　　　　return true;
+　　}
+
+　　@Override
+　　public Boolean map2(String value) {
+　　　　return false;
+　　}
+});
+
+
+
+connectedStreams.flatMap(new CoFlatMapFunction&lt;Integer, String, String&gt;() {
+
+　　@Override
+　　public void flatMap1(Integer value, Collector&lt;String&gt; out) {
+　　　　out.collect(value.toString());
+　　}
+
+　　@Override
+　　public void flatMap2(String value, Collector&lt;String&gt; out) {
+　　　　for (String word: value.split(" ")) {
+　　　　　　out.collect(word);
+　　　　}
+　　}
+});
+</code></pre></div></div>
+
+<ol>
+  <li>Split
+DataStream → SplitStream: 根据某些特征把一个DataStream拆分成两个或者多个DataStream.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SplitStream&lt;Integer&gt; split = someDataStream.split(new OutputSelector&lt;Integer&gt;() {
+　　@Override
+　　public Iterable&lt;String&gt; select(Integer value) {
+　　　　List&lt;String&gt; output = new ArrayList&lt;String&gt;();
+　　　　if (value % 2 == 0) {
+　　　　　　output.add("even");
+　　　　}
+　　　　else {
+　　　　　　output.add("odd");
+　　　　}
+　　　　return output;
+　　}
+});
+
+</code></pre></div></div>
+
+<p>Select
+SplitStream -&gt; DataStream
+从SplitStream中选择1个或多个stream</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SplitStream&lt;Integer&gt; split;
+DataStream&lt;Integer&gt; even = split.select("even");
+DataStream&lt;Integer&gt; odd = split.select("odd");
+DataStream&lt;Integer&gt; all = split.select("even","odd");
+</code></pre></div></div>
+
+<ol>
+  <li>Iterate
+DataStream -&gt; IterativeStream -&gt; DataStream
+通过将一个Operator的输出重定向到前面的某个Operator的方法，在数据流图中创建一个“反馈”循环
+大于0的element被送回到反馈通道，而其他的element则被转发到下游</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IterativeStream&lt;Long&gt; iteration = initialStream.iterate();
+DataStream&lt;Long&gt; iterationBody = iteration.map (/*do something*/);
+DataStream&lt;Long&gt; feedback = iterationBody.filter(new FilterFunction&lt;Long&gt;(){
+　　@Override
+　　public boolean filter(Integer value) throws Exception {
+　　　　return value &gt; 0;
+　　}
+});
+iteration.closeWith(feedback);
+DataStream&lt;Long&gt; output = iterationBody.filter(new FilterFunction&lt;Long&gt;(){
+　　@Override
+　　public boolean filter(Integer value) throws Exception {
+　　　　return value &lt;= 0;
+　　}
+});
+</code></pre></div></div>
+
+<p>一个持续将整数序列中的数字减1知道它们变为0的程序：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DataStream&lt;Long&gt; someIntegers = env.generateSequence(0, 1000);
+
+IterativeStream&lt;Long&gt; iteration = someIntegers.iterate();
+
+DataStream&lt;Long&gt; minusOne = iteration.map(new MapFunction&lt;Long, Long&gt;() {
+　　@Override
+　　public Long map(Long value) throws Exception {
+　　　　return value - 1 ;
+　　}
+});
+
+DataStream&lt;Long&gt; stillGreaterThanZero = minusOne.filter(new FilterFunction&lt;Long&gt;() {
+　　@Override
+　　public boolean filter(Long value) throws Exception {
+　　　　return (value &gt; 0);
+　　}
+});
+
+iteration.closeWith(stillGreaterThanZero);
+
+DataStream&lt;Long&gt; lessThanZero = minusOne.filter(new FilterFunction&lt;Long&gt;() {
+　　@Override
+　　public boolean filter(Long value) throws Exception {
+　　　　return (value &lt;= 0);
+　　}
+});
+</code></pre></div></div>
+
+<ol>
+  <li>Extract Timestamps
+DataStream → DataStream 提取记录中的时间戳来跟需要事件时间的window一起发挥作用.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stream.assignTimestamps (new TimeStampExtractor() {...});
+</code></pre></div></div>
+
+<ol>
+  <li>Project
+DataStream -&gt; DataStream  从tuple中选择出域的子集而产生新的DataStream</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DataStream&lt;Tuple3&lt;Integer, Double, String&gt;&gt; in = // [...]
+DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; out = in.project(2,0);
+</code></pre></div></div>
+<h4 id="执行参数">执行参数</h4>
+<p>StreamExecutionEnvironment包含ExecutionConfig，它可以使用户设置job的确切运行时配置值。
+请参考https://ci.apache.org/projects/flink/flink-docs-release-1.0/apis/common/index.html#execution-configuration</p>
+
+<p>以下这些参数仅适用于DataStream API：</p>
+<ol>
+  <li>
+    <p>enableTimestamps() / disableTimestamps()：在每一个source发出的事件上附加上一个时间戳。函数areTimestampsEnabled()可以返回该状态的当前值。</p>
+  </li>
+  <li>
+    <p>setAutoWatermarkInterval(long milliseconds)：设置自动水印发布（watermark emission）区间。你可以通过调用函数getAutoWatermarkInterval()来获取当前值。</p>
+  </li>
+</ol>
+
+<h4 id="容错">容错</h4>
+<p>https://doc.flink-china.org/doc/ops/state/checkpoints.html</p>
+
+<h4 id="物理级别分割">物理级别分割</h4>
+<h4 id="链接任务以及资源组task-chaining--resource-groups">链接任务以及资源组（Task chaining &amp; resource groups）</h4>
+<p>https://www.cnblogs.com/lanyun0520/p/5730403.html</p>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+
+                    <li class="previous">
+                        <a href="/legacy/2018/10/16/vim-%E4%B8%AD%E7%9A%84-wq-%E5%92%8C-x-%E7%9A%84%E5%8C%BA%E5%88%AB/" data-toggle="tooltip" data-placement="top" title="vim 中的＂:wq＂和＂:x＂的区别">
+                        Previous<br>
+                        <span>vim 中的＂:wq＂和＂:x＂的区别</span>
+                        </a>
+                    </li>
+
+
+                    <li class="next">
+                        <a href="/legacy/2018/11/20/Java%E4%BD%BF%E7%94%A8Protocol-Buffers/" data-toggle="tooltip" data-placement="top" title="Java使用Protocol Buffers">
+                        Next<br>
+                        <span>Java使用Protocol Buffers</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+
+                <!-- 引入Gitalk评论插件  -->
+
+
+
+
+
+                <!-- Gitalk end -->
+
+
+
+            </div>
+
+    <!-- Side Catalog Container -->
+
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/legacy/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+
+
+                                <a href="/legacy/tags/#markdown" title="markdown" rel="1">
+                                    markdown
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#标记语言" title="标记语言" rel="1">
+                                    标记语言
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#图像处理" title="图像处理" rel="2">
+                                    图像处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#算法" title="算法" rel="3">
+                                    算法
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#论文" title="论文" rel="5">
+                                    论文
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Java" title="Java" rel="4">
+                                    Java
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#springboot" title="springboot" rel="1">
+                                    springboot
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Json" title="Json" rel="1">
+                                    Json
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Linux" title="Linux" rel="4">
+                                    Linux
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#小工具" title="小工具" rel="2">
+                                    小工具
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Hadoop" title="Hadoop" rel="1">
+                                    Hadoop
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#大数据" title="大数据" rel="1">
+                                    大数据
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#flink" title="flink" rel="1">
+                                    flink
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#流处理" title="流处理" rel="1">
+                                    流处理
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据压缩" title="数据压缩" rel="1">
+                                    数据压缩
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#杂项" title="杂项" rel="1">
+                                    杂项
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#数据库" title="数据库" rel="1">
+                                    数据库
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#Nosql" title="Nosql" rel="1">
+                                    Nosql
+                                </a>
+
+
+
+                                <a href="/legacy/tags/#分布式" title="分布式" rel="3">
+                                    分布式
+                                </a>
+
+
+                    </div>
+                </section>
+
+
+                <!-- Friends Blog -->
+
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                        <li><a href="https://github.com/zhouzhou-96">周老师</a></li>
+
+                        <li><a href="https://apple.com">Apple</a></li>
+
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+
+
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/xiao-chao-99-1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3534383631?refer_flag=1001030101_&is_all=1">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+
+
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=100010723339047">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="https://github.com/zhanghaichao520">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 越努力越幸运 2026
+                    <br>
+                    Theme on <a href="https://github.com/zhanghaichao520/zhanghaichao520.github.io">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhanghaichao520&repo=zhanghaichao520.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/legacy/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/legacy/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/legacy/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-124605651-1';
+    var _gaDomain = 'auto';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'b68d6f7a2f0c5e20399f5f453d3e32ec';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/legacy/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
