@@ -16,7 +16,7 @@ Rebuild Haichao Zhang's academic homepage using the supplied Jia Wang homepage s
 1. Sticky navigation: name, About, News, Publications, Ongoing Research, Experience & Education, Open Source, EN/中文.
 2. Sidebar: portrait, name, role, affiliation, research interests, location, two institutional emails, Google Scholar, GitHub, and language-aware CV.
 3. Main column: About Me, News, Publications, Ongoing Research, Experience & Education, Open Source, Selected Awards.
-4. Five curated publications use supplied framework figures. Their display order balances Haichao's author position, venue quality, recency, and scholarly impact; Scholar updates cannot reorder them. CRAGRU also includes Preprint/Code/Project links.
+4. Five curated publications use supplied or source-verified framework figures. Their display order balances Haichao's author position, venue quality, recency, and scholarly impact; Scholar updates cannot reorder them. CRAGRU also includes Preprint/Code/Project links.
 5. Ongoing manuscripts use only the supplied framework figures and intentionally high-level descriptions.
 
 ## Responsive and visual acceptance
@@ -29,4 +29,4 @@ Rebuild Haichao Zhang's academic homepage using the supplied Jia Wang homepage s
 
 ## Known asset boundary
 
-The bloodstain deposition paper is intentionally excluded from the public homepage and from future Scholar sync output. Newly synced papers without a supplied framework image fall back to a compact additional-publications list until their presentation assets are configured.
+The bloodstain deposition paper remains visible in the compact additional-publications list. Framework extraction requires a reviewed public PDF; when none is available, the page shows the publication metadata, citation count, and an explicit pending-source status instead of fabricating an image.

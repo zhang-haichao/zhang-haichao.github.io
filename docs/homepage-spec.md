@@ -25,7 +25,7 @@ Build a polished, single-page academic homepage for GitHub Pages. English is the
 2. About and research focus.
 3. News highlights.
 4. Selected Research with framework figures, concise contributions, and Paper/Code/Project links.
-5. Publications sourced from Google Scholar and rendered from repository data. Exclude “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains” from the homepage and scheduled sync output.
+5. Publications sourced from Google Scholar and rendered from repository data, including “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains”.
 6. Ongoing Research with public-safe summaries only. Include Teaching to Forget, ReGen, PCDR, CEU, and DRUMRec. Exclude DURE.
 7. Experience and Education with institution/company logos.
 8. Open Source containing only `senpai-skill` and `PaperReader`.
@@ -38,6 +38,7 @@ Build a polished, single-page academic homepage for GitHub Pages. English is the
 - CRAGRU is an academic paper implementation and appears with the published paper, not in Open Source.
 - A scheduled GitHub Action updates publication data safely: pinned/current actions, explicit permissions, concurrency control, validation before replacement, commit only when changed, and no force-push.
 - If Scholar is temporarily inaccessible, keep the last valid publication data and fail without erasing content.
+- The Action may extract framework figures only from reviewed public PDFs or Scholar e-prints. Papers without an accessible source remain visible with an explicit pending state; no figure is fabricated.
 
 ## Visual direction
 

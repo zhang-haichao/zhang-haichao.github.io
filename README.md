@@ -8,7 +8,7 @@ A bilingual, single-page academic homepage for GitHub Pages. English is the defa
 - English/Chinese content with a persisted language preference
 - Selected Research and public-safe Ongoing Research framework previews
 - Google Scholar-backed Publications with citation counts
-- Curated publication ordering with framework figures, while newly synced papers remain visible as compact fallbacks until their figures are added
+- Curated publication ordering with zoomable framework figures, plus compact fallbacks for papers without a public figure source
 - Education and industry timelines with locally archived, source-documented institution logos
 - Open Source featuring only `senpai-skill` and `PaperReader`
 - Original English and Chinese CV PDFs
@@ -53,7 +53,9 @@ The gate checks local assets and privacy boundaries, Scholar normalization and f
 | --- | --- |
 | Bio, research, news, journey, projects, awards | `src/data/site.ts` |
 | Scholar publication cache | `src/data/publications.json` |
-| Research figures | `public/images/papers/` |
+| Reviewed public PDF sources for framework extraction | `src/data/framework-sources.json` |
+| Framework extraction manifest | `src/data/frameworks.json` |
+| Research figures | `public/images/papers/` (automatic output is under `auto/`) |
 | Portrait | `public/images/portrait-haichao.png` |
 | Institution identifiers and logos | `public/images/institutions/` |
 | Downloadable CVs | `public/cv/` |
@@ -68,18 +70,20 @@ Ongoing Research descriptions should stay concise and public-safe. When adding o
 
 `.github/workflows/scholar-sync.yml` runs every Monday at 03:17 UTC (11:17 China Standard Time) and can also be started manually from the Actions tab. It uses Scholar profile ID `zRvnGK0AAAAJ`.
 
-The updater:
+The workflow:
 
 1. fetches the public Scholar profile;
 2. normalizes titles, authors, venues, links, years, and citation counts;
 3. rejects empty, malformed, duplicate, or suspiciously truncated results;
 4. writes atomically only after validation;
-5. builds the site; and
-6. commits only when publication data changed.
+5. attempts framework extraction from a Scholar public e-print or a reviewed, publicly accessible PDF listed in `src/data/framework-sources.json`;
+6. keeps the last valid image if a PDF becomes temporarily unavailable or extraction fails;
+7. runs content tests and builds the site; and
+8. commits only changed publication metadata, the framework manifest, and automatic framework images.
 
-The public homepage intentionally excludes “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains”. The exclusion is enforced inside the updater, so scheduled runs cannot add it back.
+All valid works returned by the configured Scholar profile remain eligible for Publications. A paper without a publicly accessible PDF still appears with its publication metadata and citation count; its framework status remains explicit until an author-approved source is added. The workflow never invents a PDF URL or substitutes an unrelated image.
 
-If Google Scholar rate-limits a run, the workflow fails without replacing the last valid publication file. No API key or repository secret is required.
+If Google Scholar rate-limits a run, the workflow fails without replacing the last valid publication file. Likewise, a failed automatic extraction does not delete the previous valid figure. No API key or repository secret is required.
 
 To exercise the safe offline path:
 
@@ -90,6 +94,14 @@ python scripts/update_scholar.py \
 ```
 
 The updater rejects any decrease in publication count by default, so a partial or rate-limited Scholar response cannot silently remove existing work. For an intentional, reviewed deletion, add `--allow-removals`; the scheduled Action never enables this override.
+
+To approve a framework source, add its HTTPS PDF URL and optional page/crop guidance to `src/data/framework-sources.json`, then run:
+
+```bash
+python scripts/sync_framework_figures.py
+```
+
+Only use an author manuscript, preprint, or other PDF that may be downloaded and republished for this purpose. Closed-access publisher PDFs are not bypassed.
 
 ## Archived previous homepage
 

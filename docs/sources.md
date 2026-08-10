@@ -4,11 +4,12 @@ This file records the public sources used to seed publication metadata and insti
 
 - Google Scholar profile: https://scholar.google.com/citations?user=zRvnGK0AAAAJ&hl=en
 - CRAGRU: https://arxiv.org/abs/2511.05494
+- CRAGRU framework provenance: Figure 2 on page 4 of the author preprint https://arxiv.org/pdf/2511.05494, extracted to `public/images/papers/auto/cragru.png` and recorded in `src/data/frameworks.json`.
 - Perovskite quantum dots article: https://doi.org/10.1021/acsnano.5c20211
 - Uncertainty-Aware Semantic Decoding: https://arxiv.org/abs/2508.07210
 - Clustering-based incremental learning: https://doi.org/10.1016/j.knosys.2024.111612
 - Counterfactual Contrastive Learning: https://doi.org/10.1007/978-3-031-72341-4_12
-- Two-branch bloodstain network: https://doi.org/10.1109/CSCWD61410.2024.10580800
+- Two-branch bloodstain network: https://doi.org/10.1109/CSCWD61410.2024.10580800. On 2026-08-10, IEEE, Unpaywall, OpenAlex, and Semantic Scholar exposed no public PDF, so the framework manifest records `awaiting-author-pdf`; an author-approved manuscript or figure is still required for real image extraction.
 - XJTLU School of AI and Advanced Computing: https://www.xjtlu.edu.cn/en/study/departments/school-of-ai-and-advanced-computing/
 - XJTLU header logo: https://www.xjtlu.edu.cn/wp-content/uploads/2024/01/en-header-logo.svg
 - University of Liverpool header logo: https://www.liverpool.ac.uk/ (the inline `rb-header__logo` SVG was archived without changing its paths or proportions)

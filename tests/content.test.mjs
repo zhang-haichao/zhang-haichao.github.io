@@ -99,6 +99,22 @@ test('scheduled Scholar workflow validates and commits metadata plus framework a
   assert.match(workflow, /permissions:\s+contents: write/);
 });
 
+test('documentation describes complete Scholar sync and the public-PDF framework boundary', async () => {
+  const readme = await readFile(new URL('README.md', root), 'utf8');
+  const homepageSpec = await readFile(new URL('docs/homepage-spec.md', root), 'utf8');
+  const redesignSpec = await readFile(new URL('docs/jiawang-reference-redesign.md', root), 'utf8');
+  const sources = await readFile(new URL('docs/sources.md', root), 'utf8');
+  const documentation = [readme, homepageSpec, redesignSpec].join('\n');
+
+  assert.doesNotMatch(documentation, /bloodstain deposition paper is intentionally excluded/i);
+  assert.doesNotMatch(documentation, /Exclude [“"]Two-branch Network/i);
+  assert.match(readme, /framework-sources\.json/);
+  assert.match(readme, /publicly accessible PDF/i);
+  assert.match(readme, /citation counts/i);
+  assert.match(sources, /10\.1109\/CSCWD61410\.2024\.10580800/);
+  assert.match(sources, /arxiv\.org\/pdf\/2511\.05494/);
+});
+
 test('public page source excludes private contact data and removed work', async () => {
   const files = ['src/data/site.ts', 'src/pages/index.astro', 'src/styles/global.css'];
   const source = (await Promise.all(files.map((file) => readFile(new URL(file, root), 'utf8')))).join('\n');
