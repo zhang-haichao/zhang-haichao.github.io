@@ -21,6 +21,7 @@ const requiredAssets = [
   'public/images/papers/ceu.png',
   'public/images/papers/drumrec.png',
   'public/images/papers/auto/cragru.png',
+  'public/images/papers/auto/two-branch-bloodstain.png',
   'public/images/institutions/xjtlu-official.svg',
   'public/images/institutions/liverpool-official.svg',
   'public/images/institutions/ecjtu-user.png',
@@ -65,7 +66,7 @@ test('publication data matches the Scholar contract', async () => {
   }
 });
 
-test('framework sync records real extraction provenance and closed-access fallback', async () => {
+test('framework sync records real extraction provenance from PDFs and publisher figures', async () => {
   const raw = await readFile(new URL('src/data/frameworks.json', root), 'utf8');
   const data = JSON.parse(raw);
   const cragru = data.frameworks.find((item) => item.title.startsWith('Customized Retrieval-Augmented'));
@@ -75,18 +76,22 @@ test('framework sync records real extraction provenance and closed-access fallba
   assert.equal(cragru.image, '/images/papers/auto/cragru.png');
   assert.match(cragru.pdfUrl, /^https:\/\/arxiv\.org\/pdf\//);
   assert.match(cragru.caption, /framework of CRAGRU/i);
-  assert.equal(bloodstain.status, 'awaiting-author-pdf');
-  assert.ok(!('image' in bloodstain), 'closed-access papers must not receive a fabricated figure');
+  assert.equal(bloodstain.status, 'synced');
+  assert.equal(bloodstain.image, '/images/papers/auto/two-branch-bloodstain.png');
+  assert.equal(bloodstain.source, 'IEEE Xplore figures API');
+  assert.equal(bloodstain.figureId, 'fig2');
+  assert.match(bloodstain.caption, /overall architecture of FTIR-Net/i);
 });
 
-test('homepage consumes synced frameworks and exposes citation plus source-status metadata', async () => {
+test('homepage keeps every Scholar work in Publications and consumes synced frameworks', async () => {
   const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
 
   assert.match(page, /import frameworkData from ['"]\.\.\/data\/frameworks\.json['"]/);
   assert.match(page, /syncedFramework\?\.image \?\? presentation\.image/);
   assert.match(page, /Cited by \{publication\.citations\}/);
-  assert.match(page, /Framework pending public PDF/);
-  assert.match(page, /framework\?\.status === 'synced'/);
+  assert.match(page, /autoDiscoveredPublications/);
+  assert.doesNotMatch(page, /Additional publications/);
+  assert.doesNotMatch(page, /Framework pending public PDF/);
 });
 
 test('scheduled Scholar workflow validates and commits metadata plus framework artifacts', async () => {
@@ -99,7 +104,7 @@ test('scheduled Scholar workflow validates and commits metadata plus framework a
   assert.match(workflow, /permissions:\s+contents: write/);
 });
 
-test('documentation describes complete Scholar sync and the public-PDF framework boundary', async () => {
+test('documentation describes complete Scholar sync and reviewed framework sources', async () => {
   const readme = await readFile(new URL('README.md', root), 'utf8');
   const homepageSpec = await readFile(new URL('docs/homepage-spec.md', root), 'utf8');
   const redesignSpec = await readFile(new URL('docs/jiawang-reference-redesign.md', root), 'utf8');
@@ -109,9 +114,11 @@ test('documentation describes complete Scholar sync and the public-PDF framework
   assert.doesNotMatch(documentation, /bloodstain deposition paper is intentionally excluded/i);
   assert.doesNotMatch(documentation, /Exclude [“"]Two-branch Network/i);
   assert.match(readme, /framework-sources\.json/);
-  assert.match(readme, /publicly accessible PDF/i);
+  assert.match(readme, /publisher figures API/i);
   assert.match(readme, /citation counts/i);
   assert.match(sources, /10\.1109\/CSCWD61410\.2024\.10580800/);
+  assert.match(sources, /Overall architecture of FTIR-Net/);
+  assert.doesNotMatch(sources, /awaiting-author-pdf/);
   assert.match(sources, /arxiv\.org\/pdf\/2511\.05494/);
 });
 
@@ -121,6 +128,8 @@ test('public page source excludes private contact data and removed work', async 
 
   assert.doesNotMatch(source, /18279159611/);
   assert.doesNotMatch(source, /zhang_haichao@163\.com/i);
+  assert.doesNotMatch(source, /haichao\.zhang22@student\.xjtlu\.edu\.cn/i);
+  assert.match(source, /zhc@liverpool\.ac\.uk/i);
   assert.doesNotMatch(source, /clientSecret/i);
   assert.doesNotMatch(source, /\bDURE\b/);
 });

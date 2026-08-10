@@ -30,8 +30,7 @@ export const profile = {
   },
   portrait: '/images/portrait-haichao.png',
   scholarId: 'zRvnGK0AAAAJ',
-  emailPrimary: 'haichao.zhang22@student.xjtlu.edu.cn',
-  emailSecondary: 'zhc@liverpool.ac.uk',
+  email: 'zhc@liverpool.ac.uk',
   links: {
     github: 'https://github.com/zhang-haichao',
     scholar: 'https://scholar.google.com/citations?user=zRvnGK0AAAAJ&hl=en',

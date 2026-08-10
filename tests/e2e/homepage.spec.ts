@@ -19,12 +19,16 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('.academic-sidebar')).toBeVisible();
   await expect(page.locator('.academic-main')).toBeVisible();
   await expect(page.locator('.profile-avatar')).toBeVisible();
-  await expect(page.locator('.publication-paper')).toHaveCount(5);
+  await expect(page.locator('.publication-paper')).toHaveCount(6);
+  await expect(page.getByText('Additional publications', { exact: true })).toHaveCount(0);
+  await expect(page.locator('a[href="mailto:haichao.zhang22@student.xjtlu.edu.cn"]')).toHaveCount(0);
+  await expect(page.locator('a[href="mailto:zhc@liverpool.ac.uk"]')).toBeVisible();
   const bloodstain = page.locator('[data-publication-title*="Time Since Deposition Estimation"]');
   await expect(bloodstain).toBeVisible();
   await expect(bloodstain).toContainText('CSCWD');
   await expect(bloodstain.getByText('Cited by 3', { exact: true })).toBeVisible();
-  await expect(bloodstain.getByText('Framework pending public PDF', { exact: true })).toBeVisible();
+  await expect(bloodstain.getByRole('button', { name: 'Enlarge Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains framework figure' })).toBeVisible();
+  await expect(bloodstain.locator('img')).toHaveAttribute('src', '/images/papers/auto/two-branch-bloodstain.png');
 
   const perovskite = page.locator('[data-publication-title^="Machine Vision-Enabled"]');
   await expect(perovskite.locator('a[href="https://zhang-haichao.github.io/S2-SOFS-Page/"]')).toBeVisible();
@@ -38,7 +42,8 @@ test('renders the confirmed English academic profile by default', async ({ page,
     'Machine Vision-Enabled Octahedral Network Reconstruction and Structural Analysis of Perovskite Quantum Dots',
     'Clustering-based incremental learning for imbalanced data classification',
     'Counterfactual Contrastive Learning for Fine Grained Image Classification',
-    'Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation'
+    'Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation',
+    'Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains'
   ]);
 
   const composition = await page.evaluate(() => {
@@ -69,7 +74,7 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   await expect(page.getByRole('link', { name: '下载简历' })).toHaveAttribute('href', '/cv/haichao-zhang-zh.pdf');
   const bloodstain = page.locator('[data-publication-title*="Time Since Deposition Estimation"]');
   await expect(bloodstain.getByText('引用 3', { exact: true })).toBeVisible();
-  await expect(bloodstain.getByText('框架图等待公开 PDF', { exact: true })).toBeVisible();
+  await expect(bloodstain.locator('img')).toHaveAttribute('src', '/images/papers/auto/two-branch-bloodstain.png');
 
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');

@@ -36,14 +36,31 @@ const curatedPublications = publicationPresentation.flatMap((presentation) => {
     figure: {
       image: syncedFramework?.image ?? presentation.image,
       alt: presentation.imageAlt.en,
-      pdfUrl: syncedFramework?.pdfUrl ?? null
+      sourceUrl: syncedFramework?.sourceUrl ?? syncedFramework?.pdfUrl ?? null
     }
   }] : [];
 });
 const curatedTitles = new Set<string>(publicationPresentation.map((publication) => publication.title));
-const additionalPublications = publicationData.publications
+const autoDiscoveredPublications = publicationData.publications
   .filter((publication) => !curatedTitles.has(publication.title))
-  .map((publication) => ({ publication, framework: frameworkByTitle.get(publication.title) }));
+  .map((publication) => {
+    const framework = frameworkByTitle.get(publication.title);
+    const figure = framework?.status === 'synced' && framework.image
+      ? {
+          image: framework.image,
+          alt: framework.caption ?? `${publication.title} framework figure`,
+          sourceUrl: framework.sourceUrl ?? framework.pdfUrl ?? null,
+          width: framework.width,
+          height: framework.height
+        }
+      : null;
+    const acronym = publication.venue.match(/\(([A-Z][A-Z-]{2,})\)/)?.[1];
+    return {
+      publication,
+      figure,
+      venueLabel: acronym ? `${acronym} ${publication.year}` : `${publication.year}`
+    };
+  });
 ---
 
 <!doctype html>
@@ -143,11 +160,7 @@ const additionalPublications = publicationData.publications
             </li>
             <li>
               <span class="profile-icon" aria-hidden="true">✉</span>
-              <a href={`mailto:${profile.emailPrimary}`}>{profile.emailPrimary}</a>
-            </li>
-            <li>
-              <span class="profile-icon" aria-hidden="true">✉</span>
-              <a href={`mailto:${profile.emailSecondary}`}>{profile.emailSecondary}</a>
+              <a href={`mailto:${profile.email}`}>{profile.email}</a>
             </li>
             <li>
               <span class="profile-icon" aria-hidden="true">G</span>
@@ -302,8 +315,8 @@ const additionalPublications = publicationData.publications
                       [<span data-lang="en">{link.label.en}</span><span data-lang="zh">{link.label.zh}</span>]
                     </a>
                   ))}
-                  {figure.pdfUrl && (
-                    <a href={figure.pdfUrl} target="_blank" rel="noreferrer">
+                  {figure.sourceUrl && (
+                    <a href={figure.sourceUrl} target="_blank" rel="noreferrer">
                       [<span data-lang="en">Figure source</span><span data-lang="zh">图片来源</span>]
                     </a>
                   )}
@@ -317,58 +330,45 @@ const additionalPublications = publicationData.publications
             </article>
           ))}
 
-          {additionalPublications.length > 0 && (
-            <>
-              <h3 class="subsection-title reveal">
-                <span data-lang="en">Additional publications</span><span data-lang="zh">其他论文</span>
-              </h3>
-              <ol class="publication-list">
-                {additionalPublications.map(({ publication, framework }) => (
-                  <li class="publication-item reveal" data-publication-title={publication.title}>
-                    <div class="publication-year">{publication.year}</div>
-                    <div class="additional-publication-body">
-                      {framework?.status === 'synced' && framework.image && (
-                        <button
-                          class="publication-framework"
-                          type="button"
-                          data-figure-src={framework.image}
-                          data-figure-alt-en={framework.caption ?? `${publication.title} framework figure`}
-                          data-figure-alt-zh={`${publication.title} 框架图`}
-                          aria-label={`Enlarge ${publication.title} framework figure`}
-                        >
-                          <img src={framework.image} alt={framework.caption ?? `${publication.title} framework figure`} loading="lazy" />
-                        </button>
-                      )}
-                      <div>
-                        <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
-                        <p class="publication-authors">
-                          {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
-                        </p>
-                        <p class="publication-venue">{publication.venue}</p>
-                        <div class="paper-links compact">
-                          <a href={publication.url} target="_blank" rel="noreferrer">
-                            [<span data-lang="en">Paper</span><span data-lang="zh">论文</span>]
-                          </a>
-                          {framework?.status === 'awaiting-author-pdf' && (
-                            <span class="framework-status">
-                              <span data-lang="en">Framework pending public PDF</span>
-                              <span data-lang="zh">框架图等待公开 PDF</span>
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    {publication.citations !== null && (
-                      <span class="citation-count">
-                        <span data-lang="en">Cited by {publication.citations}</span>
-                        <span data-lang="zh">引用 {publication.citations}</span>
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ol>
-            </>
-          )}
+          {autoDiscoveredPublications.map(({ publication, figure, venueLabel }) => (
+            <article class:list={['paper-box', 'publication-paper', 'reveal', !figure && 'no-figure']} data-publication-title={publication.title}>
+              {figure && (
+                <button
+                  class="paper-figure"
+                  type="button"
+                  data-figure-src={figure.image}
+                  data-figure-alt-en={figure.alt}
+                  data-figure-alt-zh={`${publication.title} 框架图`}
+                  aria-label={`Enlarge ${publication.title} framework figure`}
+                >
+                  <img src={figure.image} alt={figure.alt} width={figure.width} height={figure.height} loading="lazy" />
+                </button>
+              )}
+              <div class="paper-info">
+                <span class="venue-badge">{venueLabel}</span>
+                <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
+                <p class="paper-authors">
+                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                </p>
+                <p class="publication-venue">{publication.venue}</p>
+                <div class="paper-links">
+                  <a href={publication.url} target="_blank" rel="noreferrer">
+                    [<span data-lang="en">Paper</span><span data-lang="zh">论文</span>]
+                  </a>
+                  {figure?.sourceUrl && (
+                    <a href={figure.sourceUrl} target="_blank" rel="noreferrer">
+                      [<span data-lang="en">Figure source</span><span data-lang="zh">图片来源</span>]
+                    </a>
+                  )}
+                  {publication.citations !== null && (
+                    <span class="publication-citation">
+                      <span data-lang="en">Cited by {publication.citations}</span><span data-lang="zh">引用 {publication.citations}</span>
+                    </span>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
         </section>
 
         <section class="content-section" id="ongoing-research" aria-labelledby="ongoing-title">

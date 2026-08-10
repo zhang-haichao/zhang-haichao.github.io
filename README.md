@@ -7,8 +7,8 @@ A bilingual, single-page academic homepage for GitHub Pages. English is the defa
 - Jia Wang-inspired academic layout with a compact profile sidebar and readable main column
 - English/Chinese content with a persisted language preference
 - Selected Research and public-safe Ongoing Research framework previews
-- Google Scholar-backed Publications with citation counts
-- Curated publication ordering with zoomable framework figures, plus compact fallbacks for papers without a public figure source
+- Google Scholar-backed Publications with citation counts; automatically discovered works stay in the same Publications section
+- Curated publication ordering with zoomable framework figures and automatic publisher-figure support
 - Education and industry timelines with locally archived, source-documented institution logos
 - Open Source featuring `axiom-quant`, `senpai-skill`, and `PaperReader`
 - Original English and Chinese CV PDFs
@@ -53,7 +53,7 @@ The gate checks local assets and privacy boundaries, Scholar normalization and f
 | --- | --- |
 | Bio, research, news, journey, projects, awards | `src/data/site.ts` |
 | Scholar publication cache | `src/data/publications.json` |
-| Reviewed public PDF sources for framework extraction | `src/data/framework-sources.json` |
+| Reviewed PDF or publisher-figure sources | `src/data/framework-sources.json` |
 | Framework extraction manifest | `src/data/frameworks.json` |
 | Research figures | `public/images/papers/` (automatic output is under `auto/`) |
 | Portrait | `public/images/portrait-haichao.png` |
@@ -76,12 +76,12 @@ The workflow:
 2. normalizes titles, authors, venues, links, years, and citation counts;
 3. rejects empty, malformed, duplicate, or suspiciously truncated results;
 4. writes atomically only after validation;
-5. attempts framework extraction from a Scholar public e-print or a reviewed, publicly accessible PDF listed in `src/data/framework-sources.json`;
-6. keeps the last valid image if a PDF becomes temporarily unavailable or extraction fails;
+5. attempts framework extraction from a Scholar public e-print, a reviewed public PDF, or a reviewed publisher figures API listed in `src/data/framework-sources.json`;
+6. keeps the last valid image if a source becomes temporarily unavailable or extraction fails;
 7. runs content tests and builds the site; and
 8. commits only changed publication metadata, the framework manifest, and automatic framework images.
 
-All valid works returned by the configured Scholar profile remain eligible for Publications. A paper without a publicly accessible PDF still appears with its publication metadata and citation count; its framework status remains explicit until an author-approved source is added. The workflow never invents a PDF URL or substitutes an unrelated image.
+All valid works returned by the configured Scholar profile are rendered inside Publications; automatic discovery never creates an “Additional publications” category. Submitted and early-stage manuscripts are maintained separately in Ongoing Research. A paper without a reviewed figure source still appears with its publication metadata and citation count. The workflow never invents a PDF URL or substitutes an unrelated image.
 
 If Google Scholar rate-limits a run, the workflow fails without replacing the last valid publication file. Likewise, a failed automatic extraction does not delete the previous valid figure. No API key or repository secret is required.
 
@@ -95,13 +95,13 @@ python scripts/update_scholar.py \
 
 The updater rejects any decrease in publication count by default, so a partial or rate-limited Scholar response cannot silently remove existing work. For an intentional, reviewed deletion, add `--allow-removals`; the scheduled Action never enables this override.
 
-To approve a framework source, add its HTTPS PDF URL and optional page/crop guidance to `src/data/framework-sources.json`, then run:
+To approve a framework source, add either its HTTPS `pdfUrl` with optional page/crop guidance or a reviewed `ieeeDocumentId` with caption keywords to `src/data/framework-sources.json`, then run:
 
 ```bash
 python scripts/sync_framework_figures.py
 ```
 
-Only use an author manuscript, preprint, or other PDF that may be downloaded and republished for this purpose. Closed-access publisher PDFs are not bypassed.
+Only use an author manuscript, preprint, or other PDF that may be downloaded and republished for this purpose. Closed-access publisher PDFs are not bypassed. For the bloodstain paper, the workflow reads IEEE Xplore's public figure metadata, selects the framework by its caption, requests IEEE's signed image URL, and stores the resulting PNG with provenance in the manifest.
 
 ## Archived previous homepage
 
@@ -124,6 +124,6 @@ The Pages workflow runs content, Scholar-safety, build, and browser tests before
 
 ## Privacy and assets
 
-The webpage exposes only the XJTLU and University of Liverpool academic email addresses. Phone number and private email are not rendered. The downloadable PDFs are the original user-provided files and are intentionally unmodified.
+The webpage exposes only the University of Liverpool academic email address. The XJTLU student address, phone number, and private email are not rendered. The downloadable PDFs are the original user-provided files and are intentionally unmodified.
 
 The education and industry timelines use locally archived, source-documented identifiers. The ECJTU and Alibaba images are user-provided assets selected for this homepage; Dingfu Data uses an exact-company historical profile image because its former official site was unavailable during implementation. All marks remain the property of their owners, and the timeline does not imply endorsement. Exact sources and usage notes are recorded in `docs/sources.md`.

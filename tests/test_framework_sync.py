@@ -12,6 +12,7 @@ from scripts.sync_framework_figures import (
     FrameworkSyncError,
     extract_framework_figure,
     resolve_sources,
+    select_ieee_framework_figure,
     sync_framework_sources,
 )
 
@@ -92,6 +93,91 @@ class FrameworkSyncTests(unittest.TestCase):
         self.assertEqual("https://example.org/open.pdf", sources[0]["pdfUrl"])
         self.assertNotIn("pdfUrl", sources[1])
         self.assertEqual("awaiting-author-pdf", sources[1]["status"])
+
+    def test_selects_the_highest_scoring_ieee_framework_figure(self) -> None:
+        payload = {
+            "mediaPath": "/mediastore/IEEE/content/media/1/2/3",
+            "figures": [
+                {
+                    "id": "fig1",
+                    "caption": "<p>Representative input samples.</p>",
+                    "graphic": {"hires": "samples-hires.gif"},
+                },
+                {
+                    "id": "fig2",
+                    "caption": "<p>Overall architecture of FTIR-Net and its two branches.</p>",
+                    "graphic": {"hires": "framework-hires.gif"},
+                },
+            ],
+        }
+
+        selected = select_ieee_framework_figure(payload, ["framework", "architecture", "FTIR-Net"])
+
+        self.assertEqual("fig2", selected["figureId"])
+        self.assertEqual(
+            "/mediastore/IEEE/content/media/1/2/3/framework-hires.gif",
+            selected["resource"],
+        )
+        self.assertEqual("Overall architecture of FTIR-Net and its two branches.", selected["caption"])
+
+    def test_syncs_a_configured_ieee_figure_source(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            publications = root / "publications.json"
+            sources = root / "sources.json"
+            manifest = root / "frameworks.json"
+            output = root / "auto"
+            title = "Publisher Figure Paper"
+            publications.write_text(dumps({"publications": [{"title": title}]}), encoding="utf-8")
+            sources.write_text(
+                dumps(
+                    {
+                        "sources": [
+                            {
+                                "title": title,
+                                "ieeeDocumentId": "12345678",
+                                "output": "publisher-figure.png",
+                                "captionKeywords": ["architecture"],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            def fake_download(document_id, destination, caption_keywords, caption_pattern=None):
+                self.assertEqual("12345678", document_id)
+                self.assertEqual(["architecture"], caption_keywords)
+                pixmap = pymupdf.Pixmap(pymupdf.csRGB, pymupdf.IRect(0, 0, 800, 300), False)
+                pixmap.clear_with(255)
+                pixmap.save(destination)
+                return {
+                    "figureId": "fig2",
+                    "caption": "Overall architecture.",
+                    "width": 800,
+                    "height": 300,
+                    "sha256": "publisher-digest",
+                    "sourceUrl": "https://ieeexplore.ieee.org/document/12345678/figures",
+                }
+
+            with patch(
+                "scripts.sync_framework_figures.download_ieee_framework",
+                side_effect=fake_download,
+            ):
+                result = sync_framework_sources(
+                    publications,
+                    sources,
+                    manifest,
+                    output,
+                    "2026-08-11T00:00:00Z",
+                )
+
+            self.assertEqual((1, 0), result)
+            framework = loads(manifest.read_text(encoding="utf-8"))["frameworks"][0]
+            self.assertEqual("synced", framework["status"])
+            self.assertEqual("IEEE Xplore figures API", framework["source"])
+            self.assertEqual("fig2", framework["figureId"])
+            self.assertTrue((output / "publisher-figure.png").is_file())
 
     def test_discovered_eprint_failure_keeps_metadata_sync_unblocked(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

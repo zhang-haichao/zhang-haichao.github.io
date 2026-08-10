@@ -539,6 +539,10 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   font-style: italic;
 }
 
+.paper-box.no-figure {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .paper-links {
   display: flex;
   flex-wrap: wrap;
@@ -564,91 +568,6 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   font-weight: 400;
 }
 
-.publication-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.publication-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 3.8rem minmax(0, 1fr) auto;
-  gap: 0.85rem;
-  padding: 1.05rem 0;
-  border-bottom: 1px solid var(--soft);
-}
-
-.publication-year {
-  color: #7b8590;
-  font-family: Georgia, serif;
-  font-size: 0.83rem;
-}
-
-.publication-item h3 {
-  margin: 0 0 0.25rem;
-  font-size: 0.94rem;
-  line-height: 1.42;
-}
-
-.publication-item p {
-  margin: 0.1rem 0 0;
-  color: #6b747e;
-  font-size: 0.74rem;
-  line-height: 1.46;
-}
-
-.publication-item .publication-venue {
-  color: #4f5964;
-  font-style: italic;
-}
-
-.additional-publication-body {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 0.85rem;
-}
-
-.additional-publication-body > :only-child {
-  grid-column: 1 / -1;
-}
-
-.publication-framework {
-  width: 112px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: zoom-in;
-}
-
-.publication-framework img {
-  display: block;
-  width: 100%;
-  height: 74px;
-  border: 1px solid #e1e6eb;
-  object-fit: contain;
-}
-
-.paper-links.compact {
-  align-items: baseline;
-  margin-top: 0.42rem;
-  font-size: 0.7rem;
-}
-
-.framework-status {
-  color: #7a6954;
-  font-weight: 400;
-}
-
-.citation-count {
-  align-self: start;
-  padding: 0.12rem 0.38rem;
-  border: 1px solid #d5dce5;
-  border-radius: 2px;
-  color: #6b7681;
-  font-size: 0.65rem;
-  white-space: nowrap;
-}
 
 .ongoing-list {
   display: grid;
@@ -1085,15 +1004,6 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   .paper-figure img {
     height: auto;
     max-height: 260px;
-  }
-
-  .publication-item {
-    grid-template-columns: 3.2rem minmax(0, 1fr);
-  }
-
-  .citation-count {
-    grid-column: 2;
-    justify-self: start;
   }
 
   .timeline-item {

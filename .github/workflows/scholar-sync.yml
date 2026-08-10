@@ -43,7 +43,7 @@ jobs:
           --scholar-id zRvnGK0AAAAJ
           --output src/data/publications.json
 
-      - name: Extract framework figures from reviewed public PDFs
+      - name: Extract frameworks from reviewed PDFs and publisher figures
         run: >-
           python scripts/sync_framework_figures.py
           --publications src/data/publications.json

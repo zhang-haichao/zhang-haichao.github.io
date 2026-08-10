@@ -15,7 +15,7 @@ Build a polished, single-page academic homepage for GitHub Pages. English is the
 
 ## Public contact and privacy
 
-- Show `haichao.zhang22@student.xjtlu.edu.cn` and `zhc@liverpool.ac.uk`.
+- Show only `zhc@liverpool.ac.uk`; do not render the XJTLU student address.
 - Do not display phone number or private email on the webpage.
 - Provide the original English and Chinese CV PDF files as downloads without editing or redaction.
 
@@ -38,7 +38,7 @@ Build a polished, single-page academic homepage for GitHub Pages. English is the
 - CRAGRU is an academic paper implementation and appears with the published paper, not in Open Source.
 - A scheduled GitHub Action updates publication data safely: pinned/current actions, explicit permissions, concurrency control, validation before replacement, commit only when changed, and no force-push.
 - If Scholar is temporarily inaccessible, keep the last valid publication data and fail without erasing content.
-- The Action may extract framework figures only from reviewed public PDFs or Scholar e-prints. Papers without an accessible source remain visible with an explicit pending state; no figure is fabricated.
+- The Action may extract framework figures only from reviewed public PDFs, Scholar e-prints, or reviewed publisher figure APIs. Papers without an accessible source remain visible; no figure is fabricated.
 
 ## Visual direction
 

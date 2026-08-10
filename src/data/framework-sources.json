@@ -10,9 +10,11 @@
     },
     {
       "title": "Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains",
+      "ieeeDocumentId": "10580800",
       "output": "two-branch-bloodstain.png",
-      "status": "awaiting-author-pdf",
-      "note": "IEEE, Unpaywall, OpenAlex, and Semantic Scholar do not expose a public PDF. Add an author-approved public PDF URL to enable extraction."
+      "captionKeywords": ["FTIR-Net", "framework", "architecture", "two separate branches"],
+      "captionPattern": "Overall architecture of FTIR-Net",
+      "source": "IEEE Xplore figures API"
     }
   ]
 }
