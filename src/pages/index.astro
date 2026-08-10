@@ -16,9 +16,9 @@ import publicationData from '../data/publications.json';
 const navItems = [
   { id: 'about', en: 'About Me', zh: '关于我' },
   { id: 'news', en: 'News', zh: '动态' },
+  { id: 'experience-education', en: 'Experience & Education', zh: '经历与教育' },
   { id: 'publications', en: 'Publications', zh: '论文' },
   { id: 'ongoing-research', en: 'Ongoing Research', zh: '在研工作' },
-  { id: 'experience-education', en: 'Experience & Education', zh: '经历与教育' },
   { id: 'opensource', en: 'Open Source', zh: '开源项目' }
 ];
 
@@ -206,6 +206,49 @@ const additionalPublications = publicationData.publications.filter((publication)
           </ul>
         </section>
 
+        <section class="content-section" id="experience-education" aria-labelledby="journey-title">
+          <h2 id="journey-title" class="reveal"><span data-lang="en">Experience & Education</span><span data-lang="zh">工作与教育经历</span></h2>
+
+          <h3 class="subsection-title reveal"><span data-lang="en">Education</span><span data-lang="zh">教育经历</span></h3>
+          <div class="timeline-list education-list">
+            {education.map((item) => (
+              <article class="timeline-item reveal">
+                <div class="institution-logos">
+                  <img src={item.logo} alt={item.logoAlt} width="76" height="76" loading="lazy" />
+                  {item.secondaryLogo && <img src={item.secondaryLogo} alt={item.secondaryLogoAlt ?? ''} width="76" height="76" loading="lazy" />}
+                </div>
+                <div>
+                  <time>{item.period}</time>
+                  <h4><a href={item.href} target="_blank" rel="noreferrer"><span data-lang="en">{item.institution.en}</span><span data-lang="zh">{item.institution.zh}</span></a></h4>
+                  <p class="timeline-role"><span data-lang="en">{item.degree.en}</span><span data-lang="zh">{item.degree.zh}</span></p>
+                  <p><span data-lang="en">{item.note.en}</span><span data-lang="zh">{item.note.zh}</span></p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <h3 class="subsection-title reveal"><span data-lang="en">Industry Experience</span><span data-lang="zh">工作经历</span></h3>
+          <div class="timeline-list industry-list">
+            {experience.map((item) => (
+              <article class="timeline-item reveal">
+                <div class="institution-logos">
+                  <img src={item.logo} alt={item.logoAlt} width="76" height="76" loading="lazy" />
+                </div>
+                <div>
+                  <time>{item.period}</time>
+                  <h4>
+                    {item.href.startsWith('http')
+                      ? <a href={item.href} target="_blank" rel="noreferrer"><span data-lang="en">{item.organization.en}</span><span data-lang="zh">{item.organization.zh}</span></a>
+                      : <><span data-lang="en">{item.organization.en}</span><span data-lang="zh">{item.organization.zh}</span></>}
+                  </h4>
+                  <p class="timeline-role"><span data-lang="en">{item.role.en}</span><span data-lang="zh">{item.role.zh}</span></p>
+                  <p><span data-lang="en">{item.description.en}</span><span data-lang="zh">{item.description.zh}</span></p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section class="content-section" id="publications" aria-labelledby="publications-title">
           <div class="section-heading reveal">
             <h2 id="publications-title"><span data-lang="en">Publications</span><span data-lang="zh">学术论文</span></h2>
@@ -306,49 +349,6 @@ const additionalPublications = publicationData.publications.filter((publication)
                   <span class="venue-badge muted"><span data-lang="en">Under review</span><span data-lang="zh">在投 / 在研</span></span>
                   <h3>{paper.title}</h3>
                   <p><span data-lang="en">{paper.description.en}</span><span data-lang="zh">{paper.description.zh}</span></p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section class="content-section" id="experience-education" aria-labelledby="journey-title">
-          <h2 id="journey-title" class="reveal"><span data-lang="en">Experience & Education</span><span data-lang="zh">工作与教育经历</span></h2>
-
-          <h3 class="subsection-title reveal"><span data-lang="en">Education</span><span data-lang="zh">教育经历</span></h3>
-          <div class="timeline-list education-list">
-            {education.map((item) => (
-              <article class="timeline-item reveal">
-                <div class="institution-logos">
-                  <img src={item.logo} alt={item.logoAlt} width="76" height="76" loading="lazy" />
-                  {item.secondaryLogo && <img src={item.secondaryLogo} alt={item.secondaryLogoAlt ?? ''} width="76" height="76" loading="lazy" />}
-                </div>
-                <div>
-                  <time>{item.period}</time>
-                  <h4><a href={item.href} target="_blank" rel="noreferrer"><span data-lang="en">{item.institution.en}</span><span data-lang="zh">{item.institution.zh}</span></a></h4>
-                  <p class="timeline-role"><span data-lang="en">{item.degree.en}</span><span data-lang="zh">{item.degree.zh}</span></p>
-                  <p><span data-lang="en">{item.note.en}</span><span data-lang="zh">{item.note.zh}</span></p>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <h3 class="subsection-title reveal"><span data-lang="en">Industry Experience</span><span data-lang="zh">工作经历</span></h3>
-          <div class="timeline-list industry-list">
-            {experience.map((item) => (
-              <article class="timeline-item reveal">
-                <div class="institution-logos">
-                  <img src={item.logo} alt={item.logoAlt} width="76" height="76" loading="lazy" />
-                </div>
-                <div>
-                  <time>{item.period}</time>
-                  <h4>
-                    {item.href.startsWith('http')
-                      ? <a href={item.href} target="_blank" rel="noreferrer"><span data-lang="en">{item.organization.en}</span><span data-lang="zh">{item.organization.zh}</span></a>
-                      : <><span data-lang="en">{item.organization.en}</span><span data-lang="zh">{item.organization.zh}</span></>}
-                  </h4>
-                  <p class="timeline-role"><span data-lang="en">{item.role.en}</span><span data-lang="zh">{item.role.zh}</span></p>
-                  <p><span data-lang="en">{item.description.en}</span><span data-lang="zh">{item.description.zh}</span></p>
                 </div>
               </article>
             ))}

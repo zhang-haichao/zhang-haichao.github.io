@@ -90,3 +90,14 @@ test('timeline uses traceable institution assets and the user-provided Alibaba i
   assert.match(sources, /user-provided/i);
   assert.doesNotMatch(readme, /monograms?/i);
 });
+
+test('experience and education follows news before publications', async () => {
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+  const newsPosition = page.indexOf('id="news"');
+  const journeyPosition = page.indexOf('id="experience-education"');
+  const publicationsPosition = page.indexOf('id="publications"');
+
+  assert.ok(newsPosition >= 0);
+  assert.ok(journeyPosition > newsPosition);
+  assert.ok(publicationsPosition > journeyPosition);
+});
