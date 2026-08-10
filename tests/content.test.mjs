@@ -20,6 +20,7 @@ const requiredAssets = [
   'public/images/papers/pcdr.png',
   'public/images/papers/ceu.png',
   'public/images/papers/drumrec.png',
+  'public/images/papers/auto/cragru.png',
   'public/images/institutions/xjtlu-official.svg',
   'public/images/institutions/liverpool-official.svg',
   'public/images/institutions/ecjtu-user.png',
@@ -62,6 +63,20 @@ test('publication data matches the Scholar contract', async () => {
     assert.match(publication.url, /^https:\/\//);
     assert.doesNotMatch(publication.venue, /…|\.{3}/);
   }
+});
+
+test('framework sync records real extraction provenance and closed-access fallback', async () => {
+  const raw = await readFile(new URL('src/data/frameworks.json', root), 'utf8');
+  const data = JSON.parse(raw);
+  const cragru = data.frameworks.find((item) => item.title.startsWith('Customized Retrieval-Augmented'));
+  const bloodstain = data.frameworks.find((item) => item.title.includes('Time Since Deposition Estimation'));
+
+  assert.equal(cragru.status, 'synced');
+  assert.equal(cragru.image, '/images/papers/auto/cragru.png');
+  assert.match(cragru.pdfUrl, /^https:\/\/arxiv\.org\/pdf\//);
+  assert.match(cragru.caption, /framework of CRAGRU/i);
+  assert.equal(bloodstain.status, 'awaiting-author-pdf');
+  assert.ok(!('image' in bloodstain), 'closed-access papers must not receive a fabricated figure');
 });
 
 test('public page source excludes private contact data and removed work', async () => {

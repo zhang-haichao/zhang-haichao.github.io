@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "updatedAt": "2026-08-10T15:10:00Z",
+  "frameworks": [
+    {
+      "title": "Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning",
+      "status": "synced",
+      "image": "/images/papers/auto/cragru.png",
+      "pdfUrl": "https://arxiv.org/pdf/2511.05494",
+      "source": "arXiv author preprint",
+      "page": 4,
+      "caption": "Fig. 2. The framework of CRAGRU. When the user submits an unlearning request, the retriever uses the request to fetch relevant information from the dataset and filters out the information that needs to be forgotten. The remaining information is then used to create an unlearning prompt. Finally, the LLM generates recommendation results based on the user’s needs.",
+      "width": 617,
+      "height": 599,
+      "sha256": "d3f615fb4910d60d2060a16bf0bf2b8127b0013fa028cbf4677c98f16886b4f1",
+      "extractedAt": "2026-08-10T15:10:00Z"
+    },
+    {
+      "title": "Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains",
+      "status": "awaiting-author-pdf",
+      "note": "IEEE, Unpaywall, OpenAlex, and Semantic Scholar do not expose a public PDF. Add an author-approved public PDF URL to enable extraction."
+    }
+  ]
+}

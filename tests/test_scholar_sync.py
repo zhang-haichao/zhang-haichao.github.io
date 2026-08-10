@@ -28,6 +28,7 @@ class ScholarSyncTests(unittest.TestCase):
                         "citation": "2024 27th International Conference on Computer Supported Cooperative Work in Design (CSCWD), 2191-2196",
                     },
                     "pub_url": "https://doi.org/10.1109/CSCWD61410.2024.10580800",
+                    "eprint_url": "https://example.org/bloodstain-author-copy.pdf",
                     "num_citations": 3,
                 },
                 {
@@ -54,6 +55,10 @@ class ScholarSyncTests(unittest.TestCase):
         self.assertEqual(
             "https://doi.org/10.1109/CSCWD61410.2024.10580800",
             bloodstain["url"],
+        )
+        self.assertEqual(
+            "https://example.org/bloodstain-author-copy.pdf",
+            bloodstain["pdfUrl"],
         )
 
     def test_truncated_venue_preserves_existing_complete_metadata(self) -> None:

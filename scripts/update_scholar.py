@@ -107,18 +107,21 @@ def normalize_publications(
                 f"citation_for_view={raw['author_pub_id']}"
             )
 
-        normalized.append(
-            {
-                "title": display_title,
-                "authors": authors or _clean_text(previous.get("authors")),
-                "venue": venue or previous_venue or "Google Scholar",
-                "year": year or _coerce_year(previous.get("year")),
-                "url": url,
-                "citations": _coerce_citations(
-                    raw.get("num_citations", raw.get("citedby", previous.get("citations")))
-                ),
-            }
-        )
+        pdf_url = _clean_text(raw.get("eprint_url") or previous.get("pdfUrl"))
+
+        publication = {
+            "title": display_title,
+            "authors": authors or _clean_text(previous.get("authors")),
+            "venue": venue or previous_venue or "Google Scholar",
+            "year": year or _coerce_year(previous.get("year")),
+            "url": url,
+            "citations": _coerce_citations(
+                raw.get("num_citations", raw.get("citedby", previous.get("citations")))
+            ),
+        }
+        if pdf_url.startswith("https://"):
+            publication["pdfUrl"] = pdf_url
+        normalized.append(publication)
         seen.add(key)
 
     return sorted(normalized, key=lambda item: (-item["year"], item["title"].casefold()))

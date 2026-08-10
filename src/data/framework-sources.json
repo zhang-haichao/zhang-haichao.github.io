@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "title": "Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning",
+      "pdfUrl": "https://arxiv.org/pdf/2511.05494",
+      "output": "cragru.png",
+      "captionKeywords": ["framework", "overview", "CRAGRU"],
+      "source": "arXiv author preprint"
+    },
+    {
+      "title": "Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains",
+      "output": "two-branch-bloodstain.png",
+      "status": "awaiting-author-pdf",
+      "note": "IEEE, Unpaywall, OpenAlex, and Semantic Scholar do not expose a public PDF. Add an author-approved public PDF URL to enable extraction."
+    }
+  ]
+}
