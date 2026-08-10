@@ -79,6 +79,16 @@ test('framework sync records real extraction provenance and closed-access fallba
   assert.ok(!('image' in bloodstain), 'closed-access papers must not receive a fabricated figure');
 });
 
+test('homepage consumes synced frameworks and exposes citation plus source-status metadata', async () => {
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+
+  assert.match(page, /import frameworkData from ['"]\.\.\/data\/frameworks\.json['"]/);
+  assert.match(page, /syncedFramework\?\.image \?\? presentation\.image/);
+  assert.match(page, /Cited by \{publication\.citations\}/);
+  assert.match(page, /Framework pending public PDF/);
+  assert.match(page, /framework\?\.status === 'synced'/);
+});
+
 test('scheduled Scholar workflow validates and commits metadata plus framework artifacts', async () => {
   const workflow = await readFile(new URL('.github/workflows/scholar-sync.yml', root), 'utf8');
 

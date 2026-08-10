@@ -19,7 +19,11 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('.academic-main')).toBeVisible();
   await expect(page.locator('.profile-avatar')).toBeVisible();
   await expect(page.locator('.publication-paper')).toHaveCount(5);
-  await expect(page.locator('#publications')).not.toContainText('Time Since Deposition Estimation of Bloodstains');
+  const bloodstain = page.locator('[data-publication-title*="Time Since Deposition Estimation"]');
+  await expect(bloodstain).toBeVisible();
+  await expect(bloodstain).toContainText('CSCWD');
+  await expect(bloodstain.getByText('Cited by 3', { exact: true })).toBeVisible();
+  await expect(bloodstain.getByText('Framework pending public PDF', { exact: true })).toBeVisible();
 
   const publicationTitles = await page.locator('.publication-paper h3').allTextContents();
   expect(publicationTitles).toEqual([
@@ -56,6 +60,9 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
   await expect(page.locator('.profile-identity').getByRole('heading')).toContainText('张海超');
   await expect(page.getByRole('link', { name: '下载简历' })).toHaveAttribute('href', '/cv/haichao-zhang-zh.pdf');
+  const bloodstain = page.locator('[data-publication-title*="Time Since Deposition Estimation"]');
+  await expect(bloodstain.getByText('引用 3', { exact: true })).toBeVisible();
+  await expect(bloodstain.getByText('框架图等待公开 PDF', { exact: true })).toBeVisible();
 
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
@@ -66,7 +73,7 @@ test('opens and closes a framework figure dialog', async ({ page }) => {
   await page.getByRole('button', { name: 'Enlarge CRAGRU framework figure' }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
-  await expect(dialog.locator('img')).toHaveAttribute('src', '/images/papers/cragru.png');
+  await expect(dialog.locator('img')).toHaveAttribute('src', '/images/papers/auto/cragru.png');
   await expect(dialog).toContainText('CRAGRU framework');
   await dialog.getByRole('button', { name: 'Close figure' }).click();
   await expect(dialog).not.toBeVisible();
