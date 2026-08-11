@@ -92,6 +92,7 @@ test('homepage keeps every Scholar work in Publications and consumes synced fram
   assert.match(page, /autoDiscoveredPublications/);
   assert.doesNotMatch(page, /Additional publications/);
   assert.doesNotMatch(page, /Framework pending public PDF/);
+  assert.doesNotMatch(page, /Figure source/);
 });
 
 test('scheduled Scholar workflow validates and commits metadata plus framework artifacts', async () => {
@@ -142,6 +143,7 @@ test('verified publication resources and selected open-source projects are expli
   for (const url of [
     'https://zhang-haichao.github.io/S2-SOFS-Page/',
     'https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction',
+    'https://github.com/ybyangjing/CTA',
     'https://zhang-haichao.github.io/CRAGRU-Page/',
     'https://github.com/zhang-haichao/axiom-quant'
   ]) {

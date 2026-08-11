@@ -166,7 +166,12 @@ export const publicationPresentation = [
       zh: '面向不平衡分类的聚类数据重组与增量学习框架图'
     },
     description: null,
-    extraLinks: [] satisfies Link[]
+    extraLinks: [
+      {
+        label: { en: 'Code', zh: '代码' },
+        href: 'https://github.com/ybyangjing/CTA'
+      }
+    ] satisfies Link[]
   },
   {
     shortName: 'CCL',

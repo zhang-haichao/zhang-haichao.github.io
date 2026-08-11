@@ -35,6 +35,9 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(perovskite.locator('a[href="https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction"]')).toBeVisible();
   const cragru = page.locator('[data-publication-title^="Customized Retrieval-Augmented"]');
   await expect(cragru.locator('a[href="https://zhang-haichao.github.io/CRAGRU-Page/"]')).toBeVisible();
+  const cil = page.locator('[data-publication-title^="Clustering-based incremental learning"]');
+  await expect(cil.locator('a[href="https://github.com/ybyangjing/CTA"]')).toBeVisible();
+  await expect(page.getByText('Figure source', { exact: true })).toHaveCount(0);
 
   const publicationTitles = await page.locator('.publication-paper h3').allTextContents();
   expect(publicationTitles).toEqual([

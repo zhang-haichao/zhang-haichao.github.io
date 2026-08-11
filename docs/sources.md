@@ -11,6 +11,7 @@ This file records the public sources used to seed publication metadata and insti
 - Perovskite quantum dots implementation: https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction
 - Uncertainty-Aware Semantic Decoding: https://arxiv.org/abs/2508.07210
 - Clustering-based incremental learning: https://doi.org/10.1016/j.knosys.2024.111612
+- Clustering-based incremental learning implementation: https://github.com/ybyangjing/CTA (the paper's official page states that code is available at this repository)
 - Counterfactual Contrastive Learning: https://doi.org/10.1007/978-3-031-72341-4_12
 - Two-branch bloodstain network: https://doi.org/10.1109/CSCWD61410.2024.10580800. Framework provenance: Figure 2 (“Overall architecture of FTIR-Net”) from IEEE Xplore's public figures endpoint at https://ieeexplore.ieee.org/document/10580800/figures, selected by caption and saved as `public/images/papers/auto/two-branch-bloodstain.png`; the IEEE document ID, figure ID, caption, dimensions, and digest are recorded in `src/data/frameworks.json`.
 - XJTLU School of AI and Advanced Computing: https://www.xjtlu.edu.cn/en/study/departments/school-of-ai-and-advanced-computing/
@@ -21,6 +22,6 @@ This file records the public sources used to seed publication metadata and insti
 - Dingfu Data company profile and archived logo: https://pitchhub.36kr.com/project/2316725606435333
 - Previous homepage archive: rendered pages from https://zhang-haichao.github.io/ and static assets from remote commit `1dc77dd` on the former `master` branch; Gitalk credential configuration is intentionally excluded.
 
-The publication-code audit on 2026-08-11 found no author-verifiable repository URL in the UASD arXiv paper, the CIL and CCL publisher pages, the bloodstain paper record, exact-title GitHub code search, or method-name repository search. Those papers therefore remain without a Code link rather than pointing to a cited method or third-party reproduction.
+The publication-code audit on 2026-08-11 found no author-verifiable repository URL in the UASD arXiv paper, the CCL publisher page, or the bloodstain paper record. Those papers remain without a Code link rather than pointing to a cited method or third-party reproduction.
 
 The local copies are used only to identify the corresponding education or employment record. The ECJTU and Alibaba files are the user-provided versions requested for this homepage. All trademarks remain the property of their owners; the page does not imply endorsement. The Dingfu Data website listed by its company profile (`http://www.dingfudata.com/`) was unavailable during implementation, so the exact-company 36Kr profile image is retained as a documented archival fallback rather than presented as a current official download. If an employer-supplied original becomes available, replace that one file before publication.

@@ -35,8 +35,7 @@ const curatedPublications = publicationPresentation.flatMap((presentation) => {
     presentation,
     figure: {
       image: syncedFramework?.image ?? presentation.image,
-      alt: presentation.imageAlt.en,
-      sourceUrl: syncedFramework?.sourceUrl ?? syncedFramework?.pdfUrl ?? null
+      alt: presentation.imageAlt.en
     }
   }] : [];
 });
@@ -49,7 +48,6 @@ const autoDiscoveredPublications = publicationData.publications
       ? {
           image: framework.image,
           alt: framework.caption ?? `${publication.title} framework figure`,
-          sourceUrl: framework.sourceUrl ?? framework.pdfUrl ?? null,
           width: framework.width,
           height: framework.height
         }
@@ -315,11 +313,6 @@ const autoDiscoveredPublications = publicationData.publications
                       [<span data-lang="en">{link.label.en}</span><span data-lang="zh">{link.label.zh}</span>]
                     </a>
                   ))}
-                  {figure.sourceUrl && (
-                    <a href={figure.sourceUrl} target="_blank" rel="noreferrer">
-                      [<span data-lang="en">Figure source</span><span data-lang="zh">图片来源</span>]
-                    </a>
-                  )}
                   {publication.citations !== null && (
                     <span class="publication-citation">
                       <span data-lang="en">Cited by {publication.citations}</span><span data-lang="zh">引用 {publication.citations}</span>
@@ -355,11 +348,6 @@ const autoDiscoveredPublications = publicationData.publications
                   <a href={publication.url} target="_blank" rel="noreferrer">
                     [<span data-lang="en">Paper</span><span data-lang="zh">论文</span>]
                   </a>
-                  {figure?.sourceUrl && (
-                    <a href={figure.sourceUrl} target="_blank" rel="noreferrer">
-                      [<span data-lang="en">Figure source</span><span data-lang="zh">图片来源</span>]
-                    </a>
-                  )}
                   {publication.citations !== null && (
                     <span class="publication-citation">
                       <span data-lang="en">Cited by {publication.citations}</span><span data-lang="zh">引用 {publication.citations}</span>
