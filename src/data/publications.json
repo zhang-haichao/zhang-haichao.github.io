@@ -1,6 +1,6 @@
 {
   "scholarId": "zRvnGK0AAAAJ",
-  "updatedAt": "2026-08-10T15:03:17Z",
+  "updatedAt": "2026-08-17T04:02:59Z",
   "source": "google-scholar",
   "publications": [
     {
@@ -33,7 +33,7 @@
       "venue": "Knowledge-Based Systems 292, 111612, 2024",
       "year": 2024,
       "url": "https://www.sciencedirect.com/science/article/pii/S0950705124002478",
-      "citations": 19
+      "citations": 20
     },
     {
       "title": "Counterfactual Contrastive Learning for Fine Grained Image Classification",
