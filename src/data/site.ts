@@ -7,6 +7,20 @@ export type Link = {
   href: string;
 };
 
+export type AcceptedPublication = {
+  key: string;
+  shortName: string;
+  title: string;
+  authors: string;
+  venueLabel: string;
+  venue: string;
+  description: LocalizedText;
+  image: string;
+  imageAlt: LocalizedText;
+  preprintUrl: string | null;
+  codeUrl: string;
+};
+
 export const profile = {
   name: {
     en: 'Haichao Zhang',
@@ -81,6 +95,14 @@ export const researchThemes = [
 
 export const news = [
   {
+    date: '2026.08',
+    text: {
+      en: 'Two papers on controllable generative recommendation and recommendation unlearning were accepted by IEEE ICDM 2026.',
+      zh: '两篇关于可控生成式推荐与推荐遗忘的论文被 IEEE ICDM 2026 接收。'
+    },
+    href: '#publications'
+  },
+  {
     date: '2026.02',
     text: {
       en: 'Our machine-vision study of perovskite quantum dots was published in ACS Nano.',
@@ -105,6 +127,47 @@ export const news = [
     href: 'https://doi.org/10.1016/j.knosys.2024.111612'
   }
 ] as const;
+
+export const acceptedPublications: AcceptedPublication[] = [
+  {
+    key: 'regen',
+    shortName: 'ReGen',
+    title: 'Controllable Generative Recommendation via Guided Token Refinement',
+    authors: 'Haichao Zhang, Zhixuan Liang, Chong Zhang, Zixi Chen, Wen Wang, Jia Wang',
+    venueLabel: 'IEEE ICDM 2026',
+    venue: '2026 IEEE International Conference on Data Mining (ICDM), accepted',
+    description: {
+      en: 'A controllable generative recommendation framework that refines semantic tokens under explicit guidance for more reliable alignment with user intent.',
+      zh: '一种可控生成式推荐框架，通过显式引导细化语义 token，使生成结果与用户意图更加可靠地对齐。'
+    },
+    image: '/images/papers/regen.png',
+    imageAlt: {
+      en: 'ReGen framework for controllable generative recommendation via guided token refinement',
+      zh: '基于引导式 token 细化的 ReGen 可控生成式推荐框架图'
+    },
+    preprintUrl: null,
+    codeUrl: 'https://github.com/zhang-haichao/ReGen'
+  },
+  {
+    key: 'explain-then-forget',
+    shortName: 'Explain-then-Forget',
+    title: 'Explain-then-Forget: Causal Explanation-based Unlearning for Efficient and Precise Recommendation',
+    authors: 'Haichao Zhang, Chong Zhang, Wen Wang, Shi Qiu, Peiyu Hu, Jia Wang',
+    venueLabel: 'IEEE ICDM 2026',
+    venue: '2026 IEEE International Conference on Data Mining (ICDM), accepted',
+    description: {
+      en: 'An efficient recommendation unlearning framework that uses causal explanations to localize and precisely remove the influence of target interactions.',
+      zh: '一种高效推荐遗忘框架，利用因果解释定位并精确移除目标交互产生的影响。'
+    },
+    image: '/images/papers/ceu.png',
+    imageAlt: {
+      en: 'Explain-then-Forget framework for causal explanation-based recommendation unlearning',
+      zh: '基于因果解释的 Explain-then-Forget 推荐遗忘框架图'
+    },
+    preprintUrl: null,
+    codeUrl: 'https://github.com/zhang-haichao/Explain-and-Forget'
+  }
+];
 
 export const publicationPresentation = [
   {
@@ -210,15 +273,6 @@ export const ongoingResearch = [
     image: '/images/papers/teaching-to-forget.png'
   },
   {
-    key: 'regen',
-    title: 'Controllable Generative Recommendation via Guided Token Refinement',
-    description: {
-      en: 'A controllable generative recommendation study focused on more reliable alignment between user intent and generated recommendations.',
-      zh: '一项可控生成式推荐研究，关注用户意图与生成推荐结果之间更可靠的对齐。'
-    },
-    image: '/images/papers/regen.png'
-  },
-  {
     key: 'pcdr',
     title: 'Personalized Conformity Disentanglement for Debiased Recommendations',
     description: {
@@ -226,15 +280,6 @@ export const ongoingResearch = [
       zh: '一项推荐去偏研究，通过区分个体偏好与从众效应，实现更忠实的个性化。'
     },
     image: '/images/papers/pcdr.png'
-  },
-  {
-    key: 'ceu',
-    title: 'Explain-then-Forget: Causal Explanation-based Unlearning for Efficient and Precise Recommendation',
-    description: {
-      en: 'An efficient recommendation unlearning study investigating how causal explanations can guide precise forgetting.',
-      zh: '一项高效推荐遗忘研究，探索因果解释如何指导更加精确的遗忘。'
-    },
-    image: '/images/papers/ceu.png'
   },
   {
     key: 'drumrec',
@@ -376,6 +421,124 @@ export const openSource = [
     },
     language: 'TypeScript',
     href: 'https://github.com/zhang-haichao/PaperReader'
+  }
+] as const;
+
+export const intellectualProperty = [
+  {
+    key: 'cn117312675a',
+    kind: 'patent',
+    year: '2023',
+    type: {
+      en: 'Invention Patent Application',
+      zh: '发明专利申请'
+    },
+    title: {
+      en: 'A Debiasing Method and Recommendation System Based on Personalized Causal Decomposition',
+      zh: '一种基于个性化因果分解的去偏方法及推荐系统'
+    },
+    number: 'CN117312675A',
+    detail: {
+      en: 'Co-inventor · Published on December 29, 2023',
+      zh: '共同发明人 · 2023 年 12 月 29 日公开'
+    },
+    image: '/images/intellectual-property/cn117312675a.jpg',
+    imageAlt: {
+      en: 'First page of the CN117312675A invention patent application',
+      zh: 'CN117312675A 发明专利申请首页'
+    }
+  },
+  {
+    key: 'copyright-pcdr',
+    kind: 'copyright',
+    year: '2025',
+    type: {
+      en: 'Software Copyright',
+      zh: '计算机软件著作权'
+    },
+    title: {
+      en: 'Unbiased Recommendation Algorithm System Based on Personalized Conformity Disentanglement V1.0',
+      zh: '基于个性化从众解耦的无偏推荐算法系统 V1.0'
+    },
+    number: '2025SR0516629',
+    detail: {
+      en: 'Registered software copyright',
+      zh: '计算机软件著作权登记证书'
+    },
+    image: '/images/intellectual-property/copyright-pcdr.jpg',
+    imageAlt: {
+      en: 'Software copyright certificate 2025SR0516629',
+      zh: '软件著作权登记证书 2025SR0516629'
+    }
+  },
+  {
+    key: 'copyright-yibu',
+    kind: 'copyright',
+    year: '2018',
+    type: {
+      en: 'Software Copyright',
+      zh: '计算机软件著作权'
+    },
+    title: {
+      en: 'Large-Scale Road-Network Taxi Dynamic Dispatching Platform for Mobile Internet Ridesharing (YiBu) V1.0',
+      zh: '移动互联网+拼车模式下大规模路网出租车动态调度组织平台［简称：易步］V1.0'
+    },
+    number: '2018SR047738',
+    detail: {
+      en: 'Registered software copyright',
+      zh: '计算机软件著作权登记证书'
+    },
+    image: '/images/intellectual-property/copyright-yibu.jpg',
+    imageAlt: {
+      en: 'Software copyright certificate 2018SR047738',
+      zh: '软件著作权登记证书 2018SR047738'
+    }
+  },
+  {
+    key: 'copyright-rail-android',
+    kind: 'copyright',
+    year: '2018',
+    type: {
+      en: 'Software Copyright',
+      zh: '计算机软件著作权'
+    },
+    title: {
+      en: 'Android-Based Railway Equipment Inspection System (Railway Inspection Equipment APP) V1.0',
+      zh: '基于安卓的铁路设备巡检系统［简称：铁路巡检设备 APP］V1.0'
+    },
+    number: '2018SR717297',
+    detail: {
+      en: 'Registered software copyright',
+      zh: '计算机软件著作权登记证书'
+    },
+    image: '/images/intellectual-property/copyright-rail-android.jpg',
+    imageAlt: {
+      en: 'Software copyright certificate 2018SR717297',
+      zh: '软件著作权登记证书 2018SR717297'
+    }
+  },
+  {
+    key: 'copyright-rail-web',
+    kind: 'copyright',
+    year: '2018',
+    type: {
+      en: 'Software Copyright',
+      zh: '计算机软件著作权'
+    },
+    title: {
+      en: 'Web-Based Railway Equipment Inspection System (Railway Inspection Equipment System) V1.0',
+      zh: '基于 WEB 端的铁路设备巡检系统［简称：铁路巡检设备系统］V1.0'
+    },
+    number: '2018SR643652',
+    detail: {
+      en: 'Registered software copyright',
+      zh: '计算机软件著作权登记证书'
+    },
+    image: '/images/intellectual-property/copyright-rail-web.jpg',
+    imageAlt: {
+      en: 'Software copyright certificate 2018SR643652',
+      zh: '软件著作权登记证书 2018SR643652'
+    }
   }
 ] as const;
 

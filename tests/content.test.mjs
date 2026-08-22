@@ -27,6 +27,11 @@ const requiredAssets = [
   'public/images/institutions/ecjtu-user.png',
   'public/images/institutions/alibaba-user.png',
   'public/images/institutions/dingfu-archive.png',
+  'public/images/intellectual-property/cn117312675a.jpg',
+  'public/images/intellectual-property/copyright-pcdr.jpg',
+  'public/images/intellectual-property/copyright-yibu.jpg',
+  'public/images/intellectual-property/copyright-rail-android.jpg',
+  'public/images/intellectual-property/copyright-rail-web.jpg',
   'public/cv/haichao-zhang-en.pdf',
   'public/cv/haichao-zhang-zh.pdf'
 ];
@@ -93,6 +98,46 @@ test('homepage keeps every Scholar work in Publications and consumes synced fram
   assert.doesNotMatch(page, /Additional publications/);
   assert.doesNotMatch(page, /Framework pending public PDF/);
   assert.doesNotMatch(page, /Figure source/);
+});
+
+test('ICDM 2026 acceptances are promoted from ongoing work to Publications', async () => {
+  const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+  const acceptedBlock = site.match(/export const acceptedPublications[^=]*= \[([\s\S]*?)\];/)?.[1] ?? '';
+  const ongoingBlock = site.match(/export const ongoingResearch = \[([\s\S]*?)\] as const;/)?.[1] ?? '';
+
+  assert.match(site, /date: '2026\.08'/);
+  assert.doesNotMatch(site, /date: '2026\.08\.17'/);
+  assert.match(acceptedBlock, /Controllable Generative Recommendation via Guided Token Refinement/);
+  assert.match(acceptedBlock, /Explain-then-Forget: Causal Explanation-based Unlearning/);
+  assert.match(acceptedBlock, /https:\/\/github\.com\/zhang-haichao\/ReGen/);
+  assert.match(acceptedBlock, /https:\/\/github\.com\/zhang-haichao\/Explain-and-Forget/);
+  assert.match(acceptedBlock, /preprintUrl: null/g);
+  assert.doesNotMatch(ongoingBlock, /key: 'regen'|key: 'ceu'/);
+  assert.match(page, /acceptedPublications\.map/);
+  assert.match(page, /Preprint coming soon/);
+});
+
+test('every main content heading includes a decorative icon', async () => {
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+
+  for (const id of ['about-title', 'news-title', 'journey-title', 'publications-title', 'ongoing-title', 'opensource-title', 'ip-title', 'awards-title']) {
+    assert.match(page, new RegExp(`id=["']${id}["'][^>]*>[^<]*<span class=["']heading-icon["'] aria-hidden=["']true["']>`));
+  }
+});
+
+test('intellectual property records match the supplied patent and copyright certificates', async () => {
+  const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+  const ipBlock = site.match(/export const intellectualProperty = \[([\s\S]*?)\] as const;/)?.[1] ?? '';
+
+  for (const identifier of ['CN117312675A', '2025SR0516629', '2018SR047738', '2018SR717297', '2018SR643652']) {
+    assert.match(ipBlock, new RegExp(identifier));
+  }
+  assert.match(ipBlock, /Invention Patent Application/);
+  assert.match(ipBlock, /kind: 'copyright'/);
+  assert.match(page, /id="intellectual-property"/);
+  assert.match(page, /intellectualProperty\.map/);
 });
 
 test('scheduled Scholar workflow validates and commits metadata plus framework artifacts', async () => {

@@ -15,8 +15,8 @@ Rebuild Haichao Zhang's academic homepage using the supplied Jia Wang homepage s
 
 1. Sticky navigation: name, About, News, Publications, Ongoing Research, Experience & Education, Open Source, EN/中文.
 2. Sidebar: portrait, name, role, affiliation, research interests, location, University of Liverpool email, Google Scholar, GitHub, and language-aware CV.
-3. Main column: About Me, News, Experience & Education, Publications, Ongoing Research, Open Source, Selected Awards.
-4. Five curated publications use supplied or source-verified framework figures. Their display order balances Haichao's author position, venue quality, recency, and scholarly impact; Scholar updates cannot reorder them. Additional Scholar-discovered published work follows in the same Publications section without a separate category. CRAGRU also includes Preprint/Code/Project links.
+3. Main column: About Me, News, Experience & Education, Publications, Ongoing Research, Open Source, Intellectual Property, Selected Awards.
+4. Manually curated accepted papers appear first with supplied framework figures, code links, and a preprint placeholder until publication. Five Scholar-backed curated publications then use supplied or source-verified framework figures; their display order balances Haichao's author position, venue quality, recency, and scholarly impact. Additional Scholar-discovered published work follows in the same Publications section without a separate category. CRAGRU also includes Preprint/Code/Project links.
 5. Ongoing manuscripts use only the supplied framework figures and intentionally high-level descriptions.
 6. Open Source highlights `axiom-quant`, `senpai-skill`, and `PaperReader`; paper implementation repositories remain attached to their publication entries.
 

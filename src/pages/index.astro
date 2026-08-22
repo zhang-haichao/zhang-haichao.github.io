@@ -1,9 +1,11 @@
 ---
 import '../styles/global.css';
 import {
+  acceptedPublications,
   awards,
   education,
   experience,
+  intellectualProperty,
   news,
   ongoingResearch,
   openSource,
@@ -20,7 +22,8 @@ const navItems = [
   { id: 'experience-education', en: 'Experience & Education', zh: '经历与教育' },
   { id: 'publications', en: 'Publications', zh: '论文' },
   { id: 'ongoing-research', en: 'Ongoing Research', zh: '在研工作' },
-  { id: 'opensource', en: 'Open Source', zh: '开源项目' }
+  { id: 'opensource', en: 'Open Source', zh: '开源项目' },
+  { id: 'intellectual-property', en: 'Intellectual Property', zh: '知识产权' }
 ];
 
 const markAuthor = (authors: string) => authors.split(/(Haichao Zhang)/g);
@@ -191,12 +194,12 @@ const autoDiscoveredPublications = publicationData.publications
 
       <article class="academic-main">
         <section class="content-section about-section reveal" id="about" aria-labelledby="about-title">
-          <h1 id="about-title"><span data-lang="en">About Me</span><span data-lang="zh">关于我</span></h1>
+          <h1 id="about-title"><span class="heading-icon" aria-hidden="true">👋</span><span data-lang="en">About Me</span><span data-lang="zh">关于我</span></h1>
           <p>
             <span data-lang="en">
               I am a Ph.D. student in the <strong>School of AI and Advanced Computing (AIAC)</strong> at
               <strong>Xi'an Jiaotong-Liverpool University (XJTLU)</strong>, supervised by
-              <a href={profile.links.supervisor} target="_blank" rel="noreferrer">Prof. Jia Wang</a>.
+              <a href={profile.links.supervisor} target="_blank" rel="noreferrer"> Prof. Jia Wang</a>.
               I am pursuing a Ph.D. in Computer Science and Software Engineering, with the degree awarded by the University of Liverpool.
             </span>
             <span data-lang="zh">
@@ -218,12 +221,12 @@ const autoDiscoveredPublications = publicationData.publications
         </section>
 
         <section class="content-section reveal" id="news" aria-labelledby="news-title">
-          <h2 id="news-title"><span data-lang="en">News</span><span data-lang="zh">近期动态</span></h2>
+          <h2 id="news-title"><span class="heading-icon" aria-hidden="true">🔥</span><span data-lang="en">News</span><span data-lang="zh">近期动态</span></h2>
           <ul class="news-list">
             {news.map((item) => (
               <li>
                 <time>{item.date}</time>
-                <a href={item.href} target="_blank" rel="noreferrer">
+                <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
                   <span data-lang="en">{item.text.en}</span><span data-lang="zh">{item.text.zh}</span>
                 </a>
               </li>
@@ -232,7 +235,7 @@ const autoDiscoveredPublications = publicationData.publications
         </section>
 
         <section class="content-section" id="experience-education" aria-labelledby="journey-title">
-          <h2 id="journey-title" class="reveal"><span data-lang="en">Experience & Education</span><span data-lang="zh">工作与教育经历</span></h2>
+          <h2 id="journey-title" class="reveal"><span class="heading-icon" aria-hidden="true">🧭</span><span data-lang="en">Experience & Education</span><span data-lang="zh">工作与教育经历</span></h2>
 
           <h3 class="subsection-title reveal"><span data-lang="en">Education</span><span data-lang="zh">教育经历</span></h3>
           <div class="timeline-list education-list">
@@ -276,11 +279,49 @@ const autoDiscoveredPublications = publicationData.publications
 
         <section class="content-section" id="publications" aria-labelledby="publications-title">
           <div class="section-heading reveal">
-            <h2 id="publications-title"><span data-lang="en">Publications</span><span data-lang="zh">学术论文</span></h2>
+            <h2 id="publications-title"><span class="heading-icon" aria-hidden="true">📝</span><span data-lang="en">Publications</span><span data-lang="zh">学术论文</span></h2>
             <a href={profile.links.scholar} target="_blank" rel="noreferrer">
               <span data-lang="en">Google Scholar profile</span><span data-lang="zh">Google Scholar 主页</span> ↗
             </a>
           </div>
+
+          {acceptedPublications.map((publication) => (
+            <article class="paper-box publication-paper accepted-paper reveal" data-publication-title={publication.title}>
+              <button
+                class="paper-figure"
+                type="button"
+                data-figure-src={publication.image}
+                data-figure-alt-en={publication.imageAlt.en}
+                data-figure-alt-zh={publication.imageAlt.zh}
+                aria-label={`Enlarge ${publication.shortName} framework figure`}
+              >
+                <img src={publication.image} alt={publication.imageAlt.en} loading="lazy" />
+              </button>
+              <div class="paper-info">
+                <span class="venue-badge">{publication.venueLabel}</span>
+                <h3>{publication.title}</h3>
+                <p class="paper-authors">
+                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                </p>
+                <p class="publication-venue">{publication.venue}</p>
+                <p><span data-lang="en">{publication.description.en}</span><span data-lang="zh">{publication.description.zh}</span></p>
+                <div class="paper-links">
+                  {publication.preprintUrl ? (
+                    <a href={publication.preprintUrl} target="_blank" rel="noreferrer">
+                      [<span data-lang="en">Preprint</span><span data-lang="zh">预印本</span>]
+                    </a>
+                  ) : (
+                    <span class="paper-link-placeholder">
+                      [<span data-lang="en">Preprint coming soon</span><span data-lang="zh">预印本即将发布</span>]
+                    </span>
+                  )}
+                  <a href={publication.codeUrl} target="_blank" rel="noreferrer">
+                    [<span data-lang="en">Code</span><span data-lang="zh">代码</span>]
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
 
           {curatedPublications.map(({ publication, presentation, figure }) => (
             <article class="paper-box publication-paper reveal" data-publication-title={publication.title}>
@@ -362,7 +403,7 @@ const autoDiscoveredPublications = publicationData.publications
         <section class="content-section" id="ongoing-research" aria-labelledby="ongoing-title">
           <div class="section-heading reveal">
             <div>
-              <h2 id="ongoing-title"><span data-lang="en">Ongoing Research</span><span data-lang="zh">在研工作</span></h2>
+              <h2 id="ongoing-title"><span class="heading-icon" aria-hidden="true">🔬</span><span data-lang="en">Ongoing Research</span><span data-lang="zh">在研工作</span></h2>
               <p class="section-note">
                 <span data-lang="en">Submitted and early-stage work is intentionally introduced only at a high level.</span>
                 <span data-lang="zh">为避免泄露尚未发表的研究思路，此处仅提供概括性介绍。</span>
@@ -394,7 +435,7 @@ const autoDiscoveredPublications = publicationData.publications
         </section>
 
         <section class="content-section" id="opensource" aria-labelledby="opensource-title">
-          <h2 id="opensource-title" class="reveal"><span data-lang="en">Open Source</span><span data-lang="zh">开源项目</span></h2>
+          <h2 id="opensource-title" class="reveal"><span class="heading-icon" aria-hidden="true">💻</span><span data-lang="en">Open Source</span><span data-lang="zh">开源项目</span></h2>
           <div class="project-list">
             {openSource.map((project) => (
               <a class="project-item reveal" href={project.href} target="_blank" rel="noreferrer">
@@ -408,8 +449,44 @@ const autoDiscoveredPublications = publicationData.publications
           </div>
         </section>
 
+        <section class="content-section" id="intellectual-property" aria-labelledby="ip-title">
+          <h2 id="ip-title" class="reveal"><span class="heading-icon" aria-hidden="true">📜</span><span data-lang="en">Intellectual Property</span><span data-lang="zh">知识产权</span></h2>
+          <p class="ip-summary reveal">
+            <span data-lang="en">One published invention patent application and four registered software copyrights.</span>
+            <span data-lang="zh">一项已公开发明专利申请与四项计算机软件著作权。</span>
+          </p>
+          <div class="ip-list">
+            {intellectualProperty.map((item) => (
+              <article class="ip-item reveal" data-ip-key={item.key}>
+                <button
+                  class="ip-document-preview"
+                  type="button"
+                  data-figure-src={item.image}
+                  data-figure-alt-en={item.imageAlt.en}
+                  data-figure-alt-zh={item.imageAlt.zh}
+                  aria-label={`Enlarge ${item.number} document preview`}
+                >
+                  <img src={item.image} alt={item.imageAlt.en} loading="lazy" />
+                </button>
+                <div class="ip-info">
+                  <div class="ip-meta">
+                    <span class="ip-type"><span data-lang="en">{item.type.en}</span><span data-lang="zh">{item.type.zh}</span></span>
+                    <time>{item.year}</time>
+                  </div>
+                  <h3><span data-lang="en">{item.title.en}</span><span data-lang="zh">{item.title.zh}</span></h3>
+                  <p class="ip-number">
+                    <span data-lang="en">{item.kind === 'patent' ? 'Publication No.' : 'Registration No.'}: {item.number}</span>
+                    <span data-lang="zh">{item.kind === 'patent' ? '申请公布号' : '登记号'}：{item.number}</span>
+                  </p>
+                  <p class="ip-detail"><span data-lang="en">{item.detail.en}</span><span data-lang="zh">{item.detail.zh}</span></p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section class="content-section" id="awards" aria-labelledby="awards-title">
-          <h2 id="awards-title" class="reveal"><span data-lang="en">Selected Awards</span><span data-lang="zh">部分荣誉</span></h2>
+          <h2 id="awards-title" class="reveal"><span class="heading-icon" aria-hidden="true">🏆</span><span data-lang="en">Selected Awards</span><span data-lang="zh">部分荣誉</span></h2>
           <ul class="award-list">
             {awards.map((award) => (
               <li class="reveal">

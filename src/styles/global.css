@@ -373,6 +373,15 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   line-height: 1.25;
 }
 
+.heading-icon {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.82em;
+  line-height: 1;
+  vertical-align: 0.06em;
+}
+
 .content-section p {
   margin: 0 0 0.95rem;
 }
@@ -426,9 +435,10 @@ html[data-ui-language="zh"] [data-lang="zh"] {
 }
 
 .news-list time {
-  color: #737c86;
+  color: #111;
   font-family: Georgia, serif;
   font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .section-heading {
@@ -550,6 +560,11 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   margin-top: 0.75rem;
   font-size: 0.79rem;
   font-weight: 700;
+}
+
+.paper-link-placeholder {
+  color: #78828d;
+  font-weight: 600;
 }
 
 .publication-citation {
@@ -691,6 +706,93 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   color: #7b8590;
 }
 
+.ip-summary {
+  margin: -0.55rem 0 0.9rem !important;
+  color: var(--muted);
+  font-size: 0.83rem;
+}
+
+.ip-list {
+  border-top: 1px solid var(--soft);
+}
+
+.ip-item {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 1.35rem;
+  align-items: start;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--soft);
+}
+
+.ip-document-preview {
+  width: 118px;
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  border: 1px solid #e0e4e8;
+  background: #f7f8f9;
+  cursor: zoom-in;
+  box-shadow: 0 2px 8px rgba(31, 44, 59, 0.12);
+}
+
+.ip-document-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 220ms ease;
+}
+
+.ip-document-preview:hover img {
+  transform: scale(1.025);
+}
+
+.ip-info {
+  min-width: 0;
+  padding-top: 0.08rem;
+}
+
+.ip-meta {
+  display: flex;
+  gap: 0.8rem;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.42rem;
+}
+
+.ip-type {
+  color: var(--link);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+}
+
+.ip-meta time {
+  color: #7b8590;
+  font-family: Georgia, serif;
+  font-size: 0.75rem;
+}
+
+.ip-info h3 {
+  margin: 0 0 0.5rem;
+  color: #2b323a;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.ip-info p {
+  margin: 0.18rem 0;
+  color: #626c76;
+  font-size: 0.79rem;
+  line-height: 1.48;
+}
+
+.ip-info .ip-number {
+  color: #444e58;
+  font-weight: 700;
+}
+
 .award-list {
   margin: 0;
   padding: 0;
@@ -708,8 +810,9 @@ html[data-ui-language="zh"] [data-lang="zh"] {
 }
 
 .award-list time {
-  color: #7b8590;
+  color: #111;
   font-family: Georgia, serif;
+  font-weight: 700;
 }
 
 .site-footer {
@@ -1054,6 +1157,15 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   .project-item > span::after {
     content: "↗";
     font-size: 0.9rem;
+  }
+
+  .ip-item {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 0.9rem;
+  }
+
+  .ip-document-preview {
+    width: 88px;
   }
 
   .site-footer {

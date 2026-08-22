@@ -2,6 +2,12 @@
 
 This file records the public sources used to seed publication metadata and institutional links. The scheduled Scholar updater remains the long-term source for the Publications list.
 
+## Intellectual property documents
+
+- `CN117312675A.pdf`: user-provided invention patent application publication; the homepage uses a compressed preview of page 1 and labels it as an application, not a granted patent.
+- Four user-provided China Copyright Protection Center registration certificates confirm `2025SR0516629`, `2018SR047738`, `2018SR717297`, and `2018SR643652`.
+- Only compressed document previews are deployed. The original PDFs are not copied into the public site.
+
 - Google Scholar profile: https://scholar.google.com/citations?user=zRvnGK0AAAAJ&hl=en
 - CRAGRU: https://arxiv.org/abs/2511.05494
 - CRAGRU project page: https://zhang-haichao.github.io/CRAGRU-Page/

@@ -25,11 +25,12 @@ Build a polished, single-page academic homepage for GitHub Pages. English is the
 2. About and research focus.
 3. News highlights.
 4. Selected Research with framework figures, concise contributions, and Paper/Code/Project links.
-5. Publications sourced from Google Scholar and rendered from repository data, including “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains”.
-6. Ongoing Research with public-safe summaries only. Include Teaching to Forget, ReGen, PCDR, CEU, and DRUMRec. Exclude DURE.
+5. Publications sourced from Google Scholar and rendered from repository data, including “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains”. Manually curated accepted papers may appear before publication with a clearly marked preprint placeholder.
+6. Ongoing Research with public-safe summaries only. Include Teaching to Forget, PCDR, and DRUMRec. Exclude DURE. ReGen and Explain-then-Forget moved to Publications after their IEEE ICDM 2026 acceptance on 2026-08-17.
 7. Experience and Education with institution/company logos.
 8. Open Source containing `axiom-quant`, `senpai-skill`, and `PaperReader`.
-9. Awards and contact/footer.
+9. Intellectual Property with one published invention patent application and four registered software copyrights. Use compressed previews of the supplied official documents, but do not publish the original PDFs for download.
+10. Awards and contact/footer.
 
 ## Publication and automation rules
 

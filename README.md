@@ -8,6 +8,7 @@ A bilingual, single-page academic homepage for GitHub Pages. English is the defa
 - English/Chinese content with a persisted language preference
 - Selected Research and public-safe Ongoing Research framework previews
 - Google Scholar-backed Publications with citation counts; automatically discovered works stay in the same Publications section
+- Intellectual Property with one patent-application preview and four software-copyright certificate previews
 - Curated publication ordering with zoomable framework figures and automatic publisher-figure support
 - Education and industry timelines with locally archived, source-documented institution logos
 - Open Source featuring `axiom-quant`, `senpai-skill`, and `PaperReader`

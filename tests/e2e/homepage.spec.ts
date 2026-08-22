@@ -9,17 +9,20 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('.profile-identity').getByRole('heading')).toContainText('Haichao');
   await expect(page.getByRole('link', { name: 'Download CV' })).toHaveAttribute('href', '/cv/haichao-zhang-en.pdf');
-  await expect(page.locator('.ongoing-item')).toHaveCount(5);
+  await expect(page.locator('.ongoing-item')).toHaveCount(3);
   await expect(page.locator('#opensource .project-item')).toHaveCount(3);
   await expect(page.locator('#opensource')).toContainText('axiom-quant');
   await expect(page.locator('#opensource')).toContainText('senpai-skill');
   await expect(page.locator('#opensource')).toContainText('PaperReader');
   await expect(page.locator('#opensource')).not.toContainText('CRAGRU');
+  await expect(page.locator('#intellectual-property .ip-item')).toHaveCount(5);
+  await expect(page.locator('#intellectual-property')).toContainText('CN117312675A');
+  await expect(page.locator('#intellectual-property')).toContainText('2025SR0516629');
 
   await expect(page.locator('.academic-sidebar')).toBeVisible();
   await expect(page.locator('.academic-main')).toBeVisible();
   await expect(page.locator('.profile-avatar')).toBeVisible();
-  await expect(page.locator('.publication-paper')).toHaveCount(6);
+  await expect(page.locator('.publication-paper')).toHaveCount(8);
   await expect(page.getByText('Additional publications', { exact: true })).toHaveCount(0);
   await expect(page.locator('a[href="mailto:haichao.zhang22@student.xjtlu.edu.cn"]')).toHaveCount(0);
   await expect(page.locator('a[href="mailto:zhc@liverpool.ac.uk"]')).toBeVisible();
@@ -35,12 +38,20 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(perovskite.locator('a[href="https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction"]')).toBeVisible();
   const cragru = page.locator('[data-publication-title^="Customized Retrieval-Augmented"]');
   await expect(cragru.locator('a[href="https://zhang-haichao.github.io/CRAGRU-Page/"]')).toBeVisible();
+  const regen = page.locator('[data-publication-title^="Controllable Generative Recommendation"]');
+  await expect(regen.getByText('Preprint coming soon', { exact: true })).toBeVisible();
+  await expect(regen.locator('a[href="https://github.com/zhang-haichao/ReGen"]')).toBeVisible();
+  const explainThenForget = page.locator('[data-publication-title^="Explain-then-Forget"]');
+  await expect(explainThenForget.getByText('Preprint coming soon', { exact: true })).toBeVisible();
+  await expect(explainThenForget.locator('a[href="https://github.com/zhang-haichao/Explain-and-Forget"]')).toBeVisible();
   const cil = page.locator('[data-publication-title^="Clustering-based incremental learning"]');
   await expect(cil.locator('a[href="https://github.com/ybyangjing/CTA"]')).toBeVisible();
   await expect(page.getByText('Figure source', { exact: true })).toHaveCount(0);
 
   const publicationTitles = await page.locator('.publication-paper h3').allTextContents();
   expect(publicationTitles).toEqual([
+    'Controllable Generative Recommendation via Guided Token Refinement',
+    'Explain-then-Forget: Causal Explanation-based Unlearning for Efficient and Precise Recommendation',
     'Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning',
     'Machine Vision-Enabled Octahedral Network Reconstruction and Structural Analysis of Perovskite Quantum Dots',
     'Clustering-based incremental learning for imbalanced data classification',
@@ -92,6 +103,15 @@ test('opens and closes a framework figure dialog', async ({ page }) => {
   await expect(dialog).toContainText('CRAGRU framework');
   await dialog.getByRole('button', { name: 'Close figure' }).click();
   await expect(dialog).not.toBeVisible();
+});
+
+test('opens an intellectual property document preview', async ({ page }) => {
+  await page.getByRole('button', { name: 'Enlarge CN117312675A document preview' }).click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator('img')).toHaveAttribute('src', '/images/intellectual-property/cn117312675a.jpg');
+  await expect(dialog).toContainText('CN117312675A');
+  await dialog.getByRole('button', { name: 'Close figure' }).click();
 });
 
 test('stacks readable XJTLU and Liverpool logos in the PhD education entry', async ({ page, isMobile }) => {
