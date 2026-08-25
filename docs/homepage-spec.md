@@ -25,17 +25,18 @@ Build a polished, single-page academic homepage for GitHub Pages. English is the
 2. About and research focus.
 3. News highlights.
 4. Selected Research with framework figures, concise contributions, and Paper/Code/Project links.
-5. Publications sourced from Google Scholar and rendered from repository data, including “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains”. Manually curated accepted papers may appear before publication with a clearly marked preprint placeholder.
-6. Ongoing Research with public-safe summaries only. Include Teaching to Forget, PCDR, and DRUMRec. Exclude DURE. ReGen and Explain-then-Forget moved to Publications after their IEEE ICDM 2026 acceptance on 2026-08-17.
-7. Experience and Education with institution/company logos.
-8. Open Source containing `axiom-quant`, `senpai-skill`, and `PaperReader`.
-9. Intellectual Property with one published invention patent application and four registered software copyrights. Use compressed previews of the supplied official documents, but do not publish the original PDFs for download.
-10. Awards and contact/footer.
+5. Publications sourced from Google Scholar and rendered from repository data. Manually curated accepted papers may appear before publication with a clearly marked preprint placeholder.
+6. Collaborative Publications containing the four designated co-authored works, including “Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains”, while retaining the same publication-card treatment.
+7. Ongoing Research with public-safe summaries only. Include Teaching to Forget, PCDR, and DRUMRec. Exclude DURE. ReGen and Explain-then-Forget moved to Publications after their IEEE ICDM 2026 acceptance on 2026-08-17.
+8. Experience and Education with institution/company logos.
+9. Open Source containing `axiom-quant`, `senpai-skill`, and `PaperReader`.
+10. Intellectual Property with one published invention patent application and four registered software copyrights. Use compressed previews of the supplied official documents, but do not publish the original PDFs for download.
+11. Awards and contact/footer.
 
 ## Publication and automation rules
 
 - Google Scholar profile ID: `zRvnGK0AAAAJ`.
-- Scholar-listed works belong in Publications.
+- Scholar-listed works belong in either Publications or Collaborative Publications according to the curated grouping; no work is omitted.
 - CRAGRU is an academic paper implementation and appears with the published paper, not in Open Source.
 - A scheduled GitHub Action updates publication data safely: pinned/current actions, explicit permissions, concurrency control, validation before replacement, commit only when changed, and no force-push.
 - If Scholar is temporarily inaccessible, keep the last valid publication data and fail without erasing content.

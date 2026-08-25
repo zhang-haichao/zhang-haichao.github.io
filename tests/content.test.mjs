@@ -88,16 +88,36 @@ test('framework sync records real extraction provenance from PDFs and publisher 
   assert.match(bloodstain.caption, /overall architecture of FTIR-Net/i);
 });
 
-test('homepage keeps every Scholar work in Publications and consumes synced frameworks', async () => {
+test('homepage keeps every Scholar work visible and consumes synced frameworks', async () => {
   const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
 
   assert.match(page, /import frameworkData from ['"]\.\.\/data\/frameworks\.json['"]/);
   assert.match(page, /syncedFramework\?\.image \?\? presentation\.image/);
   assert.match(page, /Cited by \{publication\.citations\}/);
   assert.match(page, /autoDiscoveredPublications/);
+  assert.match(page, /collaborativeAutoDiscoveredPublications/);
   assert.doesNotMatch(page, /Additional publications/);
   assert.doesNotMatch(page, /Framework pending public PDF/);
   assert.doesNotMatch(page, /Figure source/);
+});
+
+test('specified co-authored papers are grouped under Collaborative Publications', async () => {
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+
+  assert.match(page, /id="collaborative-publications"/);
+  assert.match(page, /Collaborative Publications/);
+  assert.match(page, /合作论文/);
+  assert.match(page, /collaborativeCuratedPublications\.map/);
+  assert.match(page, /collaborativeAutoDiscoveredPublications\.map/);
+
+  for (const title of [
+    'Clustering-based incremental learning for imbalanced data classification',
+    'Counterfactual Contrastive Learning for Fine Grained Image Classification',
+    'Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation',
+    'Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains'
+  ]) {
+    assert.match(page, new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
 });
 
 test('ICDM 2026 acceptances are promoted from ongoing work to Publications', async () => {
@@ -121,7 +141,7 @@ test('ICDM 2026 acceptances are promoted from ongoing work to Publications', asy
 test('every main content heading includes a decorative icon', async () => {
   const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
 
-  for (const id of ['about-title', 'news-title', 'journey-title', 'publications-title', 'ongoing-title', 'opensource-title', 'ip-title', 'awards-title']) {
+  for (const id of ['about-title', 'news-title', 'journey-title', 'publications-title', 'collaborative-title', 'ongoing-title', 'opensource-title', 'ip-title', 'awards-title']) {
     assert.match(page, new RegExp(`id=["']${id}["'][^>]*>[^<]*<span class=["']heading-icon["'] aria-hidden=["']true["']>`));
   }
 });

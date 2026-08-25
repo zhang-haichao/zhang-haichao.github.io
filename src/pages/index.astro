@@ -21,6 +21,7 @@ const navItems = [
   { id: 'news', en: 'News', zh: '动态' },
   { id: 'experience-education', en: 'Experience & Education', zh: '经历与教育' },
   { id: 'publications', en: 'Publications', zh: '论文' },
+  { id: 'collaborative-publications', en: 'Collaborative Work', zh: '合作论文' },
   { id: 'ongoing-research', en: 'Ongoing Research', zh: '在研工作' },
   { id: 'opensource', en: 'Open Source', zh: '开源项目' },
   { id: 'intellectual-property', en: 'Intellectual Property', zh: '知识产权' }
@@ -29,6 +30,12 @@ const navItems = [
 const markAuthor = (authors: string) => authors.split(/(Haichao Zhang)/g);
 const publicationByTitle = new Map(publicationData.publications.map((publication) => [publication.title, publication]));
 const frameworkByTitle = new Map(frameworkData.frameworks.map((framework) => [framework.title, framework]));
+const collaborativePublicationTitles = new Set([
+  'Clustering-based incremental learning for imbalanced data classification',
+  'Counterfactual Contrastive Learning for Fine Grained Image Classification',
+  'Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation',
+  'Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains'
+]);
 const curatedPublications = publicationPresentation.flatMap((presentation) => {
   const publication = publicationByTitle.get(presentation.title);
   const framework = frameworkByTitle.get(presentation.title);
@@ -42,6 +49,10 @@ const curatedPublications = publicationPresentation.flatMap((presentation) => {
     }
   }] : [];
 });
+const primaryCuratedPublications = curatedPublications
+  .filter(({ publication }) => !collaborativePublicationTitles.has(publication.title));
+const collaborativeCuratedPublications = curatedPublications
+  .filter(({ publication }) => collaborativePublicationTitles.has(publication.title));
 const curatedTitles = new Set<string>(publicationPresentation.map((publication) => publication.title));
 const autoDiscoveredPublications = publicationData.publications
   .filter((publication) => !curatedTitles.has(publication.title))
@@ -62,6 +73,10 @@ const autoDiscoveredPublications = publicationData.publications
       venueLabel: acronym ? `${acronym} ${publication.year}` : `${publication.year}`
     };
   });
+const primaryAutoDiscoveredPublications = autoDiscoveredPublications
+  .filter(({ publication }) => !collaborativePublicationTitles.has(publication.title));
+const collaborativeAutoDiscoveredPublications = autoDiscoveredPublications
+  .filter(({ publication }) => collaborativePublicationTitles.has(publication.title));
 ---
 
 <!doctype html>
@@ -323,7 +338,7 @@ const autoDiscoveredPublications = publicationData.publications
             </article>
           ))}
 
-          {curatedPublications.map(({ publication, presentation, figure }) => (
+          {primaryCuratedPublications.map(({ publication, presentation, figure }) => (
             <article class="paper-box publication-paper reveal" data-publication-title={publication.title}>
               <button
                 class="paper-figure"
@@ -364,7 +379,95 @@ const autoDiscoveredPublications = publicationData.publications
             </article>
           ))}
 
-          {autoDiscoveredPublications.map(({ publication, figure, venueLabel }) => (
+          {primaryAutoDiscoveredPublications.map(({ publication, figure, venueLabel }) => (
+            <article class:list={['paper-box', 'publication-paper', 'reveal', !figure && 'no-figure']} data-publication-title={publication.title}>
+              {figure && (
+                <button
+                  class="paper-figure"
+                  type="button"
+                  data-figure-src={figure.image}
+                  data-figure-alt-en={figure.alt}
+                  data-figure-alt-zh={`${publication.title} 框架图`}
+                  aria-label={`Enlarge ${publication.title} framework figure`}
+                >
+                  <img src={figure.image} alt={figure.alt} width={figure.width} height={figure.height} loading="lazy" />
+                </button>
+              )}
+              <div class="paper-info">
+                <span class="venue-badge">{venueLabel}</span>
+                <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
+                <p class="paper-authors">
+                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                </p>
+                <p class="publication-venue">{publication.venue}</p>
+                <div class="paper-links">
+                  <a href={publication.url} target="_blank" rel="noreferrer">
+                    [<span data-lang="en">Paper</span><span data-lang="zh">论文</span>]
+                  </a>
+                  {publication.citations !== null && (
+                    <span class="publication-citation">
+                      <span data-lang="en">Cited by {publication.citations}</span><span data-lang="zh">引用 {publication.citations}</span>
+                    </span>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </section>
+
+        <section class="content-section" id="collaborative-publications" aria-labelledby="collaborative-title">
+          <div class="section-heading reveal">
+            <div>
+              <h2 id="collaborative-title"><span class="heading-icon" aria-hidden="true">🤝</span><span data-lang="en">Collaborative Publications</span><span data-lang="zh">合作论文</span></h2>
+              <p class="section-note">
+                <span data-lang="en">Research contributions developed through interdisciplinary collaboration.</span>
+                <span data-lang="zh">跨方向合作完成的研究成果。</span>
+              </p>
+            </div>
+          </div>
+
+          {collaborativeCuratedPublications.map(({ publication, presentation, figure }) => (
+            <article class="paper-box publication-paper reveal" data-publication-title={publication.title}>
+              <button
+                class="paper-figure"
+                type="button"
+                data-figure-src={figure.image}
+                data-figure-alt-en={figure.alt}
+                data-figure-alt-zh={presentation.imageAlt.zh}
+                aria-label={`Enlarge ${presentation.shortName} framework figure`}
+              >
+                <img src={figure.image} alt={figure.alt} loading="lazy" />
+              </button>
+              <div class="paper-info">
+                <span class="venue-badge">{presentation.venueLabel}</span>
+                <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
+                <p class="paper-authors">
+                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                </p>
+                <p class="publication-venue">{publication.venue}</p>
+                {presentation.description && (
+                  <p><span data-lang="en">{presentation.description.en}</span><span data-lang="zh">{presentation.description.zh}</span></p>
+                )}
+                <div class="paper-links">
+                  <a href={publication.url} target="_blank" rel="noreferrer">
+                    [<span data-lang="en">Paper</span><span data-lang="zh">论文</span>]
+                  </a>
+                  {presentation.extraLinks.map((link) => (
+                    <a href={link.href} target="_blank" rel="noreferrer">
+                      [<span data-lang="en">{link.label.en}</span><span data-lang="zh">{link.label.zh}</span>]
+                    </a>
+                  ))}
+                  {publication.citations !== null && (
+                    <span class="publication-citation">
+                      <span data-lang="en">Cited by {publication.citations}</span><span data-lang="zh">引用 {publication.citations}</span>
+                    </span>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+
+          {collaborativeAutoDiscoveredPublications.map(({ publication, figure, venueLabel }) => (
             <article class:list={['paper-box', 'publication-paper', 'reveal', !figure && 'no-figure']} data-publication-title={publication.title}>
               {figure && (
                 <button

@@ -7,7 +7,7 @@ A bilingual, single-page academic homepage for GitHub Pages. English is the defa
 - Jia Wang-inspired academic layout with a compact profile sidebar and readable main column
 - English/Chinese content with a persisted language preference
 - Selected Research and public-safe Ongoing Research framework previews
-- Google Scholar-backed Publications with citation counts; automatically discovered works stay in the same Publications section
+- Google Scholar-backed papers with citation counts, grouped into Publications and Collaborative Publications without dropping automatically discovered work
 - Intellectual Property with one patent-application preview and four software-copyright certificate previews
 - Curated publication ordering with zoomable framework figures and automatic publisher-figure support
 - Education and industry timelines with locally archived, source-documented institution logos
@@ -84,7 +84,7 @@ The workflow:
 7. runs content tests and builds the site; and
 8. commits only changed publication metadata, the framework manifest, and automatic framework images.
 
-All valid works returned by the configured Scholar profile are rendered inside Publications; automatic discovery never creates an “Additional publications” category. Submitted and early-stage manuscripts are maintained separately in Ongoing Research. A paper without a reviewed figure source still appears with its publication metadata and citation count. The workflow never invents a PDF URL or substitutes an unrelated image.
+All valid works returned by the configured Scholar profile are rendered across Publications and Collaborative Publications; automatic discovery never creates an “Additional publications” category or omits a work. Submitted and early-stage manuscripts are maintained separately in Ongoing Research. A paper without a reviewed figure source still appears with its publication metadata and citation count. The workflow never invents a PDF URL or substitutes an unrelated image.
 
 If Google Scholar rate-limits a run, the workflow fails without replacing the last valid publication file. Likewise, a failed automatic extraction does not delete the previous valid figure. No API key or repository secret is required.
 

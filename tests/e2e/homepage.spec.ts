@@ -23,6 +23,9 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('.academic-main')).toBeVisible();
   await expect(page.locator('.profile-avatar')).toBeVisible();
   await expect(page.locator('.publication-paper')).toHaveCount(8);
+  await expect(page.locator('#publications .publication-paper')).toHaveCount(4);
+  await expect(page.locator('#collaborative-publications .publication-paper')).toHaveCount(4);
+  await expect(page.locator('#collaborative-publications')).toContainText('Collaborative Publications');
   await expect(page.getByText('Additional publications', { exact: true })).toHaveCount(0);
   await expect(page.locator('a[href="mailto:haichao.zhang22@student.xjtlu.edu.cn"]')).toHaveCount(0);
   await expect(page.locator('a[href="mailto:zhc@liverpool.ac.uk"]')).toBeVisible();
@@ -46,6 +49,9 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(explainThenForget.locator('a[href="https://github.com/zhang-haichao/Explain-and-Forget"]')).toBeVisible();
   const cil = page.locator('[data-publication-title^="Clustering-based incremental learning"]');
   await expect(cil.locator('a[href="https://github.com/ybyangjing/CTA"]')).toBeVisible();
+  await expect(page.locator('#collaborative-publications')).toContainText('Counterfactual Contrastive Learning for Fine Grained Image Classification');
+  await expect(page.locator('#collaborative-publications')).toContainText('Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation');
+  await expect(page.locator('#collaborative-publications')).toContainText('Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains');
   await expect(page.getByText('Figure source', { exact: true })).toHaveCount(0);
 
   const publicationTitles = await page.locator('.publication-paper h3').allTextContents();
@@ -156,6 +162,7 @@ test('mobile navigation is usable and the page does not overflow', async ({ page
   await expect(menu).toHaveAttribute('aria-expanded', 'true');
   await expect(page.locator('#mobile-menu')).toBeVisible();
   await expect(page.locator('#mobile-menu').getByRole('link', { name: 'Publications' })).toBeVisible();
+  await expect(page.locator('#mobile-menu').getByRole('link', { name: 'Collaborative Work' })).toBeVisible();
 
   const profileLayout = await page.locator('.profile-card').evaluate((element) => getComputedStyle(element).display);
   expect(profileLayout).toBe('grid');
