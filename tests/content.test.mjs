@@ -127,8 +127,12 @@ test('news and ongoing research expose the requested bilingual publication statu
 
   assert.doesNotMatch(site, /date: '2026\.02'/);
   assert.doesNotMatch(site, /钙钛矿量子点机器视觉研究发表于 ACS Nano/);
-  assert.match(site, /en: 'TOIS Major Revision'/);
-  assert.match(site, /zh: 'TOIS 大修'/);
+  assert.match(site, /en: 'ACM Transactions on Information Systems · Major Revision'/);
+  assert.match(site, /zh: 'ACM Transactions on Information Systems · 大修'/);
+  assert.doesNotMatch(site, /TOIS Major Revision|TOIS 大修/);
+  assert.match(site, /en: 'Our DPU framework received a major revision decision from ACM Transactions on Information Systems\.'/);
+  assert.match(site, /zh: '我们的 DPU 框架收到 ACM Transactions on Information Systems 的大修意见。'/);
+  assert.match(site, /href: 'https:\/\/dl\.acm\.org\/journal\/tois\/reviewers'/);
   assert.match(site, /International Journal of Machine Learning and Cybernetics \(JMLC\) · Under Review/);
   assert.match(site, /International Journal of Machine Learning and Cybernetics（JMLC）· 审稿中/);
   assert.match(site, /en: 'AAAI 2026 · Under Review'/);

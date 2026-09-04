@@ -97,6 +97,14 @@ export const news = [
   {
     date: '2026.08',
     text: {
+      en: 'Our DPU framework received a major revision decision from ACM Transactions on Information Systems.',
+      zh: '我们的 DPU 框架收到 ACM Transactions on Information Systems 的大修意见。'
+    },
+    href: 'https://dl.acm.org/journal/tois/reviewers'
+  },
+  {
+    date: '2026.08',
+    text: {
       en: 'Two papers on controllable generative recommendation and recommendation unlearning were accepted by IEEE ICDM 2026.',
       zh: '两篇关于可控生成式推荐与推荐遗忘的论文被 IEEE ICDM 2026 接收。'
     },
@@ -259,8 +267,8 @@ export const ongoingResearch = [
     key: 'teaching-to-forget',
     title: 'Teaching to Forget: Dual-Teacher Distilled Prompt-Tuning for Efficient Recommendation Unlearning',
     status: {
-      en: 'TOIS Major Revision',
-      zh: 'TOIS 大修'
+      en: 'ACM Transactions on Information Systems · Major Revision',
+      zh: 'ACM Transactions on Information Systems · 大修'
     },
     description: {
       en: 'A lightweight study of on-demand recommendation unlearning that aims to preserve utility for unaffected users.',

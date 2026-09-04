@@ -56,8 +56,9 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('#collaborative-publications')).toContainText('Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains');
   await expect(page.getByText('Figure source', { exact: true })).toHaveCount(0);
   await expect(page.locator('#news')).not.toContainText('2026.02');
+  await expect(page.locator('#news').getByRole('link', { name: 'Our DPU framework received a major revision decision from ACM Transactions on Information Systems.' })).toHaveAttribute('href', 'https://dl.acm.org/journal/tois/reviewers');
   await expect(perovskite.locator('a[href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12947740/"]').first()).toBeVisible();
-  await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('TOIS Major Revision');
+  await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('ACM Transactions on Information Systems · Major Revision');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Personalized Conformity Disentanglement' })).toContainText('International Journal of Machine Learning and Cybernetics (JMLC) · Under Review');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Dual-Rate User Semantic Memory' })).toContainText('AAAI 2026 · Under Review');
 
@@ -103,7 +104,8 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   await expect(bloodstain.getByText('引用 3', { exact: true })).toBeVisible();
   await expect(bloodstain.locator('img')).toHaveAttribute('src', '/images/papers/auto/two-branch-bloodstain.png');
   await expect(page.locator('#news')).not.toContainText('2026.02');
-  await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('TOIS 大修');
+  await expect(page.locator('#news').getByRole('link', { name: '我们的 DPU 框架收到 ACM Transactions on Information Systems 的大修意见。' })).toHaveAttribute('href', 'https://dl.acm.org/journal/tois/reviewers');
+  await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('ACM Transactions on Information Systems · 大修');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Personalized Conformity Disentanglement' })).toContainText('International Journal of Machine Learning and Cybernetics（JMLC）· 审稿中');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Dual-Rate User Semantic Memory' })).toContainText('AAAI 2026 · 审稿中');
 
