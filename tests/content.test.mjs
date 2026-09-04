@@ -111,6 +111,7 @@ test('specified co-authored papers are grouped under Collaborative Publications'
   assert.match(page, /collaborativeAutoDiscoveredPublications\.map/);
 
   for (const title of [
+    'Machine Vision-Enabled Octahedral Network Reconstruction and Structural Analysis of Perovskite Quantum Dots',
     'Clustering-based incremental learning for imbalanced data classification',
     'Counterfactual Contrastive Learning for Fine Grained Image Classification',
     'Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation',
@@ -118,6 +119,22 @@ test('specified co-authored papers are grouped under Collaborative Publications'
   ]) {
     assert.match(page, new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
+});
+
+test('news and ongoing research expose the requested bilingual publication statuses', async () => {
+  const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+
+  assert.doesNotMatch(site, /date: '2026\.02'/);
+  assert.doesNotMatch(site, /钙钛矿量子点机器视觉研究发表于 ACS Nano/);
+  assert.match(site, /en: 'TOIS Major Revision'/);
+  assert.match(site, /zh: 'TOIS 大修'/);
+  assert.match(site, /International Journal of Machine Learning and Cybernetics \(JMLC\) · Under Review/);
+  assert.match(site, /International Journal of Machine Learning and Cybernetics（JMLC）· 审稿中/);
+  assert.match(site, /en: 'AAAI 2026 · Under Review'/);
+  assert.match(site, /zh: 'AAAI 2026 · 审稿中'/);
+  assert.match(page, /paper\.status\.en/);
+  assert.match(page, /paper\.status\.zh/);
 });
 
 test('ICDM 2026 acceptances are promoted from ongoing work to Publications', async () => {

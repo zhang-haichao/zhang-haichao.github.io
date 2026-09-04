@@ -16,7 +16,7 @@ Rebuild Haichao Zhang's academic homepage using the supplied Jia Wang homepage s
 1. Sticky navigation: name, About, News, Experience & Education, Publications, Collaborative Work, Ongoing Research, Open Source, Intellectual Property, EN/中文.
 2. Sidebar: portrait, name, role, affiliation, research interests, location, University of Liverpool email, Google Scholar, GitHub, and language-aware CV.
 3. Main column: About Me, News, Experience & Education, Publications, Collaborative Publications, Ongoing Research, Open Source, Intellectual Property, Selected Awards.
-4. Manually curated accepted papers appear first with supplied framework figures, code links, and a preprint placeholder until publication. CRAGRU and the perovskite study remain in Publications. CIL, CCL, UASD, and the bloodstain study appear in Collaborative Publications using the same card treatment, framework figures, links, and citation metadata.
+4. Manually curated accepted papers appear first with supplied framework figures, code links, and a preprint placeholder until publication. CRAGRU remains in Publications. The perovskite study, CIL, CCL, UASD, and the bloodstain study appear in Collaborative Publications using the same card treatment, framework figures, links, and citation metadata.
 5. Ongoing manuscripts use only the supplied framework figures and intentionally high-level descriptions.
 6. Open Source highlights `axiom-quant`, `senpai-skill`, and `PaperReader`; paper implementation repositories remain attached to their publication entries.
 

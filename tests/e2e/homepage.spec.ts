@@ -23,8 +23,8 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('.academic-main')).toBeVisible();
   await expect(page.locator('.profile-avatar')).toBeVisible();
   await expect(page.locator('.publication-paper')).toHaveCount(8);
-  await expect(page.locator('#publications .publication-paper')).toHaveCount(4);
-  await expect(page.locator('#collaborative-publications .publication-paper')).toHaveCount(4);
+  await expect(page.locator('#publications .publication-paper')).toHaveCount(3);
+  await expect(page.locator('#collaborative-publications .publication-paper')).toHaveCount(5);
   await expect(page.locator('#collaborative-publications')).toContainText('Collaborative Publications');
   await expect(page.getByText('Additional publications', { exact: true })).toHaveCount(0);
   await expect(page.locator('a[href="mailto:haichao.zhang22@student.xjtlu.edu.cn"]')).toHaveCount(0);
@@ -37,6 +37,8 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(bloodstain.locator('img')).toHaveAttribute('src', '/images/papers/auto/two-branch-bloodstain.png');
 
   const perovskite = page.locator('[data-publication-title^="Machine Vision-Enabled"]');
+  await expect(page.locator('#collaborative-publications').locator('[data-publication-title^="Machine Vision-Enabled"]')).toBeVisible();
+  await expect(page.locator('#publications').locator('[data-publication-title^="Machine Vision-Enabled"]')).toHaveCount(0);
   await expect(perovskite.locator('a[href="https://zhang-haichao.github.io/S2-SOFS-Page/"]')).toBeVisible();
   await expect(perovskite.locator('a[href="https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction"]')).toBeVisible();
   const cragru = page.locator('[data-publication-title^="Customized Retrieval-Augmented"]');
@@ -53,6 +55,11 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('#collaborative-publications')).toContainText('Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation');
   await expect(page.locator('#collaborative-publications')).toContainText('Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains');
   await expect(page.getByText('Figure source', { exact: true })).toHaveCount(0);
+  await expect(page.locator('#news')).not.toContainText('2026.02');
+  await expect(perovskite.locator('a[href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12947740/"]').first()).toBeVisible();
+  await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('TOIS Major Revision');
+  await expect(page.locator('.ongoing-item').filter({ hasText: 'Personalized Conformity Disentanglement' })).toContainText('International Journal of Machine Learning and Cybernetics (JMLC) · Under Review');
+  await expect(page.locator('.ongoing-item').filter({ hasText: 'Dual-Rate User Semantic Memory' })).toContainText('AAAI 2026 · Under Review');
 
   const publicationTitles = await page.locator('.publication-paper h3').allTextContents();
   expect(publicationTitles).toEqual([
@@ -95,6 +102,10 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   const bloodstain = page.locator('[data-publication-title*="Time Since Deposition Estimation"]');
   await expect(bloodstain.getByText('引用 3', { exact: true })).toBeVisible();
   await expect(bloodstain.locator('img')).toHaveAttribute('src', '/images/papers/auto/two-branch-bloodstain.png');
+  await expect(page.locator('#news')).not.toContainText('2026.02');
+  await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('TOIS 大修');
+  await expect(page.locator('.ongoing-item').filter({ hasText: 'Personalized Conformity Disentanglement' })).toContainText('International Journal of Machine Learning and Cybernetics（JMLC）· 审稿中');
+  await expect(page.locator('.ongoing-item').filter({ hasText: 'Dual-Rate User Semantic Memory' })).toContainText('AAAI 2026 · 审稿中');
 
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
@@ -102,7 +113,10 @@ test('switches language, CV, title, and persists the preference', async ({ page 
 });
 
 test('opens and closes a framework figure dialog', async ({ page }) => {
-  await page.getByRole('button', { name: 'Enlarge CRAGRU framework figure' }).click();
+  const cragruFigure = page.getByRole('button', { name: 'Enlarge CRAGRU framework figure' });
+  await cragruFigure.scrollIntoViewIfNeeded();
+  await expect(cragruFigure).toBeVisible();
+  await cragruFigure.click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   await expect(dialog.locator('img')).toHaveAttribute('src', '/images/papers/auto/cragru.png');

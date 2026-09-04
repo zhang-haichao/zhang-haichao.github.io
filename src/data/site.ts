@@ -103,14 +103,6 @@ export const news = [
     href: '#publications'
   },
   {
-    date: '2026.02',
-    text: {
-      en: 'Our machine-vision study of perovskite quantum dots was published in ACS Nano.',
-      zh: '钙钛矿量子点机器视觉研究发表于 ACS Nano。'
-    },
-    href: 'https://doi.org/10.1021/acsnano.5c20211'
-  },
-  {
     date: '2025.11',
     text: {
       en: 'CRAGRU was accepted by IEEE ICDM 2025.',
@@ -266,6 +258,10 @@ export const ongoingResearch = [
   {
     key: 'teaching-to-forget',
     title: 'Teaching to Forget: Dual-Teacher Distilled Prompt-Tuning for Efficient Recommendation Unlearning',
+    status: {
+      en: 'TOIS Major Revision',
+      zh: 'TOIS 大修'
+    },
     description: {
       en: 'A lightweight study of on-demand recommendation unlearning that aims to preserve utility for unaffected users.',
       zh: '一项轻量级按需推荐遗忘研究，目标是在移除指定影响的同时保留未受影响用户的推荐效用。'
@@ -275,6 +271,10 @@ export const ongoingResearch = [
   {
     key: 'pcdr',
     title: 'Personalized Conformity Disentanglement for Debiased Recommendations',
+    status: {
+      en: 'International Journal of Machine Learning and Cybernetics (JMLC) · Under Review',
+      zh: 'International Journal of Machine Learning and Cybernetics（JMLC）· 审稿中'
+    },
     description: {
       en: 'A debiasing study that distinguishes personal preference signals from conformity effects for more faithful personalization.',
       zh: '一项推荐去偏研究，通过区分个体偏好与从众效应，实现更忠实的个性化。'
@@ -284,6 +284,10 @@ export const ongoingResearch = [
   {
     key: 'drumrec',
     title: 'Dual-Rate User Semantic Memory for LLM-Enhanced Sequential Recommendation',
+    status: {
+      en: 'AAAI 2026 · Under Review',
+      zh: 'AAAI 2026 · 审稿中'
+    },
     description: {
       en: 'A dual-rate semantic memory for efficient LLM-enhanced sequential recommendation, designed to retain rich user semantics with lightweight online serving.',
       zh: '一种面向高效大模型增强序列推荐的双速率语义记忆，在轻量在线服务中保留丰富用户语义。'

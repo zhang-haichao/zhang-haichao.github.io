@@ -31,6 +31,7 @@ const markAuthor = (authors: string) => authors.split(/(Haichao Zhang)/g);
 const publicationByTitle = new Map(publicationData.publications.map((publication) => [publication.title, publication]));
 const frameworkByTitle = new Map(frameworkData.frameworks.map((framework) => [framework.title, framework]));
 const collaborativePublicationTitles = new Set([
+  'Machine Vision-Enabled Octahedral Network Reconstruction and Structural Analysis of Perovskite Quantum Dots',
   'Clustering-based incremental learning for imbalanced data classification',
   'Counterfactual Contrastive Learning for Fine Grained Image Classification',
   'Uncertainty-Aware Semantic Decoding for LLM-Based Sequential Recommendation',
@@ -528,7 +529,7 @@ const collaborativeAutoDiscoveredPublications = autoDiscoveredPublications
                   <img src={paper.image} alt={`${paper.title} framework figure`} loading="lazy" />
                 </button>
                 <div class="paper-info">
-                  <span class="venue-badge muted"><span data-lang="en">Under review</span><span data-lang="zh">在投 / 在研</span></span>
+                  <span class="venue-badge muted"><span data-lang="en">{paper.status.en}</span><span data-lang="zh">{paper.status.zh}</span></span>
                   <h3>{paper.title}</h3>
                   <p><span data-lang="en">{paper.description.en}</span><span data-lang="zh">{paper.description.zh}</span></p>
                 </div>
