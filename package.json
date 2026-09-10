@@ -16,7 +16,7 @@
     "test:all": "npm run test:content && npm run test:scholar && npm run build && npm run test:e2e"
   },
   "dependencies": {
-    "astro": "^7.2.0"
+    "astro": "^7.2.8"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
