@@ -202,3 +202,16 @@ test('serves the unlisted legacy homepage from its archived index file', async (
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/i);
   await expect(page.locator('link[href="/legacy/css/bootstrap.min.css"]')).toHaveCount(1);
 });
+
+test('serves the private analytics portal without exposing a dashboard token', async ({ page }) => {
+  await page.goto('/uv/');
+
+  await expect(page).toHaveTitle('Visitor Analytics · Haichao Zhang');
+  await expect(page.getByRole('heading', { name: 'Visitor Analytics · 访客统计' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Back to homepage · 返回主页' })).toHaveAttribute('href', '/');
+  await expect(page.locator('iframe[title="Private GoatCounter visitor analytics dashboard"]')).toHaveAttribute(
+    'src',
+    'https://zhanghaichao.goatcounter.com/'
+  );
+  await expect(page.locator('html')).not.toContainText('access-token');
+});

@@ -248,6 +248,16 @@ test('production metadata and project links use the custom domain', async () => 
   assert.doesNotMatch(productionSource, /https:\/\/zhang-haichao\.github\.io/);
 });
 
+test('private analytics portal embeds GoatCounter without exposing credentials', async () => {
+  const portal = await readFile(new URL('src/pages/uv.astro', root), 'utf8');
+
+  assert.match(portal, /<meta name="robots" content="noindex, nofollow, noarchive" \/>/);
+  assert.match(portal, /src=\{dashboardUrl\}/);
+  assert.match(portal, /https:\/\/zhanghaichao\.goatcounter\.com\//);
+  assert.match(portal, /GoatCounter login required/);
+  assert.doesNotMatch(portal, /access-token|api\/v0|data-goatcounter/);
+});
+
 test('verified publication resources and selected open-source projects are explicit', async () => {
   const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
 
