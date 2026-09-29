@@ -39,10 +39,10 @@ test('renders the confirmed English academic profile by default', async ({ page,
   const perovskite = page.locator('[data-publication-title^="Machine Vision-Enabled"]');
   await expect(page.locator('#collaborative-publications').locator('[data-publication-title^="Machine Vision-Enabled"]')).toBeVisible();
   await expect(page.locator('#publications').locator('[data-publication-title^="Machine Vision-Enabled"]')).toHaveCount(0);
-  await expect(perovskite.locator('a[href="https://zhang-haichao.github.io/S2-SOFS-Page/"]')).toBeVisible();
+  await expect(perovskite.locator('a[href="https://zhanghaichao.loc.cc/S2-SOFS-Page/"]')).toBeVisible();
   await expect(perovskite.locator('a[href="https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction"]')).toBeVisible();
   const cragru = page.locator('[data-publication-title^="Customized Retrieval-Augmented"]');
-  await expect(cragru.locator('a[href="https://zhang-haichao.github.io/CRAGRU-Page/"]')).toBeVisible();
+  await expect(cragru.locator('a[href="https://zhanghaichao.loc.cc/CRAGRU-Page/"]')).toBeVisible();
   const regen = page.locator('[data-publication-title^="Controllable Generative Recommendation"]');
   await expect(regen.getByText('Preprint coming soon', { exact: true })).toBeVisible();
   await expect(regen.locator('a[href="https://github.com/zhang-haichao/ReGen"]')).toBeVisible();

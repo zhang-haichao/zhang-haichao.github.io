@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://zhang-haichao.github.io',
+  site: 'https://zhanghaichao.loc.cc',
   output: 'static',
   devToolbar: {
     enabled: false

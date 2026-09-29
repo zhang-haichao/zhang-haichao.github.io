@@ -10,10 +10,10 @@ This file records the public sources used to seed publication metadata and insti
 
 - Google Scholar profile: https://scholar.google.com/citations?user=zRvnGK0AAAAJ&hl=en
 - CRAGRU: https://arxiv.org/abs/2511.05494
-- CRAGRU project page: https://zhang-haichao.github.io/CRAGRU-Page/
+- CRAGRU project page: https://zhanghaichao.loc.cc/CRAGRU-Page/
 - CRAGRU framework provenance: Figure 2 on page 4 of the author preprint https://arxiv.org/pdf/2511.05494, extracted to `public/images/papers/auto/cragru.png` and recorded in `src/data/frameworks.json`.
 - Perovskite quantum dots article: https://doi.org/10.1021/acsnano.5c20211
-- Perovskite quantum dots project page: https://zhang-haichao.github.io/S2-SOFS-Page/
+- Perovskite quantum dots project page: https://zhanghaichao.loc.cc/S2-SOFS-Page/
 - Perovskite quantum dots implementation: https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction
 - Uncertainty-Aware Semantic Decoding: https://arxiv.org/abs/2508.07210
 - Clustering-based incremental learning: https://doi.org/10.1016/j.knosys.2024.111612

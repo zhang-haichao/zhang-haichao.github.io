@@ -78,6 +78,14 @@ const primaryAutoDiscoveredPublications = autoDiscoveredPublications
   .filter(({ publication }) => !collaborativePublicationTitles.has(publication.title));
 const collaborativeAutoDiscoveredPublications = autoDiscoveredPublications
   .filter(({ publication }) => collaborativePublicationTitles.has(publication.title));
+
+const rawGoatCounterCode = import.meta.env.PUBLIC_GOATCOUNTER_CODE?.trim();
+if (rawGoatCounterCode && !/^[a-z0-9][a-z0-9-]*$/.test(rawGoatCounterCode)) {
+  throw new Error('PUBLIC_GOATCOUNTER_CODE must contain only lowercase letters, numbers, and hyphens.');
+}
+const goatCounterEndpoint = rawGoatCounterCode
+  ? `https://${rawGoatCounterCode}.goatcounter.com/count`
+  : null;
 ---
 
 <!doctype html>
@@ -93,8 +101,9 @@ const collaborativeAutoDiscoveredPublications = autoDiscoveredPublications
     <meta property="og:title" content="Haichao Zhang · Academic Homepage" />
     <meta property="og:description" content="Trustworthy and controllable recommender systems." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://zhang-haichao.github.io/" />
-    <meta property="og:image" content="https://zhang-haichao.github.io/images/portrait-haichao.png" />
+    <meta property="og:url" content="https://zhanghaichao.loc.cc/" />
+    <meta property="og:image" content="https://zhanghaichao.loc.cc/images/portrait-haichao.png" />
+    <link rel="canonical" href="https://zhanghaichao.loc.cc/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script is:inline>
       try {
@@ -102,6 +111,24 @@ const collaborativeAutoDiscoveredPublications = autoDiscoveredPublications
         if (stored === 'zh') document.documentElement.dataset.uiLanguage = 'zh';
       } catch {}
     </script>
+    {goatCounterEndpoint && (
+      <>
+        <script is:inline>
+          window.goatcounter = {
+            no_onload: navigator.doNotTrack === '1',
+            no_events: true
+          };
+        </script>
+        <script
+          is:inline
+          data-goatcounter={goatCounterEndpoint}
+          async
+          src="https://gc.zgo.at/count.v5.js"
+          crossorigin="anonymous"
+          integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"
+        ></script>
+      </>
+    )}
     <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
     <title>Haichao Zhang · Academic Homepage</title>
   </head>

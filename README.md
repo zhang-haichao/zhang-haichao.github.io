@@ -108,7 +108,7 @@ Only use an author manuscript, preprint, or other PDF that may be downloaded and
 
 ## Archived previous homepage
 
-The previous Jekyll blog is preserved at `https://zhang-haichao.github.io/legacy/`. It is intentionally absent from the new homepage navigation and marked `noindex, nofollow, noarchive`; `public/robots.txt` also asks crawlers not to visit the path. This is an unlisted public URL, not password protection.
+The previous Jekyll blog is preserved at `https://zhanghaichao.loc.cc/legacy/`. It is intentionally absent from the new homepage navigation and marked `noindex, nofollow, noarchive`; `public/robots.txt` also asks crawlers not to visit the path. This is an unlisted public URL, not password protection.
 
 The archived HTML is generated from the rendered legacy site and the `origin/master` static assets. Historical Gitalk credential configuration and service-worker registration are removed before files are written. To rebuild the archive locally:
 
@@ -116,7 +116,7 @@ The archived HTML is generated from the rendered legacy site and the `origin/mas
 npm run archive:legacy -- -Proxy http://127.0.0.1:7897
 ```
 
-## Deploying to `zhang-haichao.github.io`
+## Deploying to `zhanghaichao.loc.cc`
 
 1. Put these files on the `main` branch of `zhang-haichao/zhang-haichao.github.io` while retaining the previous `master` history.
 2. In the repository, open **Settings → Pages**.
@@ -124,6 +124,19 @@ npm run archive:legacy -- -Proxy http://127.0.0.1:7897
 4. Push `main` or manually run **Build and deploy GitHub Pages**.
 
 The Pages workflow runs content, Scholar-safety, build, and browser tests before uploading `dist/`. It uses the GitHub Pages artifact/deployment actions with the minimum required permissions.
+
+## Private visitor analytics
+
+The production build supports private, cookie-free visitor analytics through GoatCounter. Nothing is displayed on the homepage, click events are disabled, and browsers with Do Not Track enabled are not counted. Local development is not tracked.
+
+To enable it:
+
+1. Create a GoatCounter site for `https://zhanghaichao.loc.cc/` and choose a site code.
+2. In the GitHub repository, open **Settings → Secrets and variables → Actions → Variables**.
+3. Add a repository variable named `PUBLIC_GOATCOUNTER_CODE` whose value is the site code only, for example `zhang-haichao` rather than a full URL.
+4. Run the **Build and deploy GitHub Pages** workflow again.
+
+Statistics are then available only from the password-protected GoatCounter dashboard at `https://<site-code>.goatcounter.com/`. Leaving the repository variable unset omits the analytics script entirely.
 
 ## Privacy and assets
 

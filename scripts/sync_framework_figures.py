@@ -39,7 +39,7 @@ DEFAULT_KEYWORDS = (
 MAX_PDF_BYTES = 50 * 1024 * 1024
 MAX_IMAGE_BYTES = 20 * 1024 * 1024
 IEEE_BASE_URL = "https://ieeexplore.ieee.org"
-HTTP_USER_AGENT = "Haichao-Zhang-academic-homepage/1.0 (+https://zhang-haichao.github.io/)"
+HTTP_USER_AGENT = "Haichao-Zhang-academic-homepage/1.0 (+https://zhanghaichao.loc.cc/)"
 CAPTION_RE = re.compile(r"\bfig(?:ure)?\.?\s*\d+[a-z]?\b", re.IGNORECASE)
 
 

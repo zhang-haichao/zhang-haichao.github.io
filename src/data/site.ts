@@ -194,7 +194,7 @@ export const publicationPresentation = [
       },
       {
         label: { en: 'Project', zh: '项目' },
-        href: 'https://zhang-haichao.github.io/CRAGRU-Page/'
+        href: 'https://zhanghaichao.loc.cc/CRAGRU-Page/'
       }
     ] satisfies Link[]
   },
@@ -215,7 +215,7 @@ export const publicationPresentation = [
       },
       {
         label: { en: 'Project', zh: '项目' },
-        href: 'https://zhang-haichao.github.io/S2-SOFS-Page/'
+        href: 'https://zhanghaichao.loc.cc/S2-SOFS-Page/'
       }
     ] satisfies Link[]
   },

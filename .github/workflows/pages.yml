@@ -36,6 +36,8 @@ jobs:
         run: npm ci
 
       - name: Build the static site
+        env:
+          PUBLIC_GOATCOUNTER_CODE: ${{ vars.PUBLIC_GOATCOUNTER_CODE }}
         run: |
           npm run test:content
           python3 -m unittest discover --start-directory tests --pattern 'test_scholar_sync.py'

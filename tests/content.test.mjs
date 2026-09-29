@@ -223,14 +223,39 @@ test('public page source excludes private contact data and removed work', async 
   assert.doesNotMatch(source, /\bDURE\b/);
 });
 
+test('analytics stays private, optional, and privacy-aware', async () => {
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+  const workflow = await readFile(new URL('.github/workflows/pages.yml', root), 'utf8');
+
+  assert.match(page, /import\.meta\.env\.PUBLIC_GOATCOUNTER_CODE/);
+  assert.match(page, /data-goatcounter=\{goatCounterEndpoint\}/);
+  assert.match(page, /gc\.zgo\.at\/count\.v5\.js/);
+  assert.match(page, /navigator\.doNotTrack === '1'/);
+  assert.match(page, /no_events: true/);
+  assert.doesNotMatch(page, /visit_count|counter\//);
+  assert.match(workflow, /PUBLIC_GOATCOUNTER_CODE: \$\{\{ vars\.PUBLIC_GOATCOUNTER_CODE \}\}/);
+});
+
+test('production metadata and project links use the custom domain', async () => {
+  const config = await readFile(new URL('astro.config.mjs', root), 'utf8');
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+  const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
+  const productionSource = [config, page, site].join('\n');
+
+  assert.match(config, /site: 'https:\/\/zhanghaichao\.loc\.cc'/);
+  assert.match(page, /<link rel="canonical" href="https:\/\/zhanghaichao\.loc\.cc\/" \/>/);
+  assert.match(page, /<meta property="og:url" content="https:\/\/zhanghaichao\.loc\.cc\/" \/>/);
+  assert.doesNotMatch(productionSource, /https:\/\/zhang-haichao\.github\.io/);
+});
+
 test('verified publication resources and selected open-source projects are explicit', async () => {
   const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
 
   for (const url of [
-    'https://zhang-haichao.github.io/S2-SOFS-Page/',
+    'https://zhanghaichao.loc.cc/S2-SOFS-Page/',
     'https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction',
     'https://github.com/ybyangjing/CTA',
-    'https://zhang-haichao.github.io/CRAGRU-Page/',
+    'https://zhanghaichao.loc.cc/CRAGRU-Page/',
     'https://github.com/zhang-haichao/axiom-quant'
   ]) {
     assert.match(site, new RegExp(url.replaceAll('.', '\\.').replaceAll('/', '\\/')));
