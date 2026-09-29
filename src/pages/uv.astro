@@ -1,5 +1,6 @@
 ---
-const dashboardUrl = 'https://zhanghaichao.goatcounter.com/';
+const dashboardUrl = 'https://zhanghaichao.goatcounter.com/?embed=uv';
+const directDashboardUrl = 'https://zhanghaichao.goatcounter.com/';
 ---
 
 <!doctype html>
@@ -161,7 +162,10 @@ const dashboardUrl = 'https://zhanghaichao.goatcounter.com/';
       </header>
 
       <main class="dashboard-wrap">
-        <p class="privacy-note">Statistics remain private and are visible only after signing in to GoatCounter.</p>
+        <p class="privacy-note">
+          Statistics remain private and are visible only after signing in to GoatCounter.
+          <a href={directDashboardUrl} target="_blank" rel="noreferrer">Open dashboard directly</a>
+        </p>
         <iframe
           class="dashboard-frame"
           src={dashboardUrl}
@@ -171,7 +175,7 @@ const dashboardUrl = 'https://zhanghaichao.goatcounter.com/';
         ></iframe>
         <noscript>
           <p class="no-script">
-            JavaScript is required for the embedded dashboard. <a href={dashboardUrl}>Open GoatCounter directly</a>.
+            JavaScript is required for the embedded dashboard. <a href={directDashboardUrl}>Open GoatCounter directly</a>.
           </p>
         </noscript>
       </main>

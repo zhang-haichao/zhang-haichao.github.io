@@ -212,6 +212,10 @@ test('serves the private analytics portal without exposing a dashboard token', a
   await expect(page.getByRole('link', { name: 'Back to homepage · 返回主页' })).toHaveAttribute('href', '/');
   await expect(page.locator('iframe[title="Private GoatCounter visitor analytics dashboard"]')).toHaveAttribute(
     'src',
+    'https://zhanghaichao.goatcounter.com/?embed=uv'
+  );
+  await expect(page.getByRole('link', { name: 'Open dashboard directly' })).toHaveAttribute(
+    'href',
     'https://zhanghaichao.goatcounter.com/'
   );
   await expect(page.locator('html')).not.toContainText('access-token');

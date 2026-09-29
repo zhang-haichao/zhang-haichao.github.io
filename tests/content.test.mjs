@@ -253,7 +253,7 @@ test('private analytics portal embeds GoatCounter without exposing credentials',
 
   assert.match(portal, /<meta name="robots" content="noindex, nofollow, noarchive" \/>/);
   assert.match(portal, /src=\{dashboardUrl\}/);
-  assert.match(portal, /https:\/\/zhanghaichao\.goatcounter\.com\//);
+  assert.match(portal, /https:\/\/zhanghaichao\.goatcounter\.com\/\?embed=uv/);
   assert.match(portal, /GoatCounter login required/);
   assert.match(portal, /window\.history\.replaceState\(null, '', `\/uv/);
   assert.doesNotMatch(portal, /access-token|api\/v0|data-goatcounter/);
