@@ -206,6 +206,7 @@ test('serves the unlisted legacy homepage from its archived index file', async (
 test('serves the private analytics portal without exposing a dashboard token', async ({ page }) => {
   await page.goto('/uv/');
 
+  await expect(page).toHaveURL(/\/uv$/);
   await expect(page).toHaveTitle('Visitor Analytics · Haichao Zhang');
   await expect(page.getByRole('heading', { name: 'Visitor Analytics · 访客统计' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Back to homepage · 返回主页' })).toHaveAttribute('href', '/');

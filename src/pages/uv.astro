@@ -12,6 +12,11 @@ const dashboardUrl = 'https://zhanghaichao.goatcounter.com/';
     <meta name="description" content="Private visitor analytics dashboard for Haichao Zhang's academic homepage." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Visitor Analytics · Haichao Zhang</title>
+    <script is:inline>
+      if (window.location.pathname === '/uv/') {
+        window.history.replaceState(null, '', `/uv${window.location.search}${window.location.hash}`);
+      }
+    </script>
     <style>
       :root {
         color: #30343a;
