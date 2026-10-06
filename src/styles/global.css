@@ -543,7 +543,8 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   font-size: 0.79rem;
 }
 
-.paper-info .corresponding-author-mark {
+.paper-info .corresponding-author-mark,
+.paper-info .equal-contribution-mark {
   color: #1f4f91;
   font-size: 0.8em;
   font-weight: 800;

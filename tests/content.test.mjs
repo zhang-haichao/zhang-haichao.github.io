@@ -104,6 +104,7 @@ test('homepage keeps every Scholar work visible and consumes synced frameworks',
 });
 
 test('specified co-authored papers are grouped under Collaborative Publications', async () => {
+  const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
   const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
 
   assert.match(page, /id="collaborative-publications"/);
@@ -121,6 +122,10 @@ test('specified co-authored papers are grouped under Collaborative Publications'
   ]) {
     assert.match(page, new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
+
+  assert.match(site, /equalContributionAuthors: \['Guangyu Du', 'Haichao Zhang', 'Tieyuan Bian', 'Weizhen Wang', 'Long Hu'\]/);
+  assert.match(page, /† Equal contribution/);
+  assert.match(page, /† 同等贡献（共同第一作者）/);
 });
 
 test('news and ongoing research expose the requested bilingual publication statuses', async () => {

@@ -29,6 +29,7 @@ const navItems = [
 ];
 
 const markAuthor = (authors: string) => authors.split(/(Haichao Zhang)/g);
+const isEqualContributor = (authors: readonly string[], author: string) => authors.includes(author);
 const publicationByTitle = new Map(publicationData.publications.map((publication) => [publication.title, publication]));
 const frameworkByTitle = new Map(frameworkData.frameworks.map((framework) => [framework.title, framework]));
 const collaborativePublicationTitles = new Set([
@@ -523,8 +524,13 @@ const goatCounterEndpoint = rawGoatCounterCode
                 <span class="venue-badge">{presentation.venueLabel}</span>
                 <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
                 <p class="paper-authors">
-                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                  {publication.authors.split(', ').map((author, index) => (
+                    <>{index > 0 && ', '}{author === 'Haichao Zhang' ? <strong>{author}</strong> : author}{isEqualContributor(presentation.equalContributionAuthors, author) && <sup class="equal-contribution-mark" aria-hidden="true">†</sup>}</>
+                  ))}
                 </p>
+                {presentation.equalContributionAuthors.length > 0 && (
+                  <p class="paper-author-note"><span data-lang="en">† Equal contribution</span><span data-lang="zh">† 同等贡献（共同第一作者）</span></p>
+                )}
                 <p class="publication-venue">{publication.venue}</p>
                 {presentation.description && (
                   <p><span data-lang="en">{presentation.description.en}</span><span data-lang="zh">{presentation.description.zh}</span></p>

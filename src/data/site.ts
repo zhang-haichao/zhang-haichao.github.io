@@ -234,6 +234,7 @@ export const publicationPresentation = [
       en: 'A retrieval-augmented generation framework for user-level recommendation unlearning that limits collateral effects on non-target users while preserving recommendation quality.',
       zh: '面向用户级推荐遗忘的检索增强生成框架，在保留推荐质量的同时，减少遗忘操作对非目标用户的连带影响。'
     },
+    equalContributionAuthors: [],
     extraLinks: [
       {
         label: { en: 'Preprint', zh: '预印本' },
@@ -259,6 +260,7 @@ export const publicationPresentation = [
       zh: '钙钛矿量子点八面体网络重建与结构分析的机器视觉框架图'
     },
     description: null,
+    equalContributionAuthors: ['Guangyu Du', 'Haichao Zhang', 'Tieyuan Bian', 'Weizhen Wang', 'Long Hu'],
     extraLinks: [
       {
         label: { en: 'Code', zh: '代码' },
@@ -280,6 +282,7 @@ export const publicationPresentation = [
       zh: '面向不平衡分类的聚类数据重组与增量学习框架图'
     },
     description: null,
+    equalContributionAuthors: [],
     extraLinks: [
       {
         label: { en: 'Code', zh: '代码' },
@@ -297,6 +300,7 @@ export const publicationPresentation = [
       zh: '面向细粒度图像分类的反事实对比学习框架图'
     },
     description: null,
+    equalContributionAuthors: [],
     extraLinks: [] satisfies Link[]
   },
   {
@@ -309,6 +313,7 @@ export const publicationPresentation = [
       zh: '面向序列推荐的不确定性感知语义聚类与自适应解码框架图'
     },
     description: null,
+    equalContributionAuthors: [],
     extraLinks: [] satisfies Link[]
   }
 ] as const;

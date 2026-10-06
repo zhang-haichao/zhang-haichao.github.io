@@ -41,6 +41,9 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('#publications').locator('[data-publication-title^="Machine Vision-Enabled"]')).toHaveCount(0);
   await expect(perovskite.locator('a[href="https://zhanghaichao.loc.cc/S2-SOFS-Page/"]')).toBeVisible();
   await expect(perovskite.locator('a[href="https://github.com/GDragon126651/Perovskite_Octahedral_Reconstruction"]')).toBeVisible();
+  await expect(perovskite.locator('.equal-contribution-mark')).toHaveCount(5);
+  await expect(perovskite.locator('.paper-authors strong')).toHaveText('Haichao Zhang');
+  await expect(perovskite.getByText('† Equal contribution', { exact: true })).toBeVisible();
   const cragru = page.locator('[data-publication-title^="Customized Retrieval-Augmented"]');
   await expect(cragru.locator('a[href="https://zhanghaichao.loc.cc/CRAGRU-Page/"]')).toBeVisible();
   const regen = page.locator('[data-publication-title^="Controllable Generative Recommendation"]');
@@ -122,6 +125,7 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   await expect(page.locator('[data-publication-title^="Explaining Graph Recommendations"]')).toContainText('预印本即将发布');
   await expect(page.locator('[data-publication-title^="Topology-Aware Inverse Preference Learning"]')).toContainText('预印本即将发布');
   await expect(page.locator('[data-publication-title^="Topology-Aware Inverse Preference Learning"]')).toContainText('* 通讯作者');
+  await expect(page.locator('[data-publication-title^="Machine Vision-Enabled"]')).toContainText('† 同等贡献（共同第一作者）');
   await expect(page.locator('#news').getByRole('link', { name: '我们的 DPU 框架收到 ACM Transactions on Information Systems 的大修意见。' })).toHaveAttribute('href', 'https://dl.acm.org/journal/tois/reviewers');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('ACM Transactions on Information Systems · 大修');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Personalized Conformity Disentanglement' })).toContainText('International Journal of Machine Learning and Cybernetics（JMLC）· 审稿中');
