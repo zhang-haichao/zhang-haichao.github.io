@@ -543,6 +543,20 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   font-size: 0.79rem;
 }
 
+.paper-info .corresponding-author-mark {
+  color: #1f4f91;
+  font-size: 0.8em;
+  font-weight: 800;
+  margin-left: 0.08rem;
+}
+
+.paper-info .paper-author-note {
+  color: #1f4f91;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-top: -0.3rem;
+}
+
 .paper-info .publication-venue {
   color: #59636d;
   font-size: 0.77rem;

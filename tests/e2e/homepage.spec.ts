@@ -57,6 +57,9 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(tipl.getByText('Preprint coming soon', { exact: true })).toBeVisible();
   await expect(tipl.locator('.paper-links a')).toHaveCount(0);
   await expect(tipl.locator('img')).toHaveAttribute('src', '/images/papers/tipl.png');
+  await expect(tipl.locator('.paper-authors strong')).toHaveText('Haichao Zhang');
+  await expect(tipl.locator('.corresponding-author-mark')).toHaveText('*');
+  await expect(tipl.getByText('* Corresponding author', { exact: true })).toBeVisible();
   const cil = page.locator('[data-publication-title^="Clustering-based incremental learning"]');
   await expect(cil.locator('a[href="https://github.com/ybyangjing/CTA"]')).toBeVisible();
   await expect(page.locator('#collaborative-publications')).toContainText('Counterfactual Contrastive Learning for Fine Grained Image Classification');
@@ -118,6 +121,7 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   await expect(page.locator('#news')).toContainText('两篇关于图推荐解释与拓扑感知逆偏好学习的论文被 ICONIP 2026 接收，会议将在墨尔本举行。');
   await expect(page.locator('[data-publication-title^="Explaining Graph Recommendations"]')).toContainText('预印本即将发布');
   await expect(page.locator('[data-publication-title^="Topology-Aware Inverse Preference Learning"]')).toContainText('预印本即将发布');
+  await expect(page.locator('[data-publication-title^="Topology-Aware Inverse Preference Learning"]')).toContainText('* 通讯作者');
   await expect(page.locator('#news').getByRole('link', { name: '我们的 DPU 框架收到 ACM Transactions on Information Systems 的大修意见。' })).toHaveAttribute('href', 'https://dl.acm.org/journal/tois/reviewers');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('ACM Transactions on Information Systems · 大修');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Personalized Conformity Disentanglement' })).toContainText('International Journal of Machine Learning and Cybernetics（JMLC）· 审稿中');

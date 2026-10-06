@@ -345,8 +345,13 @@ const goatCounterEndpoint = rawGoatCounterCode
                 <span class="venue-badge">{publication.venueLabel}</span>
                 <h3>{publication.title}</h3>
                 <p class="paper-authors">
-                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? (
+                    <><strong>{part}</strong>{publication.correspondingAuthor === part && <sup class="corresponding-author-mark" aria-hidden="true">*</sup>}</>
+                  ) : part)}
                 </p>
+                {publication.correspondingAuthor && (
+                  <p class="paper-author-note"><span data-lang="en">* Corresponding author</span><span data-lang="zh">* 通讯作者</span></p>
+                )}
                 <p class="publication-venue">{publication.venue}</p>
                 <p><span data-lang="en">{publication.description.en}</span><span data-lang="zh">{publication.description.zh}</span></p>
                 <div class="paper-links">
@@ -461,8 +466,13 @@ const goatCounterEndpoint = rawGoatCounterCode
                 <span class="venue-badge">{publication.venueLabel}</span>
                 <h3>{publication.title}</h3>
                 <p class="paper-authors">
-                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? (
+                    <><strong>{part}</strong>{publication.correspondingAuthor === part && <sup class="corresponding-author-mark" aria-hidden="true">*</sup>}</>
+                  ) : part)}
                 </p>
+                {publication.correspondingAuthor && (
+                  <p class="paper-author-note"><span data-lang="en">* Corresponding author</span><span data-lang="zh">* 通讯作者</span></p>
+                )}
                 <p class="publication-venue">{publication.venue}</p>
                 <p><span data-lang="en">{publication.description.en}</span><span data-lang="zh">{publication.description.zh}</span></p>
                 <div class="paper-links">

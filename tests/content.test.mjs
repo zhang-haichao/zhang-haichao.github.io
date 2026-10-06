@@ -173,10 +173,13 @@ test('ICONIP 2026 acceptances appear last in Publications with supplied figures 
   assert.match(lowerPriorityBlock, /https:\/\/github\.com\/zhang-haichao\/CoSRec/);
   assert.match(lowerPriorityBlock, /Topology-Aware Inverse Preference Learning for Robust Hybrid Voting Systems/);
   assert.match(lowerPriorityBlock, /Can Wang, Shi Qiu, Haichao Zhang/);
+  assert.match(lowerPriorityBlock, /correspondingAuthor: 'Haichao Zhang'/);
   assert.equal((lowerPriorityBlock.match(/preprintUrl: null/g) ?? []).length, 2);
   assert.match(lowerPriorityBlock, /image: '\/images\/papers\/cosrec\.png'/);
   assert.match(lowerPriorityBlock, /image: '\/images\/papers\/tipl\.png'/);
   assert.match(page, /primaryAutoDiscoveredPublications\.map[\s\S]*lowerPriorityAcceptedPublications\.map/);
+  assert.match(page, /\* Corresponding author/);
+  assert.match(page, /\* 通讯作者/);
 });
 
 test('every main content heading includes a decorative icon', async () => {

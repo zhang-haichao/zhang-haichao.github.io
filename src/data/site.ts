@@ -19,6 +19,7 @@ export type AcceptedPublication = {
   imageAlt: LocalizedText;
   preprintUrl: string | null;
   codeUrl: string | null;
+  correspondingAuthor?: string;
 };
 
 export const profile = {
@@ -214,7 +215,8 @@ export const lowerPriorityAcceptedPublications: AcceptedPublication[] = [
       zh: '面向混合投票系统的 TIPL 拓扑感知逆偏好学习框架图'
     },
     preprintUrl: null,
-    codeUrl: null
+    codeUrl: null,
+    correspondingAuthor: 'Haichao Zhang'
   }
 ];
 
