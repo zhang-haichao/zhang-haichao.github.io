@@ -19,6 +19,8 @@ const requiredAssets = [
   'public/images/papers/regen.png',
   'public/images/papers/pcdr.png',
   'public/images/papers/ceu.png',
+  'public/images/papers/cosrec.png',
+  'public/images/papers/tipl.png',
   'public/images/papers/drumrec.png',
   'public/images/papers/auto/cragru.png',
   'public/images/papers/auto/two-branch-bloodstain.png',
@@ -157,6 +159,24 @@ test('ICDM 2026 acceptances are promoted from ongoing work to Publications', asy
   assert.doesNotMatch(ongoingBlock, /key: 'regen'|key: 'ceu'/);
   assert.match(page, /acceptedPublications\.map/);
   assert.match(page, /Preprint coming soon/);
+});
+
+test('ICONIP 2026 acceptances appear last in Publications with supplied figures and placeholders', async () => {
+  const site = await readFile(new URL('src/data/site.ts', root), 'utf8');
+  const page = await readFile(new URL('src/pages/index.astro', root), 'utf8');
+  const lowerPriorityBlock = site.match(/export const lowerPriorityAcceptedPublications[^=]*= \[([\s\S]*?)\];/)?.[1] ?? '';
+
+  assert.match(site, /Two papers on explainable graph recommendation and topology-aware inverse preference learning were accepted by ICONIP 2026 in Melbourne\./);
+  assert.match(site, /两篇关于图推荐解释与拓扑感知逆偏好学习的论文被 ICONIP 2026 接收，会议将在墨尔本举行。/);
+  assert.match(lowerPriorityBlock, /Explaining Graph Recommendations via Counterfactual Support Sets/);
+  assert.match(lowerPriorityBlock, /Haichao Zhang, Chong Zhang, Can Wang, Shi Qiu, Jia Wang/);
+  assert.match(lowerPriorityBlock, /https:\/\/github\.com\/zhang-haichao\/CoSRec/);
+  assert.match(lowerPriorityBlock, /Topology-Aware Inverse Preference Learning for Robust Hybrid Voting Systems/);
+  assert.match(lowerPriorityBlock, /Can Wang, Shi Qiu, Haichao Zhang/);
+  assert.equal((lowerPriorityBlock.match(/preprintUrl: null/g) ?? []).length, 2);
+  assert.match(lowerPriorityBlock, /image: '\/images\/papers\/cosrec\.png'/);
+  assert.match(lowerPriorityBlock, /image: '\/images\/papers\/tipl\.png'/);
+  assert.match(page, /primaryAutoDiscoveredPublications\.map[\s\S]*lowerPriorityAcceptedPublications\.map/);
 });
 
 test('every main content heading includes a decorative icon', async () => {

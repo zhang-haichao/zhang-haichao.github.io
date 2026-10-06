@@ -18,7 +18,7 @@ export type AcceptedPublication = {
   image: string;
   imageAlt: LocalizedText;
   preprintUrl: string | null;
-  codeUrl: string;
+  codeUrl: string | null;
 };
 
 export const profile = {
@@ -97,6 +97,14 @@ export const news = [
   {
     date: '2026.08',
     text: {
+      en: 'Two papers on explainable graph recommendation and topology-aware inverse preference learning were accepted by ICONIP 2026 in Melbourne.',
+      zh: '两篇关于图推荐解释与拓扑感知逆偏好学习的论文被 ICONIP 2026 接收，会议将在墨尔本举行。'
+    },
+    href: '#publications'
+  },
+  {
+    date: '2026.08',
+    text: {
       en: 'Our DPU framework received a major revision decision from ACM Transactions on Information Systems.',
       zh: '我们的 DPU 框架收到 ACM Transactions on Information Systems 的大修意见。'
     },
@@ -166,6 +174,47 @@ export const acceptedPublications: AcceptedPublication[] = [
     },
     preprintUrl: null,
     codeUrl: 'https://github.com/zhang-haichao/Explain-and-Forget'
+  }
+];
+
+export const lowerPriorityAcceptedPublications: AcceptedPublication[] = [
+  {
+    key: 'cosrec',
+    shortName: 'CoSRec',
+    title: 'Explaining Graph Recommendations via Counterfactual Support Sets',
+    authors: 'Haichao Zhang, Chong Zhang, Can Wang, Shi Qiu, Jia Wang',
+    venueLabel: 'ICONIP 2026',
+    venue: '33rd International Conference on Neural Information Processing (ICONIP 2026), accepted',
+    description: {
+      en: 'A counterfactual explanation framework that identifies compact support sets whose removal changes a target user\'s recommendation without retraining the graph recommender.',
+      zh: '一种反事实图推荐解释框架，在无需重训练图推荐模型的情况下，识别能够改变目标用户推荐结果的紧凑支持集。'
+    },
+    image: '/images/papers/cosrec.png',
+    imageAlt: {
+      en: 'CoSRec framework for explaining graph recommendations through counterfactual support sets',
+      zh: '通过反事实支持集解释图推荐的 CoSRec 框架图'
+    },
+    preprintUrl: null,
+    codeUrl: 'https://github.com/zhang-haichao/CoSRec'
+  },
+  {
+    key: 'tipl',
+    shortName: 'TIPL',
+    title: 'Topology-Aware Inverse Preference Learning for Robust Hybrid Voting Systems',
+    authors: 'Can Wang, Shi Qiu, Haichao Zhang',
+    venueLabel: 'ICONIP 2026',
+    venue: '33rd International Conference on Neural Information Processing (ICONIP 2026), accepted',
+    description: {
+      en: 'A topology-aware inverse preference learning framework for reconstructing latent crowd preferences and auditing robustness, conflict, and merit alignment in hybrid voting systems.',
+      zh: '一种面向混合投票系统的拓扑感知逆偏好学习框架，用于重建潜在人群偏好，并分析鲁棒性、拓扑冲突与能力对齐。'
+    },
+    image: '/images/papers/tipl.png',
+    imageAlt: {
+      en: 'TIPL framework for topology-aware inverse preference learning in hybrid voting systems',
+      zh: '面向混合投票系统的 TIPL 拓扑感知逆偏好学习框架图'
+    },
+    preprintUrl: null,
+    codeUrl: null
   }
 ];
 

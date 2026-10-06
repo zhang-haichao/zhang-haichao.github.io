@@ -22,8 +22,8 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('.academic-sidebar')).toBeVisible();
   await expect(page.locator('.academic-main')).toBeVisible();
   await expect(page.locator('.profile-avatar')).toBeVisible();
-  await expect(page.locator('.publication-paper')).toHaveCount(8);
-  await expect(page.locator('#publications .publication-paper')).toHaveCount(3);
+  await expect(page.locator('.publication-paper')).toHaveCount(10);
+  await expect(page.locator('#publications .publication-paper')).toHaveCount(5);
   await expect(page.locator('#collaborative-publications .publication-paper')).toHaveCount(5);
   await expect(page.locator('#collaborative-publications')).toContainText('Collaborative Publications');
   await expect(page.getByText('Additional publications', { exact: true })).toHaveCount(0);
@@ -49,6 +49,14 @@ test('renders the confirmed English academic profile by default', async ({ page,
   const explainThenForget = page.locator('[data-publication-title^="Explain-then-Forget"]');
   await expect(explainThenForget.getByText('Preprint coming soon', { exact: true })).toBeVisible();
   await expect(explainThenForget.locator('a[href="https://github.com/zhang-haichao/Explain-and-Forget"]')).toBeVisible();
+  const cosrec = page.locator('[data-publication-title^="Explaining Graph Recommendations"]');
+  await expect(cosrec.getByText('Preprint coming soon', { exact: true })).toBeVisible();
+  await expect(cosrec.locator('a[href="https://github.com/zhang-haichao/CoSRec"]')).toBeVisible();
+  await expect(cosrec.locator('img')).toHaveAttribute('src', '/images/papers/cosrec.png');
+  const tipl = page.locator('[data-publication-title^="Topology-Aware Inverse Preference Learning"]');
+  await expect(tipl.getByText('Preprint coming soon', { exact: true })).toBeVisible();
+  await expect(tipl.locator('.paper-links a')).toHaveCount(0);
+  await expect(tipl.locator('img')).toHaveAttribute('src', '/images/papers/tipl.png');
   const cil = page.locator('[data-publication-title^="Clustering-based incremental learning"]');
   await expect(cil.locator('a[href="https://github.com/ybyangjing/CTA"]')).toBeVisible();
   await expect(page.locator('#collaborative-publications')).toContainText('Counterfactual Contrastive Learning for Fine Grained Image Classification');
@@ -56,6 +64,7 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('#collaborative-publications')).toContainText('Two-branch Network with Feature Fusion for Time Since Deposition Estimation of Bloodstains');
   await expect(page.getByText('Figure source', { exact: true })).toHaveCount(0);
   await expect(page.locator('#news')).not.toContainText('2026.02');
+  await expect(page.locator('#news')).toContainText('Two papers on explainable graph recommendation and topology-aware inverse preference learning were accepted by ICONIP 2026 in Melbourne.');
   await expect(page.locator('#news').getByRole('link', { name: 'Our DPU framework received a major revision decision from ACM Transactions on Information Systems.' })).toHaveAttribute('href', 'https://dl.acm.org/journal/tois/reviewers');
   await expect(perovskite.locator('a[href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12947740/"]').first()).toBeVisible();
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('ACM Transactions on Information Systems · Major Revision');
@@ -67,6 +76,8 @@ test('renders the confirmed English academic profile by default', async ({ page,
     'Controllable Generative Recommendation via Guided Token Refinement',
     'Explain-then-Forget: Causal Explanation-based Unlearning for Efficient and Precise Recommendation',
     'Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning',
+    'Explaining Graph Recommendations via Counterfactual Support Sets',
+    'Topology-Aware Inverse Preference Learning for Robust Hybrid Voting Systems',
     'Machine Vision-Enabled Octahedral Network Reconstruction and Structural Analysis of Perovskite Quantum Dots',
     'Clustering-based incremental learning for imbalanced data classification',
     'Counterfactual Contrastive Learning for Fine Grained Image Classification',
@@ -104,6 +115,9 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   await expect(bloodstain.getByText('引用 3', { exact: true })).toBeVisible();
   await expect(bloodstain.locator('img')).toHaveAttribute('src', '/images/papers/auto/two-branch-bloodstain.png');
   await expect(page.locator('#news')).not.toContainText('2026.02');
+  await expect(page.locator('#news')).toContainText('两篇关于图推荐解释与拓扑感知逆偏好学习的论文被 ICONIP 2026 接收，会议将在墨尔本举行。');
+  await expect(page.locator('[data-publication-title^="Explaining Graph Recommendations"]')).toContainText('预印本即将发布');
+  await expect(page.locator('[data-publication-title^="Topology-Aware Inverse Preference Learning"]')).toContainText('预印本即将发布');
   await expect(page.locator('#news').getByRole('link', { name: '我们的 DPU 框架收到 ACM Transactions on Information Systems 的大修意见。' })).toHaveAttribute('href', 'https://dl.acm.org/journal/tois/reviewers');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Teaching to Forget' })).toContainText('ACM Transactions on Information Systems · 大修');
   await expect(page.locator('.ongoing-item').filter({ hasText: 'Personalized Conformity Disentanglement' })).toContainText('International Journal of Machine Learning and Cybernetics（JMLC）· 审稿中');

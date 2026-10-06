@@ -6,6 +6,7 @@ import {
   education,
   experience,
   intellectualProperty,
+  lowerPriorityAcceptedPublications,
   news,
   ongoingResearch,
   openSource,
@@ -358,9 +359,11 @@ const goatCounterEndpoint = rawGoatCounterCode
                       [<span data-lang="en">Preprint coming soon</span><span data-lang="zh">预印本即将发布</span>]
                     </span>
                   )}
-                  <a href={publication.codeUrl} target="_blank" rel="noreferrer">
-                    [<span data-lang="en">Code</span><span data-lang="zh">代码</span>]
-                  </a>
+                  {publication.codeUrl && (
+                    <a href={publication.codeUrl} target="_blank" rel="noreferrer">
+                      [<span data-lang="en">Code</span><span data-lang="zh">代码</span>]
+                    </a>
+                  )}
                 </div>
               </div>
             </article>
@@ -436,6 +439,46 @@ const goatCounterEndpoint = rawGoatCounterCode
                     <span class="publication-citation">
                       <span data-lang="en">Cited by {publication.citations}</span><span data-lang="zh">引用 {publication.citations}</span>
                     </span>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+
+          {lowerPriorityAcceptedPublications.map((publication) => (
+            <article class="paper-box publication-paper accepted-paper reveal" data-publication-title={publication.title}>
+              <button
+                class="paper-figure"
+                type="button"
+                data-figure-src={publication.image}
+                data-figure-alt-en={publication.imageAlt.en}
+                data-figure-alt-zh={publication.imageAlt.zh}
+                aria-label={`Enlarge ${publication.shortName} framework figure`}
+              >
+                <img src={publication.image} alt={publication.imageAlt.en} loading="lazy" />
+              </button>
+              <div class="paper-info">
+                <span class="venue-badge">{publication.venueLabel}</span>
+                <h3>{publication.title}</h3>
+                <p class="paper-authors">
+                  {markAuthor(publication.authors).map((part) => part === 'Haichao Zhang' ? <strong>{part}</strong> : part)}
+                </p>
+                <p class="publication-venue">{publication.venue}</p>
+                <p><span data-lang="en">{publication.description.en}</span><span data-lang="zh">{publication.description.zh}</span></p>
+                <div class="paper-links">
+                  {publication.preprintUrl ? (
+                    <a href={publication.preprintUrl} target="_blank" rel="noreferrer">
+                      [<span data-lang="en">Preprint</span><span data-lang="zh">预印本</span>]
+                    </a>
+                  ) : (
+                    <span class="paper-link-placeholder">
+                      [<span data-lang="en">Preprint coming soon</span><span data-lang="zh">预印本即将发布</span>]
+                    </span>
+                  )}
+                  {publication.codeUrl && (
+                    <a href={publication.codeUrl} target="_blank" rel="noreferrer">
+                      [<span data-lang="en">Code</span><span data-lang="zh">代码</span>]
+                    </a>
                   )}
                 </div>
               </div>
