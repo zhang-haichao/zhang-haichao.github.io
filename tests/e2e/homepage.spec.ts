@@ -33,7 +33,7 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page.locator('#collaborative-publications')).toContainText('Collaborative Publications');
   await expect(page.getByText('Additional publications', { exact: true })).toHaveCount(0);
   await expect(page.locator('a[href="mailto:haichao.zhang22@student.xjtlu.edu.cn"]')).toHaveCount(0);
-  await expect(page.locator('a[href="mailto:zhc@liverpool.ac.uk"]')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'zhc@liverpool.ac.uk' })).toBeVisible();
   const bloodstain = page.locator('[data-publication-title*="Time Since Deposition Estimation"]');
   await expect(bloodstain).toBeVisible();
   await expect(bloodstain).toContainText('CSCWD');
