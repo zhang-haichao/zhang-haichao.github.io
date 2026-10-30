@@ -262,6 +262,21 @@ html[data-ui-language="zh"] [data-lang="zh"] {
   line-height: 1.48;
 }
 
+.profile-availability {
+  margin: 0.85rem 0 0;
+  padding: 0.58rem 0.7rem;
+  border-left: 3px solid var(--link);
+  color: #3f4d5c;
+  background: rgba(34, 75, 141, 0.055);
+  font-size: 0.78rem;
+  line-height: 1.48;
+}
+
+.profile-availability a {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .profile-details {
   margin-top: 1.35rem;
 }
@@ -1073,6 +1088,12 @@ html[data-ui-language="zh"] [data-lang="zh"] {
 
   .profile-affiliation {
     font-size: 0.76rem;
+  }
+
+  .profile-availability {
+    margin-top: 0.65rem;
+    padding: 0.42rem 0.55rem;
+    font-size: 0.72rem;
   }
 
   .profile-details {

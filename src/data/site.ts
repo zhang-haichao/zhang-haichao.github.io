@@ -39,6 +39,16 @@ export const profile = {
     en: 'I study trustworthy and controllable recommender systems at the intersection of large language models, retrieval-augmented generation, machine unlearning, and model editing.',
     zh: '我的研究聚焦可信与可控推荐系统，探索大语言模型、检索增强生成、机器遗忘和模型编辑的交叉问题。'
   },
+  availability: {
+    message: {
+      en: 'Expected Ph.D. graduation: 2027. Currently seeking full-time opportunities.',
+      zh: '预计 2027 年博士毕业，目前正在寻求全职机会。'
+    },
+    cta: {
+      en: 'Let\'s connect.',
+      zh: '欢迎联系交流。'
+    }
+  },
   location: {
     en: 'Suzhou, China',
     zh: '中国 · 苏州'

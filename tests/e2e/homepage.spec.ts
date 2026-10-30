@@ -8,6 +8,11 @@ test('renders the confirmed English academic profile by default', async ({ page,
   await expect(page).toHaveTitle('Haichao Zhang · Academic Homepage');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('.profile-identity').getByRole('heading')).toContainText('Haichao');
+  await expect(page.locator('.profile-availability')).toContainText('Expected Ph.D. graduation: 2027');
+  await expect(page.locator('.profile-availability').getByRole('link', { name: "Let's connect." })).toHaveAttribute(
+    'href',
+    'mailto:zhc@liverpool.ac.uk'
+  );
   await expect(page.getByRole('link', { name: 'Download CV' })).toHaveAttribute('href', '/cv/haichao-zhang-en.pdf');
   await expect(page.locator('.ongoing-item')).toHaveCount(3);
   await expect(page.locator('#opensource .project-item')).toHaveCount(3);
@@ -116,6 +121,11 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   await expect(page).toHaveTitle('张海超 · 学术主页');
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
   await expect(page.locator('.profile-identity').getByRole('heading')).toContainText('张海超');
+  await expect(page.locator('.profile-availability')).toContainText('预计 2027 年博士毕业，目前正在寻求全职机会。');
+  await expect(page.locator('.profile-availability').getByRole('link', { name: '欢迎联系交流。' })).toHaveAttribute(
+    'href',
+    'mailto:zhc@liverpool.ac.uk'
+  );
   await expect(page.getByRole('link', { name: '下载简历' })).toHaveAttribute('href', '/cv/haichao-zhang-zh.pdf');
   const bloodstain = page.locator('[data-publication-title*="Time Since Deposition Estimation"]');
   await expect(bloodstain.getByText('引用 3', { exact: true })).toBeVisible();

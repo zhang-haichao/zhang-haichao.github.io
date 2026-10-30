@@ -190,6 +190,16 @@ const goatCounterEndpoint = rawGoatCounterCode
               <span data-lang="en">School of AI and Advanced Computing<br />Xi'an Jiaotong-Liverpool University</span>
               <span data-lang="zh">人工智能与先进计算学院<br />西交利物浦大学</span>
             </p>
+            <p class="profile-availability">
+              <span data-lang="en">
+                {profile.availability.message.en}{' '}
+                <a href={`mailto:${profile.email}`}>{profile.availability.cta.en}</a>
+              </span>
+              <span data-lang="zh">
+                {profile.availability.message.zh}{' '}
+                <a href={`mailto:${profile.email}`}>{profile.availability.cta.zh}</a>
+              </span>
+            </p>
           </div>
         </div>
 
