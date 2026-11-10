@@ -380,6 +380,11 @@ const goatCounterEndpoint = rawGoatCounterCode
                       [<span data-lang="en">Code</span><span data-lang="zh">代码</span>]
                     </a>
                   )}
+                  {publication.projectUrl && (
+                    <a href={publication.projectUrl} target="_blank" rel="noreferrer">
+                      [<span data-lang="en">Project</span><span data-lang="zh">项目</span>]
+                    </a>
+                  )}
                 </div>
               </div>
             </article>
@@ -499,6 +504,11 @@ const goatCounterEndpoint = rawGoatCounterCode
                   {publication.codeUrl && (
                     <a href={publication.codeUrl} target="_blank" rel="noreferrer">
                       [<span data-lang="en">Code</span><span data-lang="zh">代码</span>]
+                    </a>
+                  )}
+                  {publication.projectUrl && (
+                    <a href={publication.projectUrl} target="_blank" rel="noreferrer">
+                      [<span data-lang="en">Project</span><span data-lang="zh">项目</span>]
                     </a>
                   )}
                 </div>

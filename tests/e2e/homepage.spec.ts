@@ -52,14 +52,17 @@ test('renders the confirmed English academic profile by default', async ({ page,
   const cragru = page.locator('[data-publication-title^="Customized Retrieval-Augmented"]');
   await expect(cragru.locator('a[href="https://zhanghaichao.loc.cc/CRAGRU-Page/"]')).toBeVisible();
   const regen = page.locator('[data-publication-title^="Controllable Generative Recommendation"]');
-  await expect(regen.getByText('Preprint coming soon', { exact: true })).toBeVisible();
+  await expect(regen.locator('a[href="https://arxiv.org/abs/2610.28642"]')).toBeVisible();
   await expect(regen.locator('a[href="https://github.com/zhang-haichao/ReGen"]')).toBeVisible();
-  const explainThenForget = page.locator('[data-publication-title^="Explain-then-Forget"]');
-  await expect(explainThenForget.getByText('Preprint coming soon', { exact: true })).toBeVisible();
-  await expect(explainThenForget.locator('a[href="https://github.com/zhang-haichao/Explain-and-Forget"]')).toBeVisible();
+  await expect(regen.locator('a[href="https://zhanghaichao.loc.cc/ReGen/"]')).toBeVisible();
+  const explainThenForget = page.locator('[data-publication-title^="Explain, Then Forget"]');
+  await expect(explainThenForget.locator('a[href="https://arxiv.org/abs/2610.40658"]')).toBeVisible();
+  await expect(explainThenForget.locator('a[href="https://github.com/zhang-haichao/CEU"]')).toBeVisible();
+  await expect(explainThenForget.locator('a[href="https://zhanghaichao.loc.cc/CEU/"]')).toBeVisible();
   const cosrec = page.locator('[data-publication-title^="Explaining Graph Recommendations"]');
   await expect(cosrec.getByText('Preprint coming soon', { exact: true })).toBeVisible();
   await expect(cosrec.locator('a[href="https://github.com/zhang-haichao/CoSRec"]')).toBeVisible();
+  await expect(cosrec.locator('a[href="https://zhanghaichao.loc.cc/CoSRec/"]')).toBeVisible();
   await expect(cosrec.locator('img')).toHaveAttribute('src', '/images/papers/cosrec.png');
   const tipl = page.locator('[data-publication-title^="Topology-Aware Inverse Preference Learning"]');
   await expect(tipl.getByText('Preprint coming soon', { exact: true })).toBeVisible();
@@ -85,7 +88,7 @@ test('renders the confirmed English academic profile by default', async ({ page,
   const publicationTitles = await page.locator('.publication-paper h3').allTextContents();
   expect(publicationTitles).toEqual([
     'Controllable Generative Recommendation via Guided Token Refinement',
-    'Explain-then-Forget: Causal Explanation-based Unlearning for Efficient and Precise Recommendation',
+    'Explain, Then Forget: Recommendation Unlearning under Asymmetric Access Constraint',
     'Customized Retrieval-Augmented Generation with LLM for Debiasing Recommendation Unlearning',
     'Explaining Graph Recommendations via Counterfactual Support Sets',
     'Topology-Aware Inverse Preference Learning for Robust Hybrid Voting Systems',
@@ -133,6 +136,9 @@ test('switches language, CV, title, and persists the preference', async ({ page 
   await expect(page.locator('#news')).not.toContainText('2026.02');
   await expect(page.locator('#news')).toContainText('两篇关于图推荐解释与拓扑感知逆偏好学习的论文被 ICONIP 2026 接收，会议将在墨尔本举行。');
   await expect(page.locator('[data-publication-title^="Explaining Graph Recommendations"]')).toContainText('预印本即将发布');
+  await expect(page.locator('[data-publication-title^="Controllable Generative Recommendation"] a[href="https://zhanghaichao.loc.cc/ReGen/"]')).toContainText('项目');
+  await expect(page.locator('[data-publication-title^="Explain, Then Forget"] a[href="https://zhanghaichao.loc.cc/CEU/"]')).toContainText('项目');
+  await expect(page.locator('[data-publication-title^="Explaining Graph Recommendations"] a[href="https://zhanghaichao.loc.cc/CoSRec/"]')).toContainText('项目');
   await expect(page.locator('[data-publication-title^="Topology-Aware Inverse Preference Learning"]')).toContainText('预印本即将发布');
   await expect(page.locator('[data-publication-title^="Topology-Aware Inverse Preference Learning"]')).toContainText('* 通讯作者');
   await expect(page.locator('[data-publication-title^="Machine Vision-Enabled"]')).toContainText('† 同等贡献（共同第一作者）');

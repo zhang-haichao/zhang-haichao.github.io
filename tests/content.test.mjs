@@ -157,13 +157,17 @@ test('ICDM 2026 acceptances are promoted from ongoing work to Publications', asy
   assert.match(site, /date: '2026\.08'/);
   assert.doesNotMatch(site, /date: '2026\.08\.17'/);
   assert.match(acceptedBlock, /Controllable Generative Recommendation via Guided Token Refinement/);
-  assert.match(acceptedBlock, /Explain-then-Forget: Causal Explanation-based Unlearning/);
+  assert.match(acceptedBlock, /Explain, Then Forget: Recommendation Unlearning under Asymmetric Access Constraint/);
+  assert.match(acceptedBlock, /https:\/\/arxiv\.org\/abs\/2610\.28642/);
+  assert.match(acceptedBlock, /https:\/\/arxiv\.org\/abs\/2610\.40658/);
+  assert.match(acceptedBlock, /https:\/\/zhanghaichao\.loc\.cc\/ReGen\//);
+  assert.match(acceptedBlock, /https:\/\/zhanghaichao\.loc\.cc\/CEU\//);
   assert.match(acceptedBlock, /https:\/\/github\.com\/zhang-haichao\/ReGen/);
-  assert.match(acceptedBlock, /https:\/\/github\.com\/zhang-haichao\/Explain-and-Forget/);
-  assert.match(acceptedBlock, /preprintUrl: null/g);
+  assert.match(acceptedBlock, /https:\/\/github\.com\/zhang-haichao\/CEU/);
+  assert.doesNotMatch(acceptedBlock, /preprintUrl: null/);
   assert.doesNotMatch(ongoingBlock, /key: 'regen'|key: 'ceu'/);
   assert.match(page, /acceptedPublications\.map/);
-  assert.match(page, /Preprint coming soon/);
+  assert.match(page, /publication\.projectUrl/);
 });
 
 test('ICONIP 2026 acceptances appear last in Publications with supplied figures and placeholders', async () => {
@@ -176,6 +180,7 @@ test('ICONIP 2026 acceptances appear last in Publications with supplied figures 
   assert.match(lowerPriorityBlock, /Explaining Graph Recommendations via Counterfactual Support Sets/);
   assert.match(lowerPriorityBlock, /Haichao Zhang, Chong Zhang, Can Wang, Shi Qiu, Jia Wang/);
   assert.match(lowerPriorityBlock, /https:\/\/github\.com\/zhang-haichao\/CoSRec/);
+  assert.match(lowerPriorityBlock, /https:\/\/zhanghaichao\.loc\.cc\/CoSRec\//);
   assert.match(lowerPriorityBlock, /Topology-Aware Inverse Preference Learning for Robust Hybrid Voting Systems/);
   assert.match(lowerPriorityBlock, /Can Wang, Shi Qiu, Haichao Zhang/);
   assert.match(lowerPriorityBlock, /correspondingAuthor: 'Haichao Zhang'/);

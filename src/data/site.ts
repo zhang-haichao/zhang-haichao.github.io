@@ -19,6 +19,7 @@ export type AcceptedPublication = {
   imageAlt: LocalizedText;
   preprintUrl: string | null;
   codeUrl: string | null;
+  projectUrl: string | null;
   correspondingAuthor?: string;
 };
 
@@ -156,35 +157,37 @@ export const acceptedPublications: AcceptedPublication[] = [
     venueLabel: 'IEEE ICDM 2026',
     venue: '2026 IEEE International Conference on Data Mining (ICDM), accepted',
     description: {
-      en: 'A controllable generative recommendation framework that refines semantic tokens under explicit guidance for more reliable alignment with user intent.',
-      zh: '一种可控生成式推荐框架，通过显式引导细化语义 token，使生成结果与用户意图更加可靠地对齐。'
+      en: 'A training-free framework for real-time control of generative recommendation through guided parallel token refinement and topology-constrained inference.',
+      zh: '一种无需训练的生成式推荐实时控制框架，通过引导式并行 token 细化与拓扑约束推理，在准确性和多样性之间灵活权衡。'
     },
     image: '/images/papers/regen.png',
     imageAlt: {
       en: 'ReGen framework for controllable generative recommendation via guided token refinement',
       zh: '基于引导式 token 细化的 ReGen 可控生成式推荐框架图'
     },
-    preprintUrl: null,
-    codeUrl: 'https://github.com/zhang-haichao/ReGen'
+    preprintUrl: 'https://arxiv.org/abs/2610.28642',
+    codeUrl: 'https://github.com/zhang-haichao/ReGen',
+    projectUrl: 'https://zhanghaichao.loc.cc/ReGen/'
   },
   {
     key: 'explain-then-forget',
-    shortName: 'Explain-then-Forget',
-    title: 'Explain-then-Forget: Causal Explanation-based Unlearning for Efficient and Precise Recommendation',
+    shortName: 'CEU',
+    title: 'Explain, Then Forget: Recommendation Unlearning under Asymmetric Access Constraint',
     authors: 'Haichao Zhang, Chong Zhang, Wen Wang, Shi Qiu, Peiyu Hu, Jia Wang',
     venueLabel: 'IEEE ICDM 2026',
     venue: '2026 IEEE International Conference on Data Mining (ICDM), accepted',
     description: {
-      en: 'An efficient recommendation unlearning framework that uses causal explanations to localize and precisely remove the influence of target interactions.',
-      zh: '一种高效推荐遗忘框架，利用因果解释定位并精确移除目标交互产生的影响。'
+      en: 'An output-level recommendation unlearning framework for asymmetric-access MLaaS settings that estimates causal contributions and adjusts only affected ranking scores without modifying model parameters.',
+      zh: '一种面向非对称访问 MLaaS 场景的输出级推荐遗忘框架，通过估计因果贡献并仅调整受影响的排序分数，在不修改模型参数的情况下移除指定交互的影响。'
     },
     image: '/images/papers/ceu.png',
     imageAlt: {
-      en: 'Explain-then-Forget framework for causal explanation-based recommendation unlearning',
-      zh: '基于因果解释的 Explain-then-Forget 推荐遗忘框架图'
+      en: 'CEU framework for recommendation unlearning under asymmetric access constraints',
+      zh: '面向非对称访问约束的 CEU 推荐遗忘框架图'
     },
-    preprintUrl: null,
-    codeUrl: 'https://github.com/zhang-haichao/Explain-and-Forget'
+    preprintUrl: 'https://arxiv.org/abs/2610.40658',
+    codeUrl: 'https://github.com/zhang-haichao/CEU',
+    projectUrl: 'https://zhanghaichao.loc.cc/CEU/'
   }
 ];
 
@@ -197,8 +200,8 @@ export const lowerPriorityAcceptedPublications: AcceptedPublication[] = [
     venueLabel: 'ICONIP 2026',
     venue: '33rd International Conference on Neural Information Processing (ICONIP 2026), accepted',
     description: {
-      en: 'A counterfactual explanation framework that identifies compact support sets whose removal changes a target user\'s recommendation without retraining the graph recommender.',
-      zh: '一种反事实图推荐解释框架，在无需重训练图推荐模型的情况下，识别能够改变目标用户推荐结果的紧凑支持集。'
+      en: 'A post-hoc graph recommendation explanation method that identifies sparse counterfactual support sets and verifies them by recomputing recommendations after deletion, without retraining the recommender.',
+      zh: '一种后验图推荐解释方法，在不重训练推荐模型的情况下识别稀疏反事实支持集，并通过删除交互后重新计算推荐结果进行验证。'
     },
     image: '/images/papers/cosrec.png',
     imageAlt: {
@@ -206,7 +209,8 @@ export const lowerPriorityAcceptedPublications: AcceptedPublication[] = [
       zh: '通过反事实支持集解释图推荐的 CoSRec 框架图'
     },
     preprintUrl: null,
-    codeUrl: 'https://github.com/zhang-haichao/CoSRec'
+    codeUrl: 'https://github.com/zhang-haichao/CoSRec',
+    projectUrl: 'https://zhanghaichao.loc.cc/CoSRec/'
   },
   {
     key: 'tipl',
@@ -226,6 +230,7 @@ export const lowerPriorityAcceptedPublications: AcceptedPublication[] = [
     },
     preprintUrl: null,
     codeUrl: null,
+    projectUrl: null,
     correspondingAuthor: 'Haichao Zhang'
   }
 ];
